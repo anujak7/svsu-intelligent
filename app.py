@@ -21,173 +21,162 @@ img_base64 = get_base64_img("assets/campus.png")
 # Modern, Premium Glassmorphism UI
 st.markdown(f"""
 <style>
-    /* Full Page Background with Image (ORIGINAL COLORS) */
+    /* Full Page Background (Premium Light Theme) */
     .stApp {{
-        background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2)), 
-                    url("data:image/png;base64,{img_base64}");
-        background-size: cover;
-        background-position: center;
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
         background-attachment: fixed;
         font-family: 'Inter', sans-serif;
     }}
 
     /* Top Header Banner (Glass) */
     .header-banner {{
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(15px);
-        padding: 2rem;
-        border-radius: 20px;
-        color: white;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: 0 0 30px 30px;
+        color: #1e293b;
         text-align: center;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #bae6fd;
+        box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
     }}
 
     .header-banner img {{
-        width: 220px;
-        filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        width: 250px;
     }}
 
     .header-title {{
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 800;
-        margin: 0.5rem 0;
-        background: linear-gradient(to right, #ffffff, #df6d25);
+        margin: 0.2rem 0;
+        background: linear-gradient(to right, #0369a1, #0ea5e9);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }}
 
-    /* Chat Messages (Glassmorphism) */
+    /* Chat Messages (Light Glass) */
     .stChatMessage {{
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(8px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 15px !important;
-        color: white !important;
-        padding: 1.2rem !important;
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 20px !important;
+        color: #1e293b !important;
+        padding: 1rem !important;
         margin-bottom: 1rem !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
     }}
 
     [data-testid="chat-message-assistant"] {{
-        border-right: 4px solid #df6d25 !important;
+        border-left: 5px solid #0ea5e9 !important;
     }}
 
     [data-testid="chat-message-user"] {{
-        border-left: 4px solid #1e4b8a !important;
+        border-right: 5px solid #f59e0b !important;
     }}
 
     /* Make text white in chat for visibility */
     .stChatMessage p, .stChatMessage li, .stChatMessage span {{
-        color: #f8fafc !important;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        color: #334155 !important;
     }}
 
-    /* Sidebar Glass */
+    /* Sidebar Light */
     [data-testid="stSidebar"] {{
-        background: rgba(255, 255, 255, 0.1) !important ;
-        backdrop-filter: blur(20px) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background: #ffffff !important ;
+        border-right: 1px solid #e2e8f0 !important;
     }}
 
     [data-testid="stSidebar"] * {{
-        color: white !important;
+        color: #475569 !important;
     }}
 
     /* Chat Input Bar */
     .stChatInputContainer {{
-        background: rgba(255, 255, 255, 0.1) !important;
-        backdrop-filter: blur(15px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background: white !important;
+        border: 2px solid #e0f2fe !important;
         border-radius: 30px !important;
-        padding: 0.5rem !important;
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15) !important;
     }}
 
     .stChatInputContainer textarea {{
-        color: white !important;
+        color: #1e293b !important;
     }}
 
-    /* --- LEAD FORM PREMIUM STYLING --- */
-    .lead-container {
-        background: rgba(255, 255, 255, 0.08); /* Dark Glass */
-        backdrop-filter: blur(25px);
-        padding: 3rem;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        margin: 2rem auto;
-        max-width: 900px;
-        color: white;
-        text-align: center;
-        animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .lead-logo {
-        width: 320px !important; /* Larger Logo */
-        margin-bottom: 30px;
+    /* --- LEAD FORM PREMIUM LIGHT STYLING --- */
+    .lead-container {{
         background: white;
-        padding: 15px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+        padding: 2.5rem;
+        border-radius: 30px;
+        border: 2px solid #e0f2fe;
+        box-shadow: 0 25px 60px rgba(14, 165, 233, 0.15);
+        margin: 0 auto;
+        max-width: 1100px;
+        text-align: center;
+        animation: fadeIn 0.6s ease-out;
+    }}
 
-    .lead-title {
-        font-size: 2.2rem;
+    @keyframes fadeIn {{
+        from {{ opacity: 0; transform: translateY(20px); }}
+        to {{ opacity: 1; transform: translateY(0); }}
+    }}
+
+    .lead-logo {{
+        width: 450px !important; /* MEGA LOGO */
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }}
+    .lead-logo:hover {{ transform: scale(1.02); }}
+
+    .lead-title {{
+        font-size: 2.5rem;
         font-weight: 800;
-        color: #f8fafc;
+        color: #0369a1;
         margin-bottom: 5px;
-        letter-spacing: -0.5px;
-    }
+    }}
 
-    .lead-subtitle {
-        color: #94a3b8;
+    .lead-subtitle {{
+        color: #64748b;
         font-size: 1.1rem;
-        margin-bottom: 40px;
-    }
+        margin-bottom: 30px;
+    }}
 
     /* Input Field Styling */
-    .stTextInput input, .stSelectbox select, .stTextArea textarea {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    .stTextInput input, .stSelectbox select, .stTextArea textarea {{
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
-        color: white !important;
+        color: #1e293b !important;
         padding: 12px !important;
-    }
+    }}
 
-    .stTextInput input:focus, .stSelectbox select:focus {
-        border-color: #df6d25 !important;
-        box-shadow: 0 0 0 2px rgba(223, 109, 37, 0.2) !important;
-    }
+    .stTextInput input:focus, .stSelectbox select:focus {{
+        border-color: #0ea5e9 !important;
+        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2) !important;
+    }}
 
     /* Horizontal Form Submit Button */
-    .stButton button {
+    .stButton button {{
         width: 100%;
-        background: linear-gradient(135deg, #df6d25, #f59e0b) !important;
+        background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
         color: white !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 18px !important;
+        border-radius: 15px !important;
+        padding: 15px !important;
         font-weight: 700 !important;
-        font-size: 1.1rem !important;
+        font-size: 1.2rem !important;
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.3s ease !important;
-        box-shadow: 0 10px 20px rgba(223, 109, 37, 0.3) !important;
+        box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3) !important;
         margin-top: 15px;
-    }
+    }}
 
-    .stButton button:hover {
+    .stButton button:hover {{
         transform: translateY(-3px) !important;
-        box-shadow: 0 15px 30px rgba(223, 109, 37, 0.4) !important;
-    }
+        box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4) !important;
+    }}
 
     /* Hide defaults */
-    #MainMenu, footer {visibility: hidden;}
+    #MainMenu, footer {{visibility: hidden;}}
 
 </style>
 
@@ -201,14 +190,16 @@ with st.sidebar:
     st.markdown("This is the official AI assistant for Shri Vishwakarma Skill University. Designed to help students, faculty, and visitors find information easily and rapidly.")
 
 
-# ----------------- MAIN HEADER -----------------
-st.markdown("""
-<div class="header-banner">
-    <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
-    <h1 class="header-title">SVSU Intelligent</h1>
-    <p class="header-subtitle">Your Official Assistant for Shri Vishwakarma Skill University</p>
-</div>
-""", unsafe_allow_html=True)
+# ----------------- MAIN HEADER (Only after Lead Capture) -----------------
+if st.session_state.lead_captured:
+    st.markdown("""
+    <div class="header-banner">
+        <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+        <h1 class="header-title">SVSU Intelligent</h1>
+        <p class="header-subtitle">Your Official Assistant for Shri Vishwakarma Skill University</p>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 
 # ----------------- INITIALIZE ENGINE (LAZY) -----------------
@@ -248,29 +239,27 @@ if not st.session_state.lead_captured:
     </div>
     """, unsafe_allow_html=True)
     
-    # Custom Container for Form to handle alignment
-    form_placeholder = st.empty()
-    with form_placeholder.container():
-        with st.form("lead_form"):
-            # Horizontal Group 1
-            r1c1, r1c2 = st.columns(2)
-            with r1c1:
-                name = st.text_input("Full Name", placeholder="e.g. John Doe")
-            with r1c2:
-                mobile = st.text_input("Mobile Number", placeholder="e.g. 9876543210")
+    with st.container():
+        with st.form("lead_form", border=False):
+            # TRUE HORIZONTAL LAYOUT (3 columns for fields)
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                name = st.text_input("Full Name", placeholder="e.g. Rahul Sharma")
+            with c2:
+                mobile = st.text_input("Mobile Number", placeholder="e.g. 98123xxxxx")
+            with c3:
+                email = st.text_input("Email Address", placeholder="e.g. user@email.com")
             
-            # Horizontal Group 2
-            r2c1, r2c2 = st.columns(2)
-            with r2c1:
-                email = st.text_input("Email Address", placeholder="e.g. john@svsu.ac.in")
-            with r2c2:
+            # Row 2
+            c4, c5 = st.columns([1, 2])
+            with c4:
                 categories = ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"]
-                destination = st.selectbox("Designation/Category", categories, index=0)
+                destination = st.selectbox("I am a...", categories, index=0)
+            with c5:
+                purpose = st.text_input("Purpose / Question", placeholder="Admission details, Exam dates, etc.")
             
-            # Full Width Field
-            purpose = st.text_area("Purpose of Chat (How can we help you today?)", placeholder="Admission, Exams, Placements, etc.")
-            
-            submit = st.form_submit_button("Start Intelligent Consulting")
+            submit = st.form_submit_button("Start Consulting Now")
+
 
             
             if submit:
