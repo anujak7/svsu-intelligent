@@ -1,106 +1,118 @@
 import os
 import streamlit as st
+import base64
 from chatbot_engine import get_chatbot_chain
 from dotenv import load_dotenv
 
-# Load env variables (including the provided API key)
+# Load env variables
 load_dotenv()
 
 st.set_page_config(page_title="SVSU Intelligent", layout="wide")
 
-# Modern, Govt-official premium UI via CSS injection
-st.markdown("""
+# Helper to encode local image to base64
+def get_base64_img(img_path):
+    if os.path.exists(img_path):
+        with open(img_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    return ""
+
+img_base64 = get_base64_img("assets/campus.png")
+
+# Modern, Premium Glassmorphism UI
+st.markdown(f"""
 <style>
-    /* Global Background */
-    .stApp {
-        background: radial-gradient(circle at 10% 20%, rgb(239, 246, 255) 0%, rgb(255, 255, 255) 90%);
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
+    /* Full Page Background with Image */
+    .stApp {{
+        background: linear-gradient(rgba(30, 75, 138, 0.7), rgba(0, 0, 0, 0.8)), 
+                    url("data:image/png;base64,{img_base64}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Inter', sans-serif;
+    }}
 
-    /* Top Header Banner */
-    .header-banner {
-        background: white;
-        padding: 2.5rem 1rem;
-        border-radius: 12px;
-        color: #1e4b8a; /* SVSU Dark Blue */
+    /* Top Header Banner (Glass) */
+    .header-banner {{
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        padding: 2rem;
+        border-radius: 20px;
+        color: white;
         text-align: center;
-        box-shadow: 0 4px 25px rgba(0,0,0,0.06);
         margin-bottom: 2rem;
-        border-top: 5px solid #df6d25; /* SVSU Orange */
-    }
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }}
 
-    .header-banner img {
-        width: 250px;
-        margin-bottom: 1.5rem;
-    }
+    .header-banner img {{
+        width: 220px;
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+    }}
 
-    .header-title {
-        font-size: 2.8rem;
+    .header-title {{
+        font-size: 2.5rem;
         font-weight: 800;
-        margin: 0;
-        letter-spacing: 1px;
-    }
+        margin: 0.5rem 0;
+        background: linear-gradient(to right, #ffffff, #df6d25);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
 
-    .header-subtitle {
-        font-size: 1.2rem;
-        font-weight: 400;
-        opacity: 0.9;
-        margin-top: 0.5rem;
-    }
+    /* Chat Messages (Glassmorphism) */
+    .stChatMessage {{
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(8px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 15px !important;
+        color: white !important;
+        padding: 1.2rem !important;
+        margin-bottom: 1rem !important;
+    }}
 
-    /* Chat window area */
-    .stChatMessage {
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(0,0,0,0.05);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    }
+    [data-testid="chat-message-assistant"] {{
+        border-right: 4px solid #df6d25 !important;
+    }}
 
-    /* Assistant Message styling */
-    [data-testid="chat-message-assistant"] {
-        background-color: white !important;
-        border-right: 5px solid #df6d25 !important;
-    }
+    [data-testid="chat-message-user"] {{
+        border-left: 4px solid #1e4b8a !important;
+    }}
 
-    /* User Message styling */
-    [data-testid="chat-message-user"] {
-        background-color: #f1f5f9 !important;
-        border-left: 5px solid #1e4b8a !important; 
-    }
+    /* Make text white in chat for visibility */
+    .stChatMessage p, .stChatMessage li, .stChatMessage span {{
+        color: #f8fafc !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }}
 
-    /* Input area styling */
-    .stChatInputContainer {
+    /* Sidebar Glass */
+    [data-testid="stSidebar"] {{
+        background: rgba(255, 255, 255, 0.1) !important ;
+        backdrop-filter: blur(20px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }}
+
+    [data-testid="stSidebar"] * {{
+        color: white !important;
+    }}
+
+    /* Chat Input Bar */
+    .stChatInputContainer {{
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
         border-radius: 30px !important;
-        border: 2px solid #e2e8f0 !important;
-        background-color: white !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
+        padding: 0.5rem !important;
+    }}
 
-    .stChatInputContainer:focus-within {
-        border-color: #1e4b8a !important;
-    }
+    .stChatInputContainer textarea {{
+        color: white !important;
+    }}
 
-    /* Hide default Streamlit marks */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
+    /* Hide defaults */
+    #MainMenu, footer {{visibility: hidden;}}
 
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background-color: #ffffff;
-        border-right: 1px solid #e2e8f0;
-    }
-    
-    .sidebar-brand {
-        text-align: center;
-        padding: 1rem 0;
-        border-bottom: 2px solid #f1f5f9;
-        margin-bottom: 1.5rem;
-    }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ----------------- SIDEBAR -----------------
 with st.sidebar:
