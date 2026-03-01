@@ -4,254 +4,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard - SVSU Intelligent</title>
+    <title>SVSU Analytics - Premium Dashboard</title>
 
-    <!-- Microsoft Fabric / PowerBI style font -->
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Flatpickr for Custom Date Range -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-    <!-- jsPDF and AutoTable for PDF Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         :root {
-            --primary: #0078D4;
-            /* Microsoft Blue */
-            --primary-dark: #005A9E;
-            --sidebar-bg: #f3f2f1;
-            --bg-color: #faf9f8;
-            --card-bg: #ffffff;
-            --text-main: #323130;
-            --text-muted: #605e5c;
-            --border-color: #edebe9;
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --accent: #3b82f6;
+            --bg-base: #090e17;
+            --glass-bg: rgba(20, 29, 46, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
+            background-color: var(--bg-base);
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(249, 115, 22, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-light);
             display: flex;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        /* ----- LOGIN OVERLAY START ----- */
+        /* ----- PREMIUM LOGIN OVERLAY ----- */
         #loginOverlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #ffffff;
+            background: rgba(9, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: opacity 0.5s ease;
         }
 
-        .ms-login-box {
-            background: white;
-            width: 440px;
-            padding: 44px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            border: 1px solid #ccc;
+        .login-glass-box {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 420px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .ms-login-box img {
+        .login-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: skewX(-20deg);
+            animation: shine 6s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            20% {
+                left: 200%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        .login-glass-box img {
             width: 140px;
-            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .ms-login-box h2 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1b1b1b;
-            margin-bottom: 16px;
+        .login-glass-box h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+            letter-spacing: 0.5px;
         }
 
-        .ms-input {
-            width: 100%;
-            padding: 8px 0;
+        .login-glass-box p.subtitle {
+            color: var(--text-muted);
             font-size: 15px;
-            border: none;
-            border-bottom: 1px solid #605e5c;
+            margin-bottom: 35px;
+        }
+
+        .prem-input-group {
+            position: relative;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .prem-input {
+            width: 100%;
+            padding: 16px 20px 16px 45px;
+            font-size: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 12px;
             outline: none;
-            margin-bottom: 24px;
+            transition: all 0.3s ease;
         }
 
-        .ms-input:focus {
-            border-bottom: 2px solid var(--primary);
+        .prem-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
         }
 
-        .ms-btn {
-            background: var(--primary);
+        .prem-input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .prem-input:focus+i {
+            color: var(--primary);
+        }
+
+        .prem-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), #ea580c);
             color: white;
             border: none;
-            padding: 10px 32px;
-            font-size: 15px;
-            font-weight: 500;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            float: right;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
         }
 
-        .ms-btn:hover {
-            background: var(--primary-dark);
+        .prem-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(249, 115, 22, 0.4);
         }
 
         .error-msg {
-            color: #d13438;
+            color: #f87171;
             font-size: 14px;
-            margin-top: -10px;
-            margin-bottom: 14px;
+            margin-bottom: 15px;
             display: none;
+            background: rgba(248, 113, 113, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
         }
 
-        /* ----- LOGIN OVERLAY END ----- */
+        .back-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            transition: color 0.3s;
+        }
 
+        .back-btn:hover {
+            color: white;
+        }
 
-        /* Sidebar */
+        /* ----- MAIN APP ----- */
+        #appRoot {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar Glassmorphism */
         .sidebar {
-            width: 260px;
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-            padding: 2rem 1rem;
+            width: 280px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            z-index: 1000;
+            padding: 30px 20px;
+            z-index: 10;
         }
 
         .sidebar img {
-            width: 180px;
-            margin-bottom: 2.5rem;
-            align-self: center;
+            width: 160px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 16px;
+            margin: 0 auto 40px auto;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 0.8rem 1rem;
-            color: var(--text-main);
+            padding: 14px 18px;
+            color: var(--text-muted);
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 12px;
             font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 14px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .nav-link:hover {
-            background: #edebe9;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
         }
 
         .nav-link.active {
-            background: white;
-            border-left: 3px solid var(--primary);
-            font-weight: 600;
+            background: rgba(249, 115, 22, 0.15);
+            color: white;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
         }
 
         .nav-link i {
-            margin-right: 12px;
-            font-size: 1rem;
+            margin-right: 15px;
+            font-size: 1.1rem;
             width: 20px;
             text-align: center;
+            color: inherit;
+            transition: color 0.3s;
+        }
+
+        .nav-link.active i {
             color: var(--primary);
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 260px;
-            padding: 2.5rem 3rem;
             flex: 1;
-            min-height: 100vh;
+            padding: 40px 50px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
+            align-items: flex-start;
+            margin-bottom: 30px;
         }
 
         .header h1 {
-            color: #1b1b1b;
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 400;
         }
 
         .export-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
-        .ms-ghost-btn {
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 6px 16px;
+        .btn-export {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px 20px;
             font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            border-radius: 2px;
+            gap: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
-        .ms-ghost-btn:hover {
-            background: #f3f2f1;
+        .btn-export.csv:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
         }
 
-        .ms-ghost-btn i {
-            color: var(--primary);
+        .btn-export.pdf:hover {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
         }
 
         /* Filters */
         .filter-container {
-            background: white;
-            padding: 12px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            margin-bottom: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 15px 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
+        .filter-title {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 10px;
+        }
+
         .filter-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 2px;
-            font-weight: 400;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
             font-size: 14px;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .filter-btn:hover {
-            background: #f3f2f1;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .filter-btn.active {
-            background: #e1dfdd;
-            font-weight: 600;
-            border: 1px solid var(--border-color);
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
         }
 
         .date-picker-wrap {
@@ -262,215 +439,299 @@
         }
 
         .date-input {
-            border: 1px solid #8a8886;
-            padding: 6px 10px;
-            border-radius: 2px;
-            font-family: inherit;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
             font-size: 14px;
             outline: none;
+            transition: 0.3s;
         }
 
         .date-input:focus {
-            border-color: var(--primary);
+            border-color: var(--accent);
         }
 
         /* Metrics */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 24px;
+            margin-bottom: 30px;
         }
 
         .metric-card {
-            background: white;
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            border-top: 4px solid var(--primary);
-            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            border-bottom-left-radius: 100%;
+        }
+
+        .metric-card.accent::before {
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        }
+
+        .metric-card.success::before {
+            background: radial-gradient(circle, #10b981 0%, transparent 70%);
         }
 
         .metric-card p {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .metric-card h3 {
-            color: #1b1b1b;
-            font-size: 32px;
-            font-weight: 300;
+            color: white;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
         }
 
         /* Charts Section */
         .charts-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 24px;
+            margin-bottom: 30px;
         }
 
         .chart-box {
-            background: white;
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
         }
 
         .chart-box h3 {
             margin-bottom: 20px;
-            font-size: 16px;
-            color: #1b1b1b;
+            font-size: 18px;
             font-weight: 600;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Table */
+        .chart-box h3 i {
+            color: var(--primary);
+        }
+
+        /* HTML Table in Admin */
         .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 40px;
         }
 
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
 
         .table-header h3 {
-            font-size: 16px;
-            color: #1b1b1b;
+            font-size: 18px;
             font-weight: 600;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-header h3 i {
+            color: var(--accent);
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         th {
             text-align: left;
-            padding: 12px 10px;
+            padding: 15px;
             color: var(--text-muted);
-            font-size: 12px;
+            font-size: 13px;
             text-transform: uppercase;
-            border-bottom: 2px solid var(--border-color);
             font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         td {
-            padding: 12px 10px;
-            color: var(--text-main);
+            padding: 15px;
+            color: #cbd5e1;
             font-size: 14px;
-            border-bottom: 1px solid #edebe9;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            background: transparent;
+            transition: background 0.2s;
         }
 
         tr:hover td {
-            background: #f3f2f1;
+            background: rgba(255, 255, 255, 0.02);
+            color: white;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .badge {
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
             border: 1px solid transparent;
         }
 
         .bg-stu {
-            background: #e1dfdd;
-            color: #323130;
-            border-color: #8a8886;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .bg-par {
-            background: #fef0d9;
-            color: #a4262c;
-            border-color: #fce100;
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.2);
         }
 
         .bg-stf {
-            background: #dff6dd;
-            color: #107c10;
-            border-color: #107c10;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
         .bg-oth {
-            background: #edebe9;
-            color: #605e5c;
-            border-color: #c8c6c4;
+            background: rgba(148, 163, 184, 0.1);
+            color: #cbd5e1;
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        /* Custom Flatpickr Dark Theme override */
+        .flatpickr-calendar {
+            background: #1e293b !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .flatpickr-day {
+            color: #e2e8f0 !important;
+        }
+
+        .flatpickr-day.selected {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+
+        .flatpickr-month,
+        .flatpickr-current-month,
+        .flatpickr-weekday {
+            color: #f8fafc !important;
+            fill: #f8fafc !important;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Microsoft Style Login Overlay -->
+    <!-- Premium Animated Login Overlay -->
     <div id="loginOverlay">
-        <div class="ms-login-box">
+        <div class="login-glass-box">
             <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
-            <h2 id="loginTitle">Sign in</h2>
+            <h2 id="loginTitle">Admin Portal</h2>
+            <p class="subtitle" id="loginDesc">Secure access for authorized personnel</p>
 
             <div id="emailStep">
-                <div class="error-msg" id="emailError">Please enter a valid admin email.</div>
-                <input type="email" id="loginEmail" class="ms-input" placeholder="Email, phone, or Skype"
-                    onkeypress="if(event.key === 'Enter') checkEmail()">
-                <p style="font-size: 13px; margin-bottom: 30px;">No account? <a href="#"
-                        style="color: var(--primary); text-decoration: none;">Create one!</a></p>
-                <div style="overflow: hidden;">
-                    <button class="ms-btn" onclick="checkEmail()">Next</button>
+                <div class="error-msg" id="emailError"><i class="fas fa-exclamation-circle"></i> Invalid administrator
+                    email</div>
+                <div class="prem-input-group">
+                    <input type="email" id="loginEmail" class="prem-input" placeholder="Admin Email ID"
+                        onkeypress="if(event.key === 'Enter') checkEmail()">
+                    <i class="fas fa-envelope"></i>
                 </div>
+                <button class="prem-btn" onclick="checkEmail()">Continue <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></button>
             </div>
 
             <div id="passwordStep" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                    <i class="fas fa-arrow-left" style="cursor: pointer; color:#605e5c;" onclick="goBack()"></i>
-                    <span id="displayEmail" style="font-weight: 600; color: #323130;"></span>
+                <div class="error-msg" id="passError"><i class="fas fa-exclamation-circle"></i> Incorrect secure
+                    password</div>
+                <div class="prem-input-group">
+                    <input type="password" id="loginPassword" class="prem-input" placeholder="Admin Password"
+                        onkeypress="if(event.key === 'Enter') checkPassword()">
+                    <i class="fas fa-lock"></i>
                 </div>
-                <h2 style="font-size: 24px; margin-bottom: 16px;">Enter password</h2>
-                <div class="error-msg" id="passError">Incorrect password. Please try again.</div>
-                <input type="password" id="loginPassword" class="ms-input" placeholder="Password"
-                    onkeypress="if(event.key === 'Enter') checkPassword()">
-                <p style="font-size: 13px; margin-bottom: 30px;"><a href="#"
-                        style="color: var(--primary); text-decoration: none;">Forgot my password</a></p>
-                <div style="overflow: hidden;">
-                    <button class="ms-btn" onclick="checkPassword()">Sign in</button>
-                </div>
+                <button class="prem-btn" onclick="checkPassword()">Verify & Access <i class="fas fa-shield-alt"
+                        style="margin-left: 8px;"></i></button>
+                <div class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Use a different email</div>
             </div>
         </div>
     </div>
 
     <!-- Main Dashboard -->
-    <div id="appRoot" style="display: none; width: 100%;">
+    <div id="appRoot">
         <aside class="sidebar">
             <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
 
-            <a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i> Analytics Overview</a>
-            <a href="#" class="nav-link"><i class="fas fa-users"></i> Lead Database</a>
+            <a href="#" class="nav-link active"><i class="fas fa-chart-line"></i> Main Dashboard</a>
+            <a href="#" class="nav-link"><i class="fas fa-users"></i> Audience Insights</a>
+            <a href="#" class="nav-link"><i class="fas fa-cog"></i> System Settings</a>
+
+            <button class="logout-btn" onclick="logoutSession()"><i class="fas fa-sign-out-alt"></i> Secure
+                Logout</button>
         </aside>
 
         <main class="main-content">
             <div class="header">
                 <div>
-                    <h1>Intelligent Analytics Workspace</h1>
+                    <h1>SVSU Intelligent Hub</h1>
+                    <p>Advanced telemetry and lead acquisitions</p>
                 </div>
                 <div class="export-group">
-                    <button class="ms-ghost-btn" id="exportCsvBtn"><i class="fas fa-file-csv"></i> Export CSV</button>
-                    <button class="ms-ghost-btn" id="exportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                    <button class="btn-export csv" id="exportCsvBtn"><i class="fas fa-file-csv"></i> Export Data
+                        CSV</button>
+                    <button class="btn-export pdf" id="exportPdfBtn"><i class="fas fa-file-pdf"></i> Generate PDF
+                        Report</button>
                 </div>
             </div>
 
             <div class="filter-container">
-                <i class="fas fa-filter" style="color: #605e5c;"></i>
+                <span class="filter-title"><i class="fas fa-filter"></i> Analytics Range</span>
                 <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
                 <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
                 <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
@@ -479,26 +740,27 @@
                 <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
 
                 <div class="date-picker-wrap">
-                    <input type="text" id="customDate" class="date-input" placeholder="Select Custom Range...">
-                    <button class="ms-ghost-btn" onclick="applyCustomFilter()"
-                        style="margin: 0; padding: 4px 12px;">Apply Filter</button>
+                    <input type="text" id="customDate" class="date-input" placeholder="Custom Data Range...">
+                    <button class="filter-btn" onclick="applyCustomFilter()"
+                        style="border-color: rgba(255,255,255,0.2);">Apply <i class="fas fa-check"
+                            style="font-size: 10px;"></i></button>
                 </div>
             </div>
 
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <p>Total Interactions</p>
+                    <p>Overall Interactions</p>
                     <h3 id="m-total">0</h3>
                 </div>
-                <div class="metric-card">
-                    <p>Students</p>
+                <div class="metric-card accent">
+                    <p>Total Students</p>
                     <h3 id="m-stu">0</h3>
                 </div>
                 <div class="metric-card">
                     <p>Parents / Guardians</p>
                     <h3 id="m-par">0</h3>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card success">
                     <p>Corporate / Staff</p>
                     <h3 id="m-stf">0</h3>
                 </div>
@@ -506,34 +768,35 @@
 
             <div class="charts-container">
                 <div class="chart-box">
-                    <h3>Traffic Analysis</h3>
+                    <h3><i class="fas fa-wave-square"></i> Request Telemetry</h3>
                     <canvas id="trafficChart" height="100"></canvas>
                 </div>
                 <div class="chart-box">
-                    <h3>Audience Overview</h3>
+                    <h3><i class="fas fa-chart-pie"></i> Audience Distribution</h3>
                     <canvas id="demoChart" height="200"></canvas>
                 </div>
             </div>
 
             <div class="table-container">
                 <div class="table-header">
-                    <h3>Recent Captured Leads</h3>
+                    <h3><i class="fas fa-database"></i> Live Captured Details</h3>
                 </div>
                 <div style="overflow-x: auto;">
                     <table id="leadsTableData">
                         <thead>
                             <tr>
                                 <th>Timestamp</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Mobile</th>
-                                <th>Email</th>
-                                <th>Purpose / Query</th>
+                                <th>Full Name</th>
+                                <th>Designation Group</th>
+                                <th>Mobile Number</th>
+                                <th>Email Address</th>
+                                <th>Interaction Purpose</th>
                             </tr>
                         </thead>
                         <tbody id="leadTableBody">
                             <tr>
-                                <td colspan="6" style="text-align: center;">Loading data...</td>
+                                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                    Loading encrypted records...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -543,22 +806,32 @@
     </div>
 
     <script>
-        // --- LOGIN LOGIC ---
+        // --- SECURE LOGIN LOGIC ---
         function checkEmail() {
             const email = document.getElementById('loginEmail').value;
             if (email.toLowerCase() === 'admin.bot@svsu.ac.in') {
                 document.getElementById('emailError').style.display = 'none';
                 document.getElementById('emailStep').style.display = 'none';
                 document.getElementById('passwordStep').style.display = 'block';
-                document.getElementById('displayEmail').innerText = email;
-                document.getElementById('loginTitle').style.display = 'none';
+                document.getElementById('loginTitle').innerText = "Enter Password";
+                document.getElementById('loginDesc').innerText = "Authenticate for " + email;
+
+                // UX effect
+                const box = document.querySelector('.login-glass-box');
+                box.style.transform = 'scale(0.98)';
+                setTimeout(() => box.style.transform = 'scale(1)', 150);
             } else {
                 document.getElementById('emailError').style.display = 'block';
+                document.querySelector('.login-glass-box').animate([
+                    { transform: "translateX(0)" }, { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" }, { transform: "translateX(0)" }
+                ], { duration: 300 });
             }
         }
 
         function goBack() {
-            document.getElementById('loginTitle').style.display = 'block';
+            document.getElementById('loginTitle').innerText = "Admin Portal";
+            document.getElementById('loginDesc').innerText = "Secure access for authorized personnel";
             document.getElementById('passwordStep').style.display = 'none';
             document.getElementById('emailStep').style.display = 'block';
             document.getElementById('passError').style.display = 'none';
@@ -568,17 +841,32 @@
             const pass = document.getElementById('loginPassword').value;
             if (pass === 'svsu@2026') {
                 document.getElementById('passError').style.display = 'none';
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('appRoot').style.display = 'flex';
-                // Trigger fetch after login
+                document.getElementById('loginOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loginOverlay').style.display = 'none';
+                    document.getElementById('appRoot').style.display = 'flex';
+                }, 500);
+
                 fetchData();
             } else {
                 document.getElementById('passError').style.display = 'block';
+                document.querySelector('.login-glass-box').animate([
+                    { transform: "translateX(0)" }, { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" }, { transform: "translateX(0)" }
+                ], { duration: 300 });
             }
         }
 
+        function logoutSession() {
+            document.getElementById('appRoot').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            goBack();
+            document.getElementById('loginOverlay').style.display = 'flex';
+            setTimeout(() => document.getElementById('loginOverlay').style.opacity = '1', 50);
+        }
+
         // --- DASHBOARD LOGIC ---
-        // Init Flatpickr for custom dates
         const datePicker = flatpickr("#customDate", {
             mode: "range",
             dateFormat: "Y-m-d",
@@ -590,19 +878,21 @@
         let trafficChartInstance = null;
         let demoChartInstance = null;
 
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Outfit', sans-serif";
+
         async function fetchData() {
             try {
                 const res = await fetch('/api/leads');
                 const data = await res.json();
 
-                // Sort by timestamp DESC
                 allLeads = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 filteredLeads = [...allLeads];
 
                 updateDashboard();
             } catch (e) {
                 console.error(e);
-                document.getElementById('leadTableBody').innerHTML = '<tr><td colspan="6" style="color:red; text-align:center;">Failed to load data. API offline.</td></tr>';
+                document.getElementById('leadTableBody').innerHTML = '<tr><td colspan="6" style="color:#f87171; text-align:center;">API Connectivity lost. Unable to load telemetry data.</td></tr>';
             }
         }
 
@@ -623,7 +913,7 @@
                 if (timeframe === '1m') return diffDays <= 30;
                 if (timeframe === '3m') return diffDays <= 90;
                 if (timeframe === '6m') return diffDays <= 180;
-                return true; // all
+                return true;
             });
 
             updateDashboard();
@@ -631,11 +921,10 @@
 
         function applyCustomFilter() {
             const dates = datePicker.selectedDates;
-            if (dates.length !== 2) return alert("Please select a full date range.");
+            if (dates.length !== 2) return alert("Please specify the complete start and end timeline.");
 
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 
-            // Increment end date by 1 day to make inclusive
             const endD = new Date(dates[1]);
             endD.setDate(endD.getDate() + 1);
 
@@ -657,8 +946,8 @@
         }
 
         function updateDashboard() {
-            // Metrics
-            document.getElementById('m-total').innerText = filteredLeads.length;
+            // Animating numbers
+            animateValue('m-total', 0, filteredLeads.length, 600);
 
             let st = 0, pr = 0, sf = 0;
             filteredLeads.forEach(l => {
@@ -667,21 +956,22 @@
                 else if (d.includes('parent')) pr++;
                 else if (d.includes('staff') || d.includes('faculty') || d.includes('corporate')) sf++;
             });
-            document.getElementById('m-stu').innerText = st;
-            document.getElementById('m-par').innerText = pr;
-            document.getElementById('m-stf').innerText = sf;
+
+            animateValue('m-stu', 0, st, 600);
+            animateValue('m-par', 0, pr, 600);
+            animateValue('m-stf', 0, sf, 600);
 
             // Table
             const tbody = document.getElementById('leadTableBody');
             tbody.innerHTML = '';
 
             if (filteredLeads.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data found for this period.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">No matching telemetry for this parameter.</td></tr>';
             } else {
                 filteredLeads.slice(0, 100).forEach(l => {
                     let tr = `<tr>
-                        <td>${l.timestamp}</td>
-                        <td style="font-weight:600;">${l.name || '-'}</td>
+                        <td style="color:var(--text-muted); font-size: 13px;">${l.timestamp}</td>
+                        <td style="font-weight:500; color:white;">${l.name || '-'}</td>
                         <td><span class="badge ${getBadgeClass(l.designation)}">${l.designation || 'Unknown'}</span></td>
                         <td>${l.mobile || '-'}</td>
                         <td>${l.email || '-'}</td>
@@ -694,25 +984,45 @@
             updateCharts(st, pr, sf);
         }
 
+        function animateValue(id, start, end, duration) {
+            if (start === end) { document.getElementById(id).innerHTML = end; return; }
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let obj = document.getElementById(id);
+            let timer = setInterval(function () {
+                current += increment;
+                obj.innerHTML = current;
+                if (current == end) clearInterval(timer);
+            }, stepTime);
+        }
+
         function updateCharts(st, pr, sf) {
-            // Demographics
+            // Demographics Donut
             const ctxPie = document.getElementById('demoChart').getContext('2d');
             if (demoChartInstance) demoChartInstance.destroy();
 
             demoChartInstance = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Students', 'Parents', 'Staff & Corp', 'Others'],
+                    labels: ['Students', 'Parents', 'Staff/Corp', 'Others'],
                     datasets: [{
                         data: [st, pr, sf, filteredLeads.length - (st + pr + sf)],
-                        backgroundColor: ['#0078D4', '#d13438', '#107c10', '#605e5c'],
-                        borderWidth: 0,
+                        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#64748b'],
+                        borderWidth: 2,
+                        borderColor: '#090e17'
                     }]
                 },
-                options: { cutout: '65%', plugins: { legend: { position: 'bottom' } } }
+                options: {
+                    cutout: '75%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#e2e8f0', usePointStyle: true, padding: 20 } }
+                    }
+                }
             });
 
-            // Traffic
+            // Traffic Line
             const dateMap = {};
             [...filteredLeads].reverse().forEach(l => {
                 if (!l.timestamp) return;
@@ -726,66 +1036,69 @@
             const ctxLine = document.getElementById('trafficChart').getContext('2d');
             if (trafficChartInstance) trafficChartInstance.destroy();
 
+            let gradient = ctxLine.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(249, 115, 22, 0.4)');
+            gradient.addColorStop(1, 'rgba(249, 115, 22, 0.0)');
+
             trafficChartInstance = new Chart(ctxLine, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Interactions',
+                        label: 'Requests',
                         data: counts,
-                        borderColor: '#0078D4',
-                        backgroundColor: 'rgba(0, 120, 212, 0.1)',
+                        borderColor: '#f97316',
+                        backgroundColor: gradient,
                         borderWidth: 3,
-                        pointBackgroundColor: '#0078D4',
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#f97316',
+                        pointHoverRadius: 6,
+                        pointRadius: 4,
                         fill: true,
-                        tension: 0
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#edebe9' } },
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)', borderDash: [5, 5] }, ticks: { stepSize: 1 } },
                         x: { grid: { display: false } }
-                    }
+                    },
+                    interaction: { mode: 'index', intersect: false }
                 }
             });
         }
 
-        // CSV Export Link
-        document.getElementById('exportCsvBtn').addEventListener('click', () => {
-            window.location.href = '/api/download-csv';
-        });
+        document.getElementById('exportCsvBtn').addEventListener('click', () => { window.location.href = '/api/download-csv'; });
 
-        // PDF Export Implementation
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
-            if (filteredLeads.length === 0) return alert("No data to export.");
+            if (filteredLeads.length === 0) return alert("Dataset is empty. Cannot export.");
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            doc.setFontSize(18);
-            doc.text("SVSU Intelligent - Lead Analytics Report", 14, 22);
-            doc.setFontSize(11);
-            doc.text("Exported On: " + new Date().toLocaleString(), 14, 30);
+            doc.setFontSize(22);
+            doc.setTextColor(249, 115, 22);
+            doc.text("SVSU Intelligent Telemetry", 14, 22);
 
-            const tableData = filteredLeads.map(l => [
-                l.timestamp,
-                l.name,
-                l.designation,
-                l.mobile,
-                l.email,
-                l.purpose
-            ]);
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Secure Generated Report • " + new Date().toLocaleString(), 14, 30);
+
+            const tableData = filteredLeads.map(l => [l.timestamp, l.name, l.designation, l.mobile, l.email, l.purpose]);
 
             doc.autoTable({
-                startY: 35,
+                startY: 38,
                 head: [['Timestamp', 'Name', 'Category', 'Mobile', 'Email', 'Purpose']],
                 body: tableData,
-                styles: { fontSize: 8, cellPadding: 2 },
-                headStyles: { fillColor: [0, 120, 212] }
+                styles: { fontSize: 8, cellPadding: 3, font: 'helvetica' },
+                headStyles: { fillColor: [15, 23, 42], textColor: 255 },
+                alternateRowStyles: { fillColor: [248, 250, 252] }
             });
 
-            doc.save("SVSU_Analytics_Report.pdf");
+            doc.save("SVSU_Analytics_Secure.pdf");
         });
 
     </script>
