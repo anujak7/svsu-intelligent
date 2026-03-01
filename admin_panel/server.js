@@ -9,14 +9,16 @@ const app = express();
 const PORT = 8503; // Accessible port
 
 // API Proxy for AI Chatbot (FastAPI on Port 8000)
-// Using array filter and no path in app.use to ensure the path is forwarded correctly
-app.use(createProxyMiddleware(
-    (path, req) => ['/api/chat', '/api/lead', '/api/voice-chat'].includes(path),
-    {
-        target: 'http://localhost:8000',
-        changeOrigin: true
+// We proxy /api/ to the backend while keeping the /api prefix
+app.use('/api', createProxyMiddleware({
+    target: 'http://localhost:8000',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api': '/api', // This keeps the /api/ prefix in the forwarded request
     }
-));
+}));
+
+// Admin Proxy (Optional if we want to separate other things, but fine as is)
 
 // Middleware
 app.use(cors());
