@@ -39,21 +39,31 @@ def ingest_data():
         loader = TextLoader(core_facts_path, encoding="utf8")
         documents.extend(loader.load())
 
-    # 2. Website Crawling (Maximum Depth for Complete Info)
-    print("Crawling SVSU website (Deep Crawl - Depth 4)...")
-    loader = RecursiveUrlLoader(
-        url="https://svsu.ac.in/", 
-        max_depth=5, 
-        extractor=bs4_extractor, 
-        prevent_outside=True,
-        use_async=True
-    )
-    try:
-        web_docs = loader.load()
-        print(f"Crawled {len(web_docs)} pages.")
-        documents.extend(web_docs)
-    except Exception as e:
-        print(f"Web crawl failed: {e}")
+    # 2. Website Crawling (Exhaustive Entrance Points)
+    start_urls = [
+        "https://svsu.ac.in/",
+        "https://svsu.ac.in/admissions/",
+        "https://svsu.ac.in/courses/",
+        "https://svsu.ac.in/examinations/",
+        "https://svsu.ac.in/contact-us/"
+    ]
+    
+    print(f"Crawling SVSU website from {len(start_urls)} entry points (Depth 4)...")
+    for url in start_urls:
+        print(f"Crawling: {url}...")
+        loader = RecursiveUrlLoader(
+            url=url, 
+            max_depth=4, 
+            extractor=bs4_extractor, 
+            prevent_outside=True,
+            use_async=True
+        )
+        try:
+            web_docs = loader.load()
+            print(f"Crawled {len(web_docs)} pages from {url}.")
+            documents.extend(web_docs)
+        except Exception as e:
+            print(f"Web crawl failed for {url}: {e}")
 
     # 3. Split Text (Optimized for Accuracy & Granularity)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
