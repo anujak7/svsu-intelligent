@@ -309,8 +309,9 @@
 
         .card {
             background: white;
-            padding: 3rem;
-            border-radius: 40px;
+            padding: 1.5rem 2.5rem;
+            /* Reduced padding */
+            border-radius: 30px;
             width: 100%;
             max-width: 1000px;
             /* Wider for horizontal layout */
@@ -322,7 +323,7 @@
 
         @keyframes popIn {
             from {
-                transform: scale(0.95) translateY(20px);
+                transform: scale(0.98) translateY(10px);
                 opacity: 0;
             }
 
@@ -333,18 +334,20 @@
         }
 
         .card h2 {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
+            /* Smaller font */
             color: #0369a1;
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
             text-align: center;
         }
 
         .card p {
             text-align: center;
             color: #64748b;
-            margin-bottom: 2.5rem;
-            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            /* Reduced margin */
+            font-size: 1rem;
         }
 
 
@@ -599,10 +602,8 @@
                 <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
                 <div>
                     <h1>SVSU Intelligent</h1>
-                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
-                        <span class="status-dot"></span> Official AI Assistant
-                    </div>
                 </div>
+
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-talk" onclick="openVoiceMode()">
@@ -624,9 +625,11 @@
             <div id="leadFormContainer" style="display: none;">
                 <div class="card premium-card">
                     <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
-                        style="width: 400px; display: block; margin: 0 auto 2rem; background: white; padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(14,165,233,0.12);">
+                        style="width: 320px; display: block; margin: 0 auto 1rem; background: white; padding: 10px; border-radius: 12px; box-shadow: 0 10px 30px rgba(14,165,233,0.1);">
                     <h2>SVSU Intelligent Guide</h2>
-                    <p>Provide your details to initiate a dedicated consultation session.</p>
+                    <p style="margin-bottom: 1rem;">Provide your details to initiate a dedicated consultation session.
+                    </p>
+
                     <form id="chatLeadForm">
                         <div class="form-grid">
                             <div class="form-group">
