@@ -145,7 +145,8 @@ if "messages" not in st.session_state:
 
 # Display history
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
+    avatar = "https://svsu.ac.in/img/SVSU-Logo.png" if message["role"] == "assistant" else None
+    with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
 # User Input
@@ -154,8 +155,9 @@ if prompt := st.chat_input("E.g., What are the admission procedures?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="https://svsu.ac.in/img/SVSU-Logo.png"):
         with st.spinner("Thinking..."):
+
             try:
                 # Lazy load the chain only when the user first interacts
                 qa_chain = load_chain()
