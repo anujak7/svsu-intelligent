@@ -35,17 +35,15 @@ _bm25_retriever = None
 def get_embeddings():
     global _embeddings
     if _embeddings is None:
-        cache_folder = "./model_cache"
-        if not os.path.exists(cache_folder):
-            os.makedirs(cache_folder)
-        os.environ["SENTENCE_TRANSFORMERS_HOME"] = cache_folder
+        google_key = os.getenv("GOOGLE_API_KEY")
+        if not google_key:
+            return None
         
-        # HIGH-PERFORMANCE LOCAL EMBEDDINGS (ULTRA STABLE)
-        from langchain_huggingface import HuggingFaceEmbeddings
-        _embeddings = HuggingFaceEmbeddings(
-            model_name="all-MiniLM-L6-v2",
-            cache_folder=cache_folder,
-            model_kwargs={'local_files_only': True}
+        # CLOUD-BASED EMBEDDINGS (ZERO CPU LOAD - ULTRA FAST)
+        from langchain_google_genai import GoogleGenerativeAIEmbeddings
+        _embeddings = GoogleGenerativeAIEmbeddings(
+            model="text-embedding-004",
+            google_api_key=google_key
         )
     return _embeddings
 
@@ -58,7 +56,7 @@ def get_chatbot_chain():
 
     db = FAISS.load_local(FAISS_DIR, embeddings, allow_dangerous_deserialization=True)
     # Reduced k to stay within Groq Free Tier limits (TPM: 6000)
-    faiss_retriever = db.as_retriever(search_kwargs={"k": 3})
+    faiss_retriever = db.as_retriever(search_kwargs={"k": 2})
 
     # Instant BM25 loading from persistent storage
     if _bm25_retriever is None and EnsembleRetriever is not None:
@@ -67,7 +65,7 @@ def get_chatbot_chain():
                 with open(BM25_DOCS_PATH, "rb") as f:
                     docs = pickle.load(f)
                 _bm25_retriever = BM25Retriever.from_documents(docs)
-                _bm25_retriever.k = 3
+                _bm25_retriever.k = 2
         except Exception:
             pass
 
@@ -77,15 +75,14 @@ def get_chatbot_chain():
     else:
         retriever = faiss_retriever
 
-    # PRIMARY: Gemini 1.5 Flash (High Token Limit) | SECONDARY: Groq (Ultra Fast)
-    gemini_key = os.getenv("GOOGLE_API_KEY")
+    # PRIMARY: Groq (Ultra Fast) | SECONDARY: Gemini
     groq_key = os.getenv("GROQ_API_KEY")
+    gemini_key = os.getenv("GOOGLE_API_KEY")
 
-    if gemini_key:
-        # Gemini is much more stable for high-context RAG (1M token limit)
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=gemini_key, temperature=0.1)
-    elif groq_key:
+    if groq_key:
         llm = ChatGroq(model="llama-3.1-8b-instant", api_key=groq_key, temperature=0.1)
+    elif gemini_key:
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=gemini_key, temperature=0.1)
     else:
         return None
     
