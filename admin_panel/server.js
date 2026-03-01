@@ -8,16 +8,6 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = 8503; // Accessible port
 
-// API Proxy for AI Chatbot (FastAPI on Port 8000)
-// We proxy /api/ to the backend while keeping the /api prefix
-app.use('/api', createProxyMiddleware({
-    target: 'http://localhost:8000',
-    changeOrigin: true,
-    pathRewrite: { '^/': '/api/' }
-}));
-
-// Admin Proxy (Optional if we want to separate other things, but fine as is)
-
 // Middleware
 app.use(cors());
 app.use(express.static(__dirname)); // Serve HTML files
@@ -62,6 +52,14 @@ app.get('/api/download-csv', (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'chatbot.html'));
 });
+
+// API Proxy for AI Chatbot (FastAPI on Port 8000)
+// This goes AFTER local API routes so it only catches unhandled /api requests
+app.use('/api', createProxyMiddleware({
+    target: 'http://localhost:8000',
+    changeOrigin: true,
+    pathRewrite: { '^/': '/api/' }
+}));
 
 // Admin Login
 app.get('/admin', (req, res) => {

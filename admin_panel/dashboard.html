@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVSU Intelligent - Analytics Dashboard v2.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <title>Analytics Dashboard - SVSU Intelligent</title>
+
+    <!-- Microsoft Fabric / PowerBI style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -14,114 +16,166 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    <!-- jsPDF and AutoTable for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         :root {
-            --primary: #df6d25;
-            --primary-dark: #c85a1a;
-            --secondary: #1e4b8a;
-            --bg-dark: #0f172a;
-            --sidebar-bg: #1e293b;
+            --primary: #0078D4;
+            /* Microsoft Blue */
+            --primary-dark: #005A9E;
+            --sidebar-bg: #f3f2f1;
+            --bg-color: #faf9f8;
             --card-bg: #ffffff;
-            --text-main: #334155;
-            --text-muted: #64748b;
+            --text-main: #323130;
+            --text-muted: #605e5c;
+            --border-color: #edebe9;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
         body {
-            background-color: #f8fafc;
+            background-color: var(--bg-color);
             color: var(--text-main);
             overflow-x: hidden;
             display: flex;
         }
 
+        /* ----- LOGIN OVERLAY START ----- */
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ms-login-box {
+            background: white;
+            width: 440px;
+            padding: 44px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc;
+        }
+
+        .ms-login-box img {
+            width: 140px;
+            margin-bottom: 24px;
+        }
+
+        .ms-login-box h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1b1b1b;
+            margin-bottom: 16px;
+        }
+
+        .ms-input {
+            width: 100%;
+            padding: 8px 0;
+            font-size: 15px;
+            border: none;
+            border-bottom: 1px solid #605e5c;
+            outline: none;
+            margin-bottom: 24px;
+        }
+
+        .ms-input:focus {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .ms-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            float: right;
+        }
+
+        .ms-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .error-msg {
+            color: #d13438;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        /* ----- LOGIN OVERLAY END ----- */
+
+
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: var(--sidebar-bg);
-            color: white;
+            border-right: 1px solid var(--border-color);
             position: fixed;
             height: 100vh;
             left: 0;
             top: 0;
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar img {
-            width: 200px;
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 2rem;
+            width: 180px;
+            margin-bottom: 2.5rem;
             align-self: center;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 1rem 1.2rem;
-            color: #94a3b8;
+            padding: 0.8rem 1rem;
+            color: var(--text-main);
             text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            transition: all 0.3s;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 14px;
         }
 
-        .nav-link:hover,
+        .nav-link:hover {
+            background: #edebe9;
+        }
+
         .nav-link.active {
-            background: var(--primary);
-            color: white;
-            transform: translateX(5px);
+            background: white;
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
         }
 
         .nav-link i {
-            margin-right: 15px;
-            font-size: 1.2rem;
+            margin-right: 12px;
+            font-size: 1rem;
             width: 20px;
             text-align: center;
-        }
-
-        .creator-badge {
-            margin-top: auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .creator-badge h4 {
-            color: #fff;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-
-        .creator-badge p {
-            color: #94a3b8;
-            font-size: 0.8rem;
-            line-height: 1.4;
-        }
-
-        .creator-badge .owner-name {
             color: var(--primary);
-            font-weight: 800;
-            font-size: 1.1rem;
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 280px;
-            padding: 2.5rem 4rem;
+            margin-left: 260px;
+            padding: 2.5rem 3rem;
             flex: 1;
             min-height: 100vh;
         }
@@ -130,23 +184,49 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .header h1 {
-            color: #0f172a;
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
+            color: #1b1b1b;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .export-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ms-ghost-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            border-radius: 2px;
+        }
+
+        .ms-ghost-btn:hover {
+            background: #f3f2f1;
+        }
+
+        .ms-ghost-btn i {
+            color: var(--primary);
         }
 
         /* Filters */
         .filter-container {
             background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            margin-bottom: 2.5rem;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -154,26 +234,24 @@
         }
 
         .filter-btn {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 2px;
+            font-weight: 400;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .filter-btn:hover {
-            background: #e2e8f0;
+            background: #f3f2f1;
         }
 
         .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(223, 109, 37, 0.3);
+            background: #e1dfdd;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
         }
 
         .date-picker-wrap {
@@ -184,11 +262,11 @@
         }
 
         .date-input {
-            border: 1px solid #cbd5e1;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
+            border: 1px solid #8a8886;
+            padding: 6px 10px;
+            border-radius: 2px;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 14px;
             outline: none;
         }
 
@@ -201,126 +279,77 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .metric-card {
             background: white;
-            padding: 1.8rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            transition: transform 0.3s;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .metric-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .icon-wrap {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.6rem;
-            color: white;
-        }
-
-        .mc-1 {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-        }
-
-        .mc-2 {
-            background: linear-gradient(135deg, #df6d25, #ea580c);
-        }
-
-        .mc-3 {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .mc-4 {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        }
-
-        .metric-info p {
-            color: #64748b;
-            font-size: 0.95rem;
+        .metric-card p {
+            color: var(--text-muted);
+            font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
         }
 
-        .metric-info h3 {
-            color: #0f172a;
-            font-size: 2rem;
-            font-weight: 800;
+        .metric-card h3 {
+            color: #1b1b1b;
+            font-size: 32px;
+            font-weight: 300;
         }
 
         /* Charts Section */
         .charts-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2.5rem;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .chart-box {
             background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
         }
 
         .chart-box h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #1b1b1b;
+            font-weight: 600;
         }
 
         /* Table */
         .table-container {
             background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
         }
 
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .table-header h3 {
-            font-size: 1.3rem;
-            color: #0f172a;
-        }
-
-        .export-btn {
-            background: #10b981;
-            color: white;
-            padding: 0.7rem 1.4rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .export-btn:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+            font-size: 16px;
+            color: #1b1b1b;
+            font-weight: 600;
         }
 
         table {
@@ -330,172 +359,225 @@
 
         th {
             text-align: left;
-            padding: 1.2rem 1rem;
-            color: #64748b;
-            font-size: 0.85rem;
+            padding: 12px 10px;
+            color: var(--text-muted);
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
         }
 
         td {
-            padding: 1.2rem 1rem;
-            color: #334155;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 12px 10px;
+            color: var(--text-main);
+            font-size: 14px;
+            border-bottom: 1px solid #edebe9;
         }
 
         tr:hover td {
-            background: #f8fafc;
+            background: #f3f2f1;
         }
 
         .badge {
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid transparent;
         }
 
         .bg-stu {
-            background: #dbeafe;
-            color: #1e40af;
+            background: #e1dfdd;
+            color: #323130;
+            border-color: #8a8886;
         }
 
         .bg-par {
-            background: #fef3c7;
-            color: #b45309;
+            background: #fef0d9;
+            color: #a4262c;
+            border-color: #fce100;
         }
 
         .bg-stf {
-            background: #dcfce7;
-            color: #166534;
+            background: #dff6dd;
+            color: #107c10;
+            border-color: #107c10;
         }
 
         .bg-oth {
-            background: #f1f5f9;
-            color: #475569;
+            background: #edebe9;
+            color: #605e5c;
+            border-color: #c8c6c4;
         }
     </style>
 </head>
 
 <body>
 
-    <aside class="sidebar">
-        <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+    <!-- Microsoft Style Login Overlay -->
+    <div id="loginOverlay">
+        <div class="ms-login-box">
+            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+            <h2 id="loginTitle">Sign in</h2>
 
-        <a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i> Analytics Overview</a>
-        <a href="#" class="nav-link"><i class="fas fa-users"></i> Lead Database</a>
-        <a href="/api/download-csv" class="nav-link"><i class="fas fa-file-export"></i> Export Data</a>
-        <a href="/" class="nav-link"><i class="fas fa-robot"></i> Test Chatbot</a>
-
-        <div class="creator-badge">
-            <h4>Developed & Governed By</h4>
-            <div class="owner-name">ANUJ KHAN</div>
-            <p>Official Owner & Architect of SVSU Intelligent v2.0</p>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <div class="header">
-            <div>
-                <h1>Data Insights AI</h1>
-                <p>Welcome back, Anuj. Here is the traffic analysis for your chatbot.</p>
+            <div id="emailStep">
+                <div class="error-msg" id="emailError">Please enter a valid admin email.</div>
+                <input type="email" id="loginEmail" class="ms-input" placeholder="Email, phone, or Skype"
+                    onkeypress="if(event.key === 'Enter') checkEmail()">
+                <p style="font-size: 13px; margin-bottom: 30px;">No account? <a href="#"
+                        style="color: var(--primary); text-decoration: none;">Create one!</a></p>
+                <div style="overflow: hidden;">
+                    <button class="ms-btn" onclick="checkEmail()">Next</button>
+                </div>
             </div>
-            <div>
-                <a href="/api/download-csv" class="export-btn"><i class="fas fa-download"></i> Download CSV</a>
-            </div>
-        </div>
 
-        <div class="filter-container">
-            <span style="font-weight: 700; color: #64748b; margin-right: 10px;"><i class="fas fa-filter"></i>
-                timeframe:</span>
-            <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
-            <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
-            <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
-            <button class="filter-btn" onclick="applyFilter('1m', this)">Last 1 Month</button>
-            <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
-            <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
-
-            <div class="date-picker-wrap">
-                <input type="text" id="customDate" class="date-input" placeholder="Select Custom Range...">
-                <button class="filter-btn" onclick="applyCustomFilter()"
-                    style="margin: 0; background: #1e293b; color: white;">Apply</button>
+            <div id="passwordStep" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                    <i class="fas fa-arrow-left" style="cursor: pointer; color:#605e5c;" onclick="goBack()"></i>
+                    <span id="displayEmail" style="font-weight: 600; color: #323130;"></span>
+                </div>
+                <h2 style="font-size: 24px; margin-bottom: 16px;">Enter password</h2>
+                <div class="error-msg" id="passError">Incorrect password. Please try again.</div>
+                <input type="password" id="loginPassword" class="ms-input" placeholder="Password"
+                    onkeypress="if(event.key === 'Enter') checkPassword()">
+                <p style="font-size: 13px; margin-bottom: 30px;"><a href="#"
+                        style="color: var(--primary); text-decoration: none;">Forgot my password</a></p>
+                <div style="overflow: hidden;">
+                    <button class="ms-btn" onclick="checkPassword()">Sign in</button>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="icon-wrap mc-1"><i class="fas fa-comments"></i></div>
-                <div class="metric-info">
+    <!-- Main Dashboard -->
+    <div id="appRoot" style="display: none; width: 100%;">
+        <aside class="sidebar">
+            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+
+            <a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i> Analytics Overview</a>
+            <a href="#" class="nav-link"><i class="fas fa-users"></i> Lead Database</a>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <div>
+                    <h1>Intelligent Analytics Workspace</h1>
+                </div>
+                <div class="export-group">
+                    <button class="ms-ghost-btn" id="exportCsvBtn"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    <button class="ms-ghost-btn" id="exportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                </div>
+            </div>
+
+            <div class="filter-container">
+                <i class="fas fa-filter" style="color: #605e5c;"></i>
+                <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
+                <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
+                <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
+                <button class="filter-btn" onclick="applyFilter('1m', this)">Last 30 Days</button>
+                <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
+                <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
+
+                <div class="date-picker-wrap">
+                    <input type="text" id="customDate" class="date-input" placeholder="Select Custom Range...">
+                    <button class="ms-ghost-btn" onclick="applyCustomFilter()"
+                        style="margin: 0; padding: 4px 12px;">Apply Filter</button>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
                     <p>Total Interactions</p>
                     <h3 id="m-total">0</h3>
                 </div>
-            </div>
-            <div class="metric-card">
-                <div class="icon-wrap mc-2"><i class="fas fa-user-graduate"></i></div>
-                <div class="metric-info">
+                <div class="metric-card">
                     <p>Students</p>
                     <h3 id="m-stu">0</h3>
                 </div>
-            </div>
-            <div class="metric-card">
-                <div class="icon-wrap mc-3"><i class="fas fa-user-tie"></i></div>
-                <div class="metric-info">
-                    <p>Parents/Guardians</p>
+                <div class="metric-card">
+                    <p>Parents / Guardians</p>
                     <h3 id="m-par">0</h3>
                 </div>
-            </div>
-            <div class="metric-card">
-                <div class="icon-wrap mc-4"><i class="fas fa-briefcase"></i></div>
-                <div class="metric-info">
-                    <p>Staff/Corporate</p>
+                <div class="metric-card">
+                    <p>Corporate / Staff</p>
                     <h3 id="m-stf">0</h3>
                 </div>
             </div>
-        </div>
 
-        <div class="charts-container">
-            <div class="chart-box">
-                <h3><i class="fas fa-chart-line" style="color:var(--primary); margin-right:8px;"></i> Traffic &
-                    Interaction Over Time</h3>
-                <canvas id="trafficChart" height="100"></canvas>
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Traffic Analysis</h3>
+                    <canvas id="trafficChart" height="100"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Audience Overview</h3>
+                    <canvas id="demoChart" height="200"></canvas>
+                </div>
             </div>
-            <div class="chart-box">
-                <h3><i class="fas fa-chart-pie" style="color:var(--primary); margin-right:8px;"></i> Audience
-                    Demographics</h3>
-                <canvas id="demoChart" height="200"></canvas>
-            </div>
-        </div>
 
-        <div class="table-container">
-            <div class="table-header">
-                <h3><i class="fas fa-database" style="color:var(--primary); margin-right:8px;"></i> Recent Captured
-                    Leads</h3>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Recent Captured Leads</h3>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="leadsTableData">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Purpose / Query</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center;">Loading data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date & Time</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Purpose / Query</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leadTableBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center;">Loading data...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
+        // --- LOGIN LOGIC ---
+        function checkEmail() {
+            const email = document.getElementById('loginEmail').value;
+            if (email.toLowerCase() === 'admin.bot@svsu.ac.in') {
+                document.getElementById('emailError').style.display = 'none';
+                document.getElementById('emailStep').style.display = 'none';
+                document.getElementById('passwordStep').style.display = 'block';
+                document.getElementById('displayEmail').innerText = email;
+                document.getElementById('loginTitle').style.display = 'none';
+            } else {
+                document.getElementById('emailError').style.display = 'block';
+            }
+        }
+
+        function goBack() {
+            document.getElementById('loginTitle').style.display = 'block';
+            document.getElementById('passwordStep').style.display = 'none';
+            document.getElementById('emailStep').style.display = 'block';
+            document.getElementById('passError').style.display = 'none';
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('loginPassword').value;
+            if (pass === 'svsu@2026') {
+                document.getElementById('passError').style.display = 'none';
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('appRoot').style.display = 'flex';
+                // Trigger fetch after login
+                fetchData();
+            } else {
+                document.getElementById('passError').style.display = 'block';
+            }
+        }
+
+        // --- DASHBOARD LOGIC ---
         // Init Flatpickr for custom dates
         const datePicker = flatpickr("#customDate", {
             mode: "range",
@@ -525,7 +607,6 @@
         }
 
         function applyFilter(timeframe, btnElement) {
-            // Update active state
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             if (btnElement) btnElement.classList.add('active');
             datePicker.clear();
@@ -576,7 +657,7 @@
         }
 
         function updateDashboard() {
-            // 1. Update Metrics
+            // Metrics
             document.getElementById('m-total').innerText = filteredLeads.length;
 
             let st = 0, pr = 0, sf = 0;
@@ -590,20 +671,17 @@
             document.getElementById('m-par').innerText = pr;
             document.getElementById('m-stf').innerText = sf;
 
-            // 2. Update Table
+            // Table
             const tbody = document.getElementById('leadTableBody');
             tbody.innerHTML = '';
 
             if (filteredLeads.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data found for this period.</td></tr>';
             } else {
-                // Show only top 50 in table to prevent lag
-                filteredLeads.slice(0, 50).forEach(l => {
-                    let d = new Date(l.timestamp);
-                    let fDate = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                filteredLeads.slice(0, 100).forEach(l => {
                     let tr = `<tr>
-                        <td style="color:#64748b; font-size:0.85rem;"><i class="far fa-calendar-alt" style="margin-right:6px;"></i> ${fDate || l.timestamp}</td>
-                        <td style="font-weight:700; color:#0f172a;">${l.name || '-'}</td>
+                        <td>${l.timestamp}</td>
+                        <td style="font-weight:600;">${l.name || '-'}</td>
                         <td><span class="badge ${getBadgeClass(l.designation)}">${l.designation || 'Unknown'}</span></td>
                         <td>${l.mobile || '-'}</td>
                         <td>${l.email || '-'}</td>
@@ -613,12 +691,11 @@
                 });
             }
 
-            // 3. Update Charts
             updateCharts(st, pr, sf);
         }
 
         function updateCharts(st, pr, sf) {
-            // Data for Demographics
+            // Demographics
             const ctxPie = document.getElementById('demoChart').getContext('2d');
             if (demoChartInstance) demoChartInstance.destroy();
 
@@ -628,18 +705,18 @@
                     labels: ['Students', 'Parents', 'Staff & Corp', 'Others'],
                     datasets: [{
                         data: [st, pr, sf, filteredLeads.length - (st + pr + sf)],
-                        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#94a3b8'],
+                        backgroundColor: ['#0078D4', '#d13438', '#107c10', '#605e5c'],
                         borderWidth: 0,
                     }]
                 },
-                options: { cutout: '70%', plugins: { legend: { position: 'bottom' } } }
+                options: { cutout: '65%', plugins: { legend: { position: 'bottom' } } }
             });
 
-            // Data for Traffic (Group by Date)
+            // Traffic
             const dateMap = {};
             [...filteredLeads].reverse().forEach(l => {
                 if (!l.timestamp) return;
-                const dateStr = l.timestamp.split(' ')[0]; // yyyy-mm-dd assumed
+                const dateStr = l.timestamp.split(' ')[0];
                 dateMap[dateStr] = (dateMap[dateStr] || 0) + 1;
             });
 
@@ -649,41 +726,68 @@
             const ctxLine = document.getElementById('trafficChart').getContext('2d');
             if (trafficChartInstance) trafficChartInstance.destroy();
 
-            // Create gradient
-            let gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(223, 109, 37, 0.5)');
-            gradient.addColorStop(1, 'rgba(223, 109, 37, 0.0)');
-
             trafficChartInstance = new Chart(ctxLine, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Interactions Generated',
+                        label: 'Interactions',
                         data: counts,
-                        borderColor: '#df6d25',
-                        backgroundColor: gradient,
+                        borderColor: '#0078D4',
+                        backgroundColor: 'rgba(0, 120, 212, 0.1)',
                         borderWidth: 3,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#df6d25',
-                        pointRadius: 4,
+                        pointBackgroundColor: '#0078D4',
                         fill: true,
-                        tension: 0.4
+                        tension: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
+                        y: { beginAtZero: true, grid: { color: '#edebe9' } },
                         x: { grid: { display: false } }
                     }
                 }
             });
         }
 
-        // Init
-        fetchData();
+        // CSV Export Link
+        document.getElementById('exportCsvBtn').addEventListener('click', () => {
+            window.location.href = '/api/download-csv';
+        });
+
+        // PDF Export Implementation
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            if (filteredLeads.length === 0) return alert("No data to export.");
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text("SVSU Intelligent - Lead Analytics Report", 14, 22);
+            doc.setFontSize(11);
+            doc.text("Exported On: " + new Date().toLocaleString(), 14, 30);
+
+            const tableData = filteredLeads.map(l => [
+                l.timestamp,
+                l.name,
+                l.designation,
+                l.mobile,
+                l.email,
+                l.purpose
+            ]);
+
+            doc.autoTable({
+                startY: 35,
+                head: [['Timestamp', 'Name', 'Category', 'Mobile', 'Email', 'Purpose']],
+                body: tableData,
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [0, 120, 212] }
+            });
+
+            doc.save("SVSU_Analytics_Report.pdf");
+        });
+
     </script>
 </body>
 
