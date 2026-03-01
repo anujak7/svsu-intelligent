@@ -265,6 +265,7 @@
         .logout-btn:hover {
             background: #fee2e2;
             color: #be123c;
+            transform: translateY(-2px);
         }
 
         /* Main Content Scroll Fix */
@@ -643,7 +644,7 @@
                         onkeypress="if(event.key === 'Enter') checkEmail()">
                     <i class="fas fa-envelope"></i>
                 </div>
-                <button class="prem-btn" onclick="checkEmail()">Continue <i class="fas fa-arrow-right"
+                <button class="prem-btn" onclick="checkEmail()">Next <i class="fas fa-arrow-right"
                         style="margin-left: 8px;"></i></button>
             </div>
 
@@ -655,7 +656,7 @@
                         onkeypress="if(event.key === 'Enter') checkPassword()">
                     <i class="fas fa-lock"></i>
                 </div>
-                <button class="prem-btn" onclick="checkPassword()">Verify & Access <i class="fas fa-shield-alt"
+                <button class="prem-btn" onclick="checkPassword()">Sign In <i class="fas fa-sign-in-alt"
                         style="margin-left: 8px;"></i></button>
                 <div class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Use a different email</div>
             </div>
@@ -674,8 +675,7 @@
             <a href="#" id="nav-tools" class="nav-link" onclick="switchTab('tools')"><i class="fas fa-sliders-h"></i>
                 System Tools</a>
 
-            <button class="logout-btn" onclick="logoutSession()"><i class="fas fa-sign-out-alt"></i> Secure
-                Logout</button>
+            <button class="logout-btn" onclick="logoutSession()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </aside>
 
         <main class="main-content">
@@ -694,10 +694,10 @@
             <div id="tab-analytics" class="tab-section" style="display: block;">
                 <div class="filter-container">
                     <span class="filter-title"><i class="fas fa-calendar-alt"></i> Time Range:</span>
-                    <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
+                    <button class="filter-btn active" onclick="applyFilter('all', this)">All</button>
                     <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
-                    <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
-                    <button class="filter-btn" onclick="applyFilter('1m', this)">Last 30 Days</button>
+                    <button class="filter-btn" onclick="applyFilter('7d', this)">7 Days</button>
+                    <button class="filter-btn" onclick="applyFilter('1m', this)">1 Month</button>
                     <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
                     <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
 
@@ -807,61 +807,8 @@
                                     <th>AI Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Rahul Verma</strong> <br><small style="color: var(--text-muted)">B.Tech
-                                            Inquiry</small></td>
-                                    <td><span class="badge" style="background: #e0e7ff; color: #4338ca;">High
-                                            Intent</span></td>
-                                    <td>Positive <i class="fas fa-smile" style="color:#10b981;"></i></td>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div
-                                                style="flex:1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow:hidden;">
-                                                <div style="width: 88%; background: #0ea5e9; height: 100%;"></div>
-                                            </div>
-                                            <span style="font-weight: 700; font-size: 13px;">88%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-stu" style="background: #dcfce7; color: #15803d;"><i
-                                                class="fas fa-fire"></i> Hot Lead</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Sneha Sharma</strong> <br><small style="color: var(--text-muted)">MBA
-                                            Details</small></td>
-                                    <td><span class="badge" style="background: #e0e7ff; color: #4338ca;">High
-                                            Intent</span></td>
-                                    <td>Neutral <i class="fas fa-meh" style="color:#f59e0b;"></i></td>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div
-                                                style="flex:1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow:hidden;">
-                                                <div style="width: 65%; background: #f59e0b; height: 100%;"></div>
-                                            </div>
-                                            <span style="font-weight: 700; font-size: 13px;">65%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-par" style="background: #fef3c7; color: #d97706;"><i
-                                                class="fas fa-thermometer-half"></i> Warm Lead</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Aman Gupta</strong> <br><small style="color: var(--text-muted)">General
-                                            Campus Query</small></td>
-                                    <td><span class="badge" style="background: #f1f5f9; color: #475569;">Low
-                                            Intent</span></td>
-                                    <td>Neutral <i class="fas fa-meh" style="color:#f59e0b;"></i></td>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div
-                                                style="flex:1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow:hidden;">
-                                                <div style="width: 25%; background: #94a3b8; height: 100%;"></div>
-                                            </div>
-                                            <span style="font-weight: 700; font-size: 13px;">25%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-oth" style="background: #f1f5f9; color: #64748b;"><i
-                                                class="fas fa-snowflake"></i> Cold Lead</span></td>
-                                </tr>
+                            <tbody id="aiScoringBody">
+                                <!-- Dynamic Content Loaded here -->
                             </tbody>
                         </table>
                     </div>
@@ -997,15 +944,20 @@
             filteredLeads = allLeads.filter(lead => {
                 if (!lead.timestamp) return false;
                 const leadDate = new Date(lead.timestamp);
-                const diffTime = Math.abs(now - leadDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                if (timeframe === 'today') return diffDays <= 1;
-                if (timeframe === '7d') return diffDays <= 7;
-                if (timeframe === '1m') return diffDays <= 30;
-                if (timeframe === '3m') return diffDays <= 90;
-                if (timeframe === '6m') return diffDays <= 180;
-                return true;
+                if (timeframe === 'today') {
+                    return leadDate.toDateString() === now.toDateString();
+                }
+
+                // For months, we use a relative date check
+                let thresholdDate = new Date();
+                if (timeframe === '7d') thresholdDate.setDate(now.getDate() - 7);
+                else if (timeframe === '1m') thresholdDate.setMonth(now.getMonth() - 1);
+                else if (timeframe === '3m') thresholdDate.setMonth(now.getMonth() - 3);
+                else if (timeframe === '6m') thresholdDate.setMonth(now.getMonth() - 6);
+                else return true; // all
+
+                return leadDate >= thresholdDate;
             });
 
             updateDashboard();
@@ -1074,6 +1026,60 @@
             }
 
             updateCharts(st, pr, sf);
+            updateAiScoring();
+        }
+
+        function updateAiScoring() {
+            const scoringBody = document.getElementById('aiScoringBody');
+            scoringBody.innerHTML = '';
+
+            // Logic: High score if "purpose" is long or contains "fee", "admission", "course"
+            // Mid score for general queries. Low score for short queries.
+
+            const aiData = filteredLeads.slice(0, 15).map(l => {
+                let score = 40; // baseline
+                const p = (l.purpose || "").toLowerCase();
+                if (p.length > 50) score += 20;
+                if (p.includes('admission') || p.includes('fee') || p.includes('course') || p.includes('b.tech')) score += 30;
+                if (l.designation && l.designation.toLowerCase().includes('student')) score += 10;
+
+                score = Math.min(score, 98); // cap at 98
+
+                let status = 'Cold Lead';
+                let sClass = 'bg-oth';
+                let sIcon = 'fa-snowflake';
+                let intent = 'Low Intent';
+                let iColor = '#475569';
+                let iBg = '#f1f5f9';
+                let barColor = '#94a3b8';
+
+                if (score > 80) {
+                    status = 'Hot Lead'; sClass = 'bg-stu'; sIcon = 'fa-fire';
+                    intent = 'High Intent'; iColor = '#4338ca'; iBg = '#e0e7ff';
+                    barColor = '#0ea5e9';
+                } else if (score > 55) {
+                    status = 'Warm Lead'; sClass = 'bg-par'; sIcon = 'fa-thermometer-half';
+                    intent = 'Medium Intent'; iColor = '#b45309'; iBg = '#fef3c7';
+                    barColor = '#f59e0b';
+                }
+
+                return `<tr>
+                    <td><strong>${l.name || 'Anonymous'}</strong> <br><small style="color: var(--text-muted)">${l.designation || 'Visitor'}</small></td>
+                    <td><span class="badge" style="background: ${iBg}; color: ${iColor};">${intent}</span></td>
+                    <td>Positive <i class="fas fa-smile" style="color:#10b981;"></i></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="flex:1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow:hidden;">
+                                <div style="width: ${score}%; background: ${barColor}; height: 100%;"></div>
+                            </div>
+                            <span style="font-weight: 700; font-size: 13px;">${score}%</span>
+                        </div>
+                    </td>
+                    <td><span class="badge ${sClass}"><i class="fas ${sIcon}"></i> ${status}</span></td>
+                </tr>`;
+            });
+
+            scoringBody.innerHTML = aiData.join('') || '<tr><td colspan="5" style="text-align:center; padding:20px;">No leads for AI analysis in this range.</td></tr>';
         }
 
         function animateValue(id, start, end, duration) {
