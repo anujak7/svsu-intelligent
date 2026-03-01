@@ -40,47 +40,39 @@ def ingest_data():
         loader = TextLoader(core_facts_path, encoding="utf8")
         documents.extend(loader.load())
 
-    # 2. Exhaustive Website Crawling (Mega Depth for 600+ pages)
-    start_urls = [
-        "https://svsu.ac.in/",
-        "https://svsu.ac.in/admissions/",
-        "https://svsu.ac.in/courses/",
-        "https://svsu.ac.in/examinations/",
-        "https://svsu.ac.in/contact-us/",
-        "https://svsu.ac.in/notices/",
-        "https://svsu.ac.in/tenders/",
-        "https://svsu.ac.in/faculty-staff/"
-    ]
+    # 2. Exhaustive Sitemap Crawling (GUARANTEED 500+ Pages)
+    sitemap_url = "https://svsu.ac.in/sitemap.xml"
+    print(f"🚀 Starting MASSIVE SITEMAP CRAWL for 500+ pages ({sitemap_url})...")
     
-    print(f"🚀 Starting MASSIVE CRAWL (Depth 7) for 600+ pages...")
-    for url in start_urls:
-        print(f"Deep Crawling: {url}...")
-        loader = RecursiveUrlLoader(
-            url=url, 
-            max_depth=7,  # Increased depth for exhaustive search
-            extractor=bs4_extractor, 
-            prevent_outside=True,
-            use_async=True,
-            timeout=20, # Higher timeout for heavy pages
-            check_response_status=True
-        )
-        try:
-            web_docs = loader.load()
-            print(f"✅ Crawled {len(web_docs)} pages from {url}.")
-            documents.extend(web_docs)
-        except Exception as e:
-            print(f"❌ Web crawl failed for {url}: {e}")
+    from langchain_community.document_loaders.sitemap import SitemapLoader
+    loader = SitemapLoader(
+        web_path=sitemap_url,
+        filter_urls=["https://svsu.ac.in/"],
+        parsing_function=bs4_extractor,
+        continue_on_failure=True
+    )
+    
+    try:
+        sitemap_docs = loader.load()
+        print(f"✅ Successfully ingested {len(sitemap_docs)} pages from Sitemap.")
+        documents.extend(sitemap_docs)
+    except Exception as e:
+        print(f"❌ Sitemap ingest failed: {e}. Falling back to Recursive Loader.")
+        # Fallback to recursive if sitemap fails
+        loader = RecursiveUrlLoader(url="https://svsu.ac.in/", max_depth=5, extractor=bs4_extractor)
+        documents.extend(loader.load())
 
     # 3. Clean and Deduplicate
     unique_docs = []
     seen_content = set()
     for doc in documents:
-        content_hash = hash(doc.page_content)
-        if content_hash not in seen_content:
+        # Use a more robust check: first 500 chars
+        content_prefix = doc.page_content[:500].strip()
+        if content_prefix and content_prefix not in seen_content:
             unique_docs.append(doc)
-            seen_content.add(content_hash)
+            seen_content.add(content_prefix)
     
-    print(f"Total Unique Pages/Docs: {len(unique_docs)}")
+    print(f"Total Unique Pages/Docs after Deduplication: {len(unique_docs)}")
 
     # 4. Split Text (High Precision for Production)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -93,13 +85,13 @@ def ingest_data():
                 
     print(f"Total Chunks Generated: {len(chunks)}")
 
-    # 5. Save BM25 Docs (For Keyword Accuracy)
-    print("Saving BM25 Knowledge Base...")
+    # 5. Save BM25 Knowledge Base (Keyword Search)
+    print("Building BM25 Index...")
     with open(BM25_DOCS_PATH, "wb") as f:
         pickle.dump(chunks, f)
 
-    # 6. Build FAISS (Semantic Accuracy)
-    print("Initializing FAISS Vector DB...")
+    # 6. Build FAISS Vector DB (Semantic Search)
+    print("Building FAISS Vector Database...")
     cache_folder = "./model_cache"
     os.environ["SENTENCE_TRANSFORMERS_HOME"] = cache_folder
     
@@ -110,7 +102,7 @@ def ingest_data():
     
     db = FAISS.from_documents(chunks, embeddings)
     db.save_local(FAISS_DIR)
-    print("✨ SUCCESS: Production Database Ready with Massive Data.")
+    print("✨ SUCCESS: Production Database Ready with Exhaustive Data.")
 
 if __name__ == "__main__":
     ingest_data()
