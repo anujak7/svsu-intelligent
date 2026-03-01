@@ -304,14 +304,17 @@
         }
 
         .card {
-            background: white;
-            padding: 2rem;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2.5rem;
             border-radius: 24px;
             width: 100%;
-            max-width: 440px;
-            color: #1e293b;
+            max-width: 650px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
             animation: popIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            color: white;
         }
 
         @keyframes popIn {
@@ -327,52 +330,87 @@
         }
 
         .card h2 {
-            color: var(--secondary);
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #df6d25 0%, #f07e32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-weight: 800;
             margin-bottom: 0.5rem;
             text-align: center;
-            font-size: 1.5rem;
         }
 
         .card p {
             text-align: center;
-            color: #64748b;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
         }
 
         .form-input {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid #e2e8f0;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             font-size: 0.95rem;
+            color: white;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .form-input:focus {
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(223, 109, 37, 0.2);
+        }
+
+        .form-input option {
+            background: #1e293b;
+            color: white;
         }
 
         .btn-form {
             width: 100%;
-            padding: 1rem;
+            padding: 1.1rem;
             background: var(--primary-gradient);
             color: white;
             border: none;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.05rem;
             cursor: pointer;
-            margin-top: 0.5rem;
+            margin-top: 5px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(223, 109, 37, 0.3);
+        }
+
+        .btn-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(223, 109, 37, 0.4);
         }
 
         /* Voice Mode */
@@ -575,26 +613,45 @@
             </div>
 
             <div id="leadFormContainer" style="display: none;">
-                <div class="card">
+                <div class="card premium-card">
                     <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
-                        style="width: 120px; display: block; margin: 0 auto 1.2rem;">
-                    <h2>Registration</h2>
-                    <p>Enter your details to start chatting</p>
+                        style="width: 150px; display: block; margin: 0 auto 1.5rem; background: white; padding: 10px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                    <h2>SVSU Intelligent Guide</h2>
+                    <p>Provide your details to initiate a dedicated consultation session.</p>
                     <form id="chatLeadForm">
-                        <input type="text" id="l-name" class="form-input" style="margin-bottom:12px;"
-                            placeholder="Full Name" required>
                         <div class="form-grid">
-                            <input type="email" id="l-email" class="form-input" placeholder="Email" required>
-                            <input type="text" id="l-mobile" class="form-input" placeholder="Mobile" required>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="l-name" class="form-input" placeholder="e.g. John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="text" id="l-mobile" class="form-input" placeholder="e.g. 9876543210"
+                                    required>
+                            </div>
                         </div>
-                        <select id="l-desig" class="form-input" style="margin-bottom:12px;">
-                            <option>Student</option>
-                            <option>Parent</option>
-                            <option>Staff</option>
-                        </select>
-                        <textarea id="l-purpose" class="form-input" style="margin-bottom:15px;" rows="2"
-                            placeholder="Primary interest (e.g. Admission in MBA)" required></textarea>
-                        <button type="submit" class="btn-form">Start Chat</button>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="l-email" class="form-input" placeholder="e.g. john@svsu.ac.in"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label>Designation/Category</label>
+                                <select id="l-desig" class="form-input" required>
+                                    <option>Student</option>
+                                    <option>Parent</option>
+                                    <option>Staff</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 25px;">
+                            <label>Purpose of Chat (e.g. Admission, Exams, Hiring)</label>
+                            <textarea id="l-purpose" class="form-input" rows="3"
+                                placeholder="Tell us how we can help..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-form">Start Chatting <i class="fas fa-arrow-right"
+                                style="margin-left: 8px;"></i></button>
                     </form>
                 </div>
             </div>
