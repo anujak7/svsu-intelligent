@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVSU Analytics Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334e68;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #102a43;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar img {
+            width: 180px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            align-self: center;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: #bcccdc;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #df6d25;
+            color: white;
+        }
+
+        .nav-link i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid #df6d25;
+            color: #df6d25;
+        }
+
+        .logout-btn:hover {
+            background: #df6d25;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: #102a43;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        div[data-type="total"] .icon-box {
+            background: rgba(30, 75, 138, 0.1);
+            color: #1e4b8a;
+        }
+
+        div[data-type="student"] .icon-box {
+            background: rgba(223, 109, 37, 0.1);
+            color: #df6d25;
+        }
+
+        div[data-type="unique"] .icon-box {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        div[data-type="today"] .icon-box {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        .metric-info h3 {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-info p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #102a43;
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 1.5rem;
+            color: #1e4b8a;
+            font-size: 1.2rem;
+        }
+
+        /* Table Section */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .download-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .download-btn i {
+            margin-right: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334e68;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-student {
+            background: rgba(30, 75, 138, 0.1);
+            color: #1e4b8a;
+        }
+
+        .badge-faculty {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .badge-visitor {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+
+        .badge-other {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+
+        <a href="#" class="nav-link active">
+            <i class="fas fa-chart-line"></i> Analytics Overview
+        </a>
+        <a href="#" class="nav-link">
+            <i class="fas fa-users"></i> Lead Database
+        </a>
+        <a href="#" class="nav-link">
+            <i class="fas fa-cog"></i> Settings
+        </a>
+
+        <a href="#" class="nav-link logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout Securely
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Visitor Insights & Leads</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="color: #64748b; font-weight: 500;">🟢 Live System Active</span>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card" data-type="total">
+                <div class="icon-box"><i class="fas fa-eye"></i></div>
+                <div class="metric-info">
+                    <h3>Total Visitors</h3>
+                    <p id="m-total">0</p>
+                </div>
+            </div>
+            <div class="metric-card" data-type="student">
+                <div class="icon-box"><i class="fas fa-user-graduate"></i></div>
+                <div class="metric-info">
+                    <h3>Students/Aspirants</h3>
+                    <p id="m-student">0</p>
+                </div>
+            </div>
+            <div class="metric-card" data-type="unique">
+                <div class="icon-box"><i class="fas fa-fingerprint"></i></div>
+                <div class="metric-info">
+                    <h3>Unique Leads</h3>
+                    <p id="m-unique">0</p>
+                </div>
+            </div>
+            <div class="metric-card" data-type="today">
+                <div class="icon-box"><i class="fas fa-calendar-day"></i></div>
+                <div class="metric-info">
+                    <h3>Leads Today</h3>
+                    <p id="m-today">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Visitor Demographics</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Lead Generation Timeline (Last 7 Days)</h3>
+                <canvas id="lineChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Recent Incoming Leads</h3>
+                <button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> Export CSV
+                    Dataset</button>
+            </div>
+            <table id="leadsTable">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Full Name</th>
+                        <th>Email Contact</th>
+                        <th>Mobile</th>
+                        <th>Category</th>
+                        <th>Purpose of Visit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script>
+        // Check Authentication!
+        if (localStorage.getItem('svsu_admin_auth') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('svsu_admin_auth');
+            window.location.href = 'index.html';
+        });
+
+        // ----------------- DATA FETCHING -----------------
+        async function fetchDashboardData() {
+            try {
+                // We will create this backend Node endpoint
+                const response = await fetch('/api/leads');
+                const data = await response.json();
+
+                updateDashboard(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function getBadgeClass(category) {
+            category = category ? category.toLowerCase() : '';
+            if (category.includes('student')) return 'badge-student';
+            if (category.includes('faculty') || category.includes('staff')) return 'badge-faculty';
+            if (category.includes('visitor')) return 'badge-visitor';
+            return 'badge-other';
+        }
+
+        function updateDashboard(leads) {
+            // Metrics
+            document.getElementById('m-total').innerText = leads.length;
+
+            const students = leads.filter(l => l.designation && l.designation.toLowerCase() === 'student').length;
+            document.getElementById('m-student').innerText = students;
+
+            const uniqueEmails = new Set(leads.map(l => l.email)).size;
+            document.getElementById('m-unique').innerText = uniqueEmails;
+
+            const today = new Date().toISOString().split('T')[0];
+            const todayLeads = leads.filter(l => l.timestamp && l.timestamp.includes(today)).length;
+            document.getElementById('m-today').innerText = todayLeads;
+
+
+            // Table
+            const tbody = document.querySelector('#leadsTable tbody');
+            tbody.innerHTML = '';
+
+            // Show top 20 latest
+            const recentLeads = [...leads].reverse().slice(0, 20);
+
+            for (let lead of recentLeads) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${lead.timestamp}</td>
+                    <td style="font-weight: 500; color: #102a43;">${lead.name}</td>
+                    <td>${lead.email}</td>
+                    <td>${lead.mobile}</td>
+                    <td><span class="badge ${getBadgeClass(lead.designation)}">${lead.designation || 'Unknown'}</span></td>
+                    <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${lead.purpose}">${lead.purpose}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+
+            // Charts Processing
+            let categoryCounts = {};
+            let timelineCounts = {};
+
+            leads.forEach(l => {
+                // Category Pie
+                const desig = l.designation || 'Other';
+                categoryCounts[desig] = (categoryCounts[desig] || 0) + 1;
+
+                // Timeline Date
+                if (l.timestamp) {
+                    const date = l.timestamp.split(' ')[0];
+                    timelineCounts[date] = (timelineCounts[date] || 0) + 1;
+                }
+            });
+
+            // Pie Chart
+            new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryCounts),
+                    datasets: [{
+                        data: Object.values(categoryCounts),
+                        backgroundColor: ['#1e4b8a', '#df6d25', '#10b981', '#f59e0b', '#8b5cf6', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Line Chart
+            // Sort dates
+            const sortedDates = Object.keys(timelineCounts).sort();
+            const dateGraphLabs = sortedDates.slice(-7); // Last 7 days
+            const dateGraphData = dateGraphLabs.map(d => timelineCounts[d]);
+
+            new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: {
+                    labels: dateGraphLabs,
+                    datasets: [{
+                        label: 'Leads per Day',
+                        data: dateGraphData,
+                        borderColor: '#df6d25',
+                        backgroundColor: 'rgba(223, 109, 37, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#df6d25',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // CSV Download Logic
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            // Directly fetch CSV from backend
+            window.location.href = '/api/download-csv';
+        });
+
+        fetchDashboardData();
+
+    </script>
+</body>
+
+</html>
