@@ -17,6 +17,8 @@
             --glass-thick: rgba(255, 255, 255, 0.12);
             --border: rgba(255, 255, 255, 0.15);
             --primary-gradient: linear-gradient(135deg, #df6d25 0%, #f07e32 100%);
+            --header-bg: rgba(255, 255, 255, 0.03);
+            --msg-user: linear-gradient(135deg, #1e4b8a 0%, #2f61a8 100%);
         }
 
         * {
@@ -28,7 +30,6 @@
 
         body {
             background: #0f172a;
-            /* Fallback */
             background: radial-gradient(circle at top right, #1e293b, #0f172a);
             height: 100vh;
             display: flex;
@@ -47,13 +48,13 @@
             height: 100%;
             background: url('https://svsu.ac.in/img/SVSU-Home-Banner.jpg') no-repeat center center fixed;
             background-size: cover;
-            filter: blur(5px) brightness(0.4);
+            filter: blur(8px) brightness(0.35);
             z-index: -1;
         }
 
         /* App Layout */
         .app-container {
-            width: 100%;
+            width: 95%;
             max-width: 1100px;
             margin: auto;
             height: 85vh;
@@ -66,16 +67,18 @@
             flex-direction: column;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
             overflow: hidden;
+            position: relative;
         }
 
         /* Header */
         .chat-header {
-            padding: 1.25rem 2rem;
+            padding: 1rem 2rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--header-bg);
+            z-index: 10;
         }
 
         .chat-header .logo-area {
@@ -85,7 +88,7 @@
         }
 
         .chat-header img {
-            height: 44px;
+            height: 40px;
             background: white;
             padding: 4px;
             border-radius: 8px;
@@ -93,7 +96,7 @@
         }
 
         .chat-header h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             background: linear-gradient(to right, #fff, #cbd5e1);
@@ -113,12 +116,12 @@
 
         /* Buttons */
         .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -128,7 +131,7 @@
         .btn-talk {
             background: var(--primary-gradient);
             color: white;
-            box-shadow: 0 8px 16px rgba(223, 109, 37, 0.3);
+            box-shadow: 0 8px 16px rgba(223, 109, 37, 0.2);
         }
 
         .btn-talk:hover {
@@ -151,19 +154,20 @@
         /* Chat Area */
         .chat-area {
             flex: 1;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+            z-index: 1;
         }
 
         /* Messages */
         .message {
-            max-width: 80%;
-            padding: 1rem 1.5rem;
+            max-width: 85%;
+            padding: 1rem 1.4rem;
             border-radius: 20px;
             font-size: 1rem;
             line-height: 1.55;
@@ -197,33 +201,33 @@
 
         .user-msg {
             align-self: flex-end;
-            background: var(--primary-gradient);
+            background: var(--msg-user);
             color: white;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 10px 25px rgba(223, 109, 37, 0.25);
+            box-shadow: 0 10px 25px rgba(30, 75, 138, 0.3);
             font-weight: 500;
         }
 
-        /* Typing Indicator */
+        /* Typing Dots */
         .typing {
             display: flex;
-            gap: 4px;
-            padding: 4px 0;
+            gap: 5px;
+            padding: 5px 0;
         }
 
-        .typing span {
-            width: 6px;
-            height: 6px;
+        .typing .dot {
+            width: 7px;
+            height: 7px;
             background: rgba(255, 255, 255, 0.6);
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out;
         }
 
-        .typing span:nth-child(2) {
+        .typing .dot:nth-child(2) {
             animation-delay: 0.2s;
         }
 
-        .typing span:nth-child(3) {
+        .typing .dot:nth-child(3) {
             animation-delay: 0.4s;
         }
 
@@ -242,20 +246,21 @@
             }
         }
 
-        /* Input Bar */
+        /* Input Container */
         .input-container {
-            padding: 1.5rem 2rem;
+            padding: 1.25rem 2rem;
             background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid var(--border);
             display: flex;
             gap: 12px;
+            z-index: 10;
         }
 
         .input-container input {
             flex: 1;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            padding: 0.9rem 1.4rem;
+            padding: 0.85rem 1.4rem;
             border-radius: 16px;
             color: white;
             font-size: 1rem;
@@ -271,8 +276,8 @@
 
         .btn-send {
             background: var(--primary-gradient);
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 14px;
             display: flex;
             justify-content: center;
@@ -289,30 +294,43 @@
             box-shadow: 0 8px 20px rgba(223, 109, 37, 0.35);
         }
 
-        /* Overlays (Lead & Voice) */
-        .overlay {
+        /* Lead Form - INSIDE BOT */
+        #leadOverlay {
             position: absolute;
-            top: 0;
+            top: 70px;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px);
-            z-index: 100;
+            height: calc(100% - 70px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 50;
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.4s ease;
+            padding: 1rem;
         }
 
         .card {
             background: white;
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 24px;
-            width: 90%;
-            max-width: 480px;
+            width: 100%;
+            max-width: 440px;
             color: #1e293b;
-            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+            animation: popIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .card h2 {
@@ -320,22 +338,29 @@
             font-weight: 800;
             margin-bottom: 0.5rem;
             text-align: center;
+            font-size: 1.5rem;
         }
 
         .card p {
             text-align: center;
             color: #64748b;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .form-input {
             width: 100%;
-            padding: 0.85rem 1rem;
+            padding: 0.8rem 1rem;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            margin-bottom: 1.25rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: border-color 0.2s;
         }
@@ -352,7 +377,7 @@
             border: none;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             margin-top: 0.5rem;
         }
@@ -362,7 +387,8 @@
             background: radial-gradient(circle at center, #1e293b, #020617);
             display: none;
             flex-direction: column;
-            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.5s ease;
+            z-index: 100;
         }
 
         @keyframes slideUp {
@@ -376,13 +402,13 @@
         }
 
         .avatar-frame {
-            width: 280px;
-            height: 280px;
+            width: 240px;
+            height: 240px;
             border-radius: 50%;
             padding: 8px;
             background: var(--primary-gradient);
-            box-shadow: 0 0 60px rgba(223, 109, 37, 0.4);
-            margin-bottom: 2.5rem;
+            box-shadow: 0 0 50px rgba(223, 109, 37, 0.3);
+            margin-bottom: 2rem;
             position: relative;
         }
 
@@ -392,6 +418,16 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #0f172a;
+        }
+
+        .voice-subtitles {
+            max-width: 80%;
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-style: italic;
+            font-size: 1.1rem;
+            height: 60px;
         }
 
         .wave-container {
@@ -425,18 +461,18 @@
         }
 
         .btn-mic {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: var(--primary-gradient);
             color: white;
-            font-size: 2.5rem;
+            font-size: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
             border: none;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(223, 109, 37, 0.4);
+            box-shadow: 0 0 30px rgba(223, 109, 37, 0.3);
             transition: all 0.3s;
         }
 
@@ -448,6 +484,21 @@
             background: #ef4444;
             box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
             transform: scale(0.95);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -455,74 +506,71 @@
 <body>
 
     <div class="app-container">
-        <!-- Lead Form Overlay -->
+        <!-- Chat Header -->
+        <header class="chat-header">
+            <div class="logo-area">
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
+                <div>
+                    <h1>SVSU Intelligent</h1>
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
+                        <span class="status-dot"></span> Official AI Assistant
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-talk" onclick="openVoiceMode()">
+                    <i class="fas fa-microphone-alt"></i> Talk
+                </button>
+                <button class="btn btn-reset" onclick="sessionStorage.clear(); location.reload();">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Lead Form Overlay (INSIDE BOT) -->
         <div id="leadOverlay" class="overlay">
             <div class="card">
                 <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
-                    style="width: 140px; display: block; margin: 0 auto 1.5rem;">
+                    style="width: 120px; display: block; margin: 0 auto 1.2rem;">
                 <h2>University AI Guide</h2>
                 <p>Register to start your conversation with <b>SVSU Intelligent</b></p>
                 <form id="chatLeadForm">
-                    <input type="text" id="l-name" class="form-input" placeholder="Your Full Name" required>
-                    <div style="display: flex; gap: 1rem;">
-                        <input type="email" id="l-email" class="form-input" placeholder="Professional Email" required>
-                        <input type="text" id="l-mobile" class="form-input" placeholder="Mobile No." required>
+                    <input type="text" id="l-name" class="form-input" style="margin-bottom:12px;"
+                        placeholder="Full Name" required>
+                    <div class="form-grid">
+                        <input type="email" id="l-email" class="form-input" placeholder="Email" required>
+                        <input type="text" id="l-mobile" class="form-input" placeholder="Mobile" required>
                     </div>
-                    <select id="l-desig" class="form-input">
-                        <option>Interested Student</option>
-                        <option>Parent / Guardian</option>
-                        <option>Academic Staff</option>
-                        <option>Industry Partner</option>
+                    <select id="l-desig" class="form-input" style="margin-bottom:12px;">
+                        <option>Student</option>
+                        <option>Parent</option>
+                        <option>Staff</option>
                     </select>
-                    <textarea id="l-purpose" class="form-input" rows="2"
+                    <textarea id="l-purpose" class="form-input" style="margin-bottom:15px;" rows="2"
                         placeholder="Primary interest (e.g. Admission in MBA)" required></textarea>
                     <button type="submit" class="btn-form">Begin Consultation</button>
                 </form>
             </div>
         </div>
 
-        <!-- Chat Header -->
-        <header class="chat-header">
-            <div class="logo-area">
-                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
-                <div>
-                    <h1>SVSU Intelligent <span
-                            style="font-size: 0.7rem; vertical-align: middle; color: #94a3b8; margin-left: 8px;">v3.0</span>
-                    </h1>
-                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: 2px;">
-                        <span class="status-dot"></span> Official Support AI
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn btn-talk" onclick="openVoiceMode()">
-                    <i class="fas fa-microphone-alt"></i> Voice Talk
-                </button>
-                <button class="btn btn-reset" onclick="location.reload()">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-            </div>
-        </header>
-
         <!-- Chat Area -->
         <main class="chat-area" id="chatArea">
             <div class="message bot-msg">
-                Greetings! I am <b>SVSU Intelligent</b>, your official digital guide. I am ready to provide documented
-                facts about admissions, courses, and university life.
+                Greetings! I am <b>SVSU Intelligent</b>. Once you fill the form, I will be ready to guide you.
             </div>
         </main>
 
         <!-- Input Box -->
         <div class="input-container">
-            <input type="text" id="chatInput" placeholder="How can I help you today?" autocomplete="off">
+            <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off">
             <button class="btn-send" id="sendBtn"><i class="fas fa-arrow-up"></i></button>
         </div>
 
         <!-- Voice Mode Overlay -->
         <div id="voiceOverlay" class="overlay">
-            <button class="btn btn-reset" style="position: absolute; top: 2rem; left: 2rem; padding: 0.75rem 1.5rem;"
+            <button class="btn btn-reset" style="position: absolute; top: 1.5rem; left: 1.5rem;"
                 onclick="closeVoiceMode()">
-                <i class="fas fa-chevron-left"></i> Exit Voice
+                <i class="fas fa-arrow-left"></i> Exit
             </button>
 
             <div class="avatar-frame">
@@ -530,10 +578,7 @@
                 <img src="avatar.png" alt="AI Avatar">
             </div>
 
-            <div class="voice-subtitles" id="voiceSubtitles"
-                style="color: #94a3b8; margin-bottom: 2rem; font-style: italic;">
-                Ready to speak. Tap the mic.
-            </div>
+            <div class="voice-subtitles" id="voiceSubtitles">Ready to speak. Tap the mic.</div>
 
             <div class="wave-container" id="waveContainer">
                 <div class="wave-bar"></div>
@@ -548,7 +593,7 @@
 
             <button class="btn-mic" id="micBtn"><i class="fas fa-microphone"></i></button>
             <div id="voiceStatus" style="color: #64748b; font-weight: 700; margin-top: 1rem; letter-spacing: 1px;">TAP
-                TO START</div>
+                TO TALK</div>
         </div>
     </div>
 
@@ -569,6 +614,7 @@
         let audioChunks = [];
         let isRecording = false;
 
+        // Check if lead already captured
         if (sessionStorage.getItem('svsu_lead_captured')) {
             leadOverlay.style.display = 'none';
         }
@@ -590,8 +636,9 @@
                     body: JSON.stringify(leadData)
                 });
                 sessionStorage.setItem('svsu_lead_captured', 'true');
-                leadOverlay.style.display = 'none';
-                addMessage('bot', `Welcome <b>${leadData.name}</b>! I am at your service.`);
+                leadOverlay.style.opacity = '0';
+                setTimeout(() => leadOverlay.style.display = 'none', 300);
+                addMessage('bot', `Welcome <b>${leadData.name}</b>! I am at your service. Swagat hai aapka!`);
             } catch (err) { alert("Server connection failed."); }
         });
 
@@ -603,7 +650,7 @@
 
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message bot-msg';
-            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+            typingDiv.innerHTML = '<div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
             chatArea.appendChild(typingDiv);
             chatArea.scrollTop = chatArea.scrollHeight;
 
@@ -615,10 +662,14 @@
                 });
                 const data = await response.json();
                 chatArea.removeChild(typingDiv);
-                addMessage('bot', data.response);
+                if (data.response) {
+                    addMessage('bot', data.response);
+                } else {
+                    addMessage('bot', "Server returned an empty response. Please check Groq API.");
+                }
             } catch (err) {
                 chatArea.removeChild(typingDiv);
-                addMessage('bot', "Bhai, server error. Please retry.");
+                addMessage('bot', "Bhai, disconnect ho gaya server se. Restart karke dekho.");
             }
         }
 
@@ -628,7 +679,10 @@
             text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
             div.innerHTML = text;
             chatArea.appendChild(div);
-            chatArea.scrollTop = chatArea.scrollHeight;
+            // Auto scroll
+            requestAnimationFrame(() => {
+                chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: 'smooth' });
+            });
         }
 
         sendBtn.addEventListener('click', sendMessage);
@@ -686,14 +740,24 @@
                 if (data.transcription) {
                     voiceSubtitles.innerText = `You: ${data.transcription}`;
                     setTimeout(() => {
-                        voiceSubtitles.innerText = `${data.response}`;
-                        if (data.audio) {
-                            const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
-                            audio.play();
-                            voiceStatus.innerText = "SPEAKING...";
-                            audio.onended = () => { voiceStatus.innerText = "TAP TO TALK"; };
+                        if (data.response) {
+                            voiceSubtitles.innerText = `${data.response}`;
+                            if (data.audio) {
+                                const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+                                audio.play();
+                                voiceStatus.innerText = "SPEAKING...";
+                                audio.onended = () => { voiceStatus.innerText = "TAP TO TALK"; };
+                            } else {
+                                voiceStatus.innerText = "TAP TO TALK";
+                            }
+                        } else {
+                            voiceSubtitles.innerText = "Server returned an empty response.";
+                            voiceStatus.innerText = "TAP TO TALK";
                         }
                     }, 500);
+                } else {
+                    voiceSubtitles.innerText = "Could not transcribe audio.";
+                    voiceStatus.innerText = "TAP TO TALK";
                 }
             } catch (err) { voiceStatus.innerText = "ERROR"; }
         }
