@@ -138,10 +138,68 @@ def load_chain():
 
 
 # ----------------- CHAT UI -----------------
+# ----------------- LEAD GENERATION & DATA STORAGE -----------------
+LEADS_FILE = "data/leads.csv"
+if not os.path.exists("data"):
+    os.makedirs("data")
+
+def save_lead(data):
+    import pandas as pd
+    from datetime import datetime
+    data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    file_exists = os.path.isfile(LEADS_FILE)
+    df = pd.DataFrame([data])
+    df.to_csv(LEADS_FILE, mode='a', index=False, header=not file_exists)
+
+# Initialize Session States
+if "lead_captured" not in st.session_state:
+    st.session_state.lead_captured = False
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Welcome! I am SVSU Intelligent. How can I assist you today?"}
+        {"role": "assistant", "content": "Welcome! I am SVSU Intelligent. Please introduce yourself to start our conversation."}
     ]
+
+# ----------------- CHAT UI & LEAD FORM -----------------
+# 1. Capture Leads First
+if not st.session_state.lead_captured:
+    with st.container():
+        st.markdown("""
+        <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin: 2rem auto; max-width: 600px; color: white;">
+            <h2 style="text-align: center; color: #df6d25;">Welcome to SVSU Intelligent</h2>
+            <p style="text-align: center;">Please provide your details to begin the consultation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        with st.form("lead_form"):
+            col1, col2 = st.columns(2)
+            with col1:
+                name = st.text_input("Full Name")
+                email = st.text_input("Email Address")
+            with col2:
+                mobile = st.text_input("Mobile Number")
+                destination = st.selectbox("Designation/Category", ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"])
+            
+            purpose = st.text_area("Purpose of Chat (e.g., Admission, Exams, Hiring)")
+            
+            submit = st.form_submit_button("🚀 Start Chatting")
+            
+            if submit:
+                if name and email and mobile:
+                    lead_data = {
+                        "name": name,
+                        "email": email,
+                        "mobile": mobile,
+                        "designation": destination,
+                        "purpose": purpose
+                    }
+                    save_lead(lead_data)
+                    st.session_state.lead_captured = True
+                    st.session_state.user_name = name
+                    st.success(f"Welcome {name}! Let's find what you need.")
+                    st.rerun()
+                else:
+                    st.error("Please fill in Name, Email and Mobile to continue.")
+    st.stop() # Don't show the chat until lead is captured
 
 # Display history
 logo_base64 = f"data:image/png;base64,{get_base64_img('assets/logo-svsu.png')}"
