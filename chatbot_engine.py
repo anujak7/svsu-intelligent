@@ -55,8 +55,8 @@ def get_chatbot_chain():
         return None
 
     db = FAISS.load_local(FAISS_DIR, embeddings, allow_dangerous_deserialization=True)
-    # Reduced k to stay within Groq Free Tier limits (TPM: 6000)
-    faiss_retriever = db.as_retriever(search_kwargs={"k": 2})
+    # Reduced k to stay within Groq Free Tier limits (TPM: 6000), but k=3 is safe and provides better context.
+    faiss_retriever = db.as_retriever(search_kwargs={"k": 3})
 
     # Instant BM25 loading from persistent storage
     if _bm25_retriever is None and EnsembleRetriever is not None:
@@ -65,7 +65,7 @@ def get_chatbot_chain():
                 with open(BM25_DOCS_PATH, "rb") as f:
                     docs = pickle.load(f)
                 _bm25_retriever = BM25Retriever.from_documents(docs)
-                _bm25_retriever.k = 2
+                _bm25_retriever.k = 3
         except Exception:
             pass
 
@@ -99,9 +99,10 @@ def get_chatbot_chain():
 Use the University Snapshot (Critical Facts) and provided Context to answer EXHAUSTIVELY and IN DETAIL.
 
 INSTRUCTIONS:
-1. If the user asks for a list (like courses), provide the COMPLETE list found in the context. Do not truncate.
-2. If the user asks for information not in the context, clearly state that the information isn't available and suggest visiting https://svsu.ac.in.
-3. Use a professional, academic tone.
+1. RULE OF TRUTH: The UNIVERSITY SNAPSHOT contains absolute core facts. If the user asks about anything in the snapshot (e.g., Vice Chancellor, Registrar), you MUST use the snapshot information, even if the Context contradicts it or lacks it.
+2. If the user asks for a list (like courses), provide the COMPLETE list found in the context. Do not truncate.
+3. If the user asks for information not in the context, clearly state that it is unavailable and suggest visiting https://svsu.ac.in.
+4. Use a professional, academic tone.
 
 UNIVERSITY SNAPSHOT (CRITICAL FACTS):
 {static_knowledge}
@@ -110,6 +111,7 @@ Context from University Database:
 {context}
 
 Question: {question}"""
+
 
     prompt = ChatPromptTemplate.from_template(template)
 
