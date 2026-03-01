@@ -442,6 +442,23 @@
             }
         }
 
+        .ai-orb.speaking {
+            animation: orbPulse 0.4s infinite alternate;
+        }
+
+        @keyframes orbPulse {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 40px rgba(223, 109, 37, 0.6);
+            }
+
+            to {
+                transform: scale(1.15);
+                box-shadow: 0 0 80px rgba(223, 109, 37, 1);
+                filter: brightness(1.2);
+            }
+        }
+
         .voice-subtitles {
             max-width: 80%;
             text-align: center;
@@ -765,7 +782,11 @@
                                 const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
                                 audio.play();
                                 voiceStatus.innerText = "SPEAKING...";
-                                audio.onended = () => { voiceStatus.innerText = "TAP TO TALK"; };
+                                document.querySelector('.ai-orb').classList.add('speaking');
+                                audio.onended = () => {
+                                    voiceStatus.innerText = "TAP TO TALK";
+                                    document.querySelector('.ai-orb').classList.remove('speaking');
+                                };
                             } else {
                                 voiceStatus.innerText = "TAP TO TALK";
                             }
