@@ -57,7 +57,8 @@ def get_chatbot_chain():
         return None
 
     db = FAISS.load_local(FAISS_DIR, embeddings, allow_dangerous_deserialization=True)
-    faiss_retriever = db.as_retriever(search_kwargs={"k": 10})
+    # Reduced k to stay within Groq Free Tier limits (TPM: 6000)
+    faiss_retriever = db.as_retriever(search_kwargs={"k": 3})
 
     # Instant BM25 loading from persistent storage
     if _bm25_retriever is None and EnsembleRetriever is not None:
@@ -66,7 +67,7 @@ def get_chatbot_chain():
                 with open(BM25_DOCS_PATH, "rb") as f:
                     docs = pickle.load(f)
                 _bm25_retriever = BM25Retriever.from_documents(docs)
-                _bm25_retriever.k = 10
+                _bm25_retriever.k = 3
         except Exception:
             pass
 
@@ -76,14 +77,15 @@ def get_chatbot_chain():
     else:
         retriever = faiss_retriever
 
-    # PRIMARY: Groq (Ultra Fast) | SECONDARY: Gemini
-    groq_key = os.getenv("GROQ_API_KEY")
+    # PRIMARY: Gemini 1.5 Flash (High Token Limit) | SECONDARY: Groq (Ultra Fast)
     gemini_key = os.getenv("GOOGLE_API_KEY")
+    groq_key = os.getenv("GROQ_API_KEY")
 
-    if groq_key:
-        llm = ChatGroq(model="llama-3.1-8b-instant", api_key=groq_key, temperature=0.1)
-    elif gemini_key:
+    if gemini_key:
+        # Gemini is much more stable for high-context RAG (1M token limit)
         llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=gemini_key, temperature=0.1)
+    elif groq_key:
+        llm = ChatGroq(model="llama-3.1-8b-instant", api_key=groq_key, temperature=0.1)
     else:
         return None
     
