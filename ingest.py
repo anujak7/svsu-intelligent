@@ -55,9 +55,24 @@ def ingest_data():
     except Exception as e:
         print(f"Web crawl failed: {e}")
 
-    # 3. Split Text (Optimized for Accuracy & Lists)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=350)
+    # 3. Split Text (Optimized for Accuracy & Granularity)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
     chunks = text_splitter.split_documents(documents)
+    
+    # Clean up source names in metadata for cleaner display
+    for chunk in chunks:
+        if "source" in chunk.metadata:
+            # Map long paths to cleaner names
+            s = chunk.metadata["source"]
+            if "Document Prospectus-12.pdf" in s:
+                chunk.metadata["display_source"] = "University Prospectus"
+            elif "A3.pdf" in s:
+                chunk.metadata["display_source"] = "University Brochure"
+            elif s.startswith("http"):
+                chunk.metadata["display_source"] = s
+            else:
+                chunk.metadata["display_source"] = os.path.basename(s)
+                
     print(f"Total chunks: {len(chunks)}")
 
     # 4. Save BM25 Docs for Instant Loading

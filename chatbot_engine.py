@@ -113,6 +113,8 @@ INSTRUCTIONS:
 2. If the user asks for a list (like courses), provide the COMPLETE list found in the context. Do not truncate.
 3. If the user asks for information not in the context, clearly state that it is unavailable and suggest visiting https://svsu.ac.in.
 4. Use a professional, academic tone.
+5. EXHAUSTIVE ANSWER: If the user asks for information (like courses, eligibility, fee), you MUST provide a detailed and complete response found in the context.
+6. SOURCE REMOVAL: Do not mention source file names in the final answer text.
 
 UNIVERSITY SNAPSHOT (CRITICAL FACTS):
 {static_knowledge}
@@ -126,16 +128,9 @@ Question: {question}"""
     prompt = ChatPromptTemplate.from_template(template)
 
     def extract_sources(docs):
-        if not docs: return ""
-        sources = set([d.metadata.get("source", "Official Website") for d in docs if "source" in d.metadata])
-        if not sources: return ""
-        return "\n\nSources / Official Links:\n" + "\n".join([f"- {s}" for s in sources])
+        # User requested to hide sources or make them less intrusive
+        return "" # Hide for now as requested by user
 
-    def format_docs(docs):
-        if not docs: return "No additional records."
-        return "\n\n---\n\n".join([d.page_content for d in docs])
-
-    # Enhanced Chain with Source Tracking
     def final_response(input_data):
         query = input_data["question"].lower().strip()
         
@@ -168,11 +163,11 @@ Question: {question}"""
             
         content = response.content if hasattr(response, 'content') else str(response)
         
-        # Only show sources if the response isn't a "don't know" style or very short
-        if "don't know" in content.lower() or "not available" in content.lower():
-             return f"{content}\n\nOfficial Website: https://svsu.ac.in"
-             
-        return f"{content}\n\n{source_str}"
+        # Clean response from any accidental source mentions
+        content = re.sub(r"Source:.*?\n", "", content, flags=re.IGNORECASE)
+        content = re.sub(r"\[DOC.*?\]", "", content)
+        
+        return content.strip()
 
     return final_response
 
