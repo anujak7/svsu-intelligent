@@ -662,9 +662,12 @@
         <aside class="sidebar">
             <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
 
-            <a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i> Analytics Hub</a>
-            <a href="#" class="nav-link"><i class="fas fa-users"></i> Target Audience</a>
-            <a href="#" class="nav-link"><i class="fas fa-sliders-h"></i> System Tools</a>
+            <a href="#" id="nav-analytics" class="nav-link active" onclick="switchTab('analytics')"><i
+                    class="fas fa-chart-pie"></i> Analytics Hub</a>
+            <a href="#" id="nav-audience" class="nav-link" onclick="switchTab('audience')"><i class="fas fa-users"></i>
+                Target Audience</a>
+            <a href="#" id="nav-tools" class="nav-link" onclick="switchTab('tools')"><i class="fas fa-sliders-h"></i>
+                System Tools</a>
 
             <button class="logout-btn" onclick="logoutSession()"><i class="fas fa-sign-out-alt"></i> Secure
                 Logout</button>
@@ -683,85 +686,129 @@
                 </div>
             </div>
 
-            <div class="filter-container">
-                <span class="filter-title"><i class="fas fa-calendar-alt"></i> Time Range:</span>
-                <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
-                <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
-                <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
-                <button class="filter-btn" onclick="applyFilter('1m', this)">Last 30 Days</button>
-                <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
-                <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
+            <div id="tab-analytics" class="tab-section" style="display: block;">
+                <div class="filter-container">
+                    <span class="filter-title"><i class="fas fa-calendar-alt"></i> Time Range:</span>
+                    <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
+                    <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
+                    <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
+                    <button class="filter-btn" onclick="applyFilter('1m', this)">Last 30 Days</button>
+                    <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
+                    <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
 
-                <div class="date-picker-wrap">
-                    <input type="text" id="customDate" class="date-input" placeholder="Select Dates...">
-                    <button class="date-btn" onclick="applyCustomFilter()">Apply <i class="fas fa-check"
-                            style="font-size: 10px; margin-left: 4px;"></i></button>
-                </div>
-            </div>
-
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <i class="fas fa-comment-dots metric-icon"></i>
-                    <p>Overall Interactions</p>
-                    <h3 id="m-total">0</h3>
-                </div>
-                <div class="metric-card">
-                    <i class="fas fa-user-graduate metric-icon"></i>
-                    <p>Total Students</p>
-                    <h3 id="m-stu">0</h3>
-                </div>
-                <div class="metric-card">
-                    <i class="fas fa-user-friends metric-icon"></i>
-                    <p>Parents / Guardians</p>
-                    <h3 id="m-par">0</h3>
-                </div>
-                <div class="metric-card">
-                    <i class="fas fa-briefcase metric-icon"></i>
-                    <p>Corporate / Staff</p>
-                    <h3 id="m-stf">0</h3>
-                </div>
-            </div>
-
-            <div class="charts-container">
-                <div class="chart-box">
-                    <h3><i class="fas fa-chart-line"></i> Traffic Analytics</h3>
-                    <div style="position: relative; height: 320px; width: 100%;">
-                        <canvas id="trafficChart"></canvas>
+                    <div class="date-picker-wrap">
+                        <input type="text" id="customDate" class="date-input" placeholder="Select Dates...">
+                        <button class="date-btn" onclick="applyCustomFilter()">Apply <i class="fas fa-check"
+                                style="font-size: 10px; margin-left: 4px;"></i></button>
                     </div>
                 </div>
-                <div class="chart-box">
-                    <h3><i class="fas fa-chart-pie"></i> Audience Split</h3>
-                    <div style="position: relative; height: 320px; width: 100%;">
-                        <canvas id="demoChart"></canvas>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <i class="fas fa-comment-dots metric-icon"></i>
+                        <p>Overall Interactions</p>
+                        <h3 id="m-total">0</h3>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-user-graduate metric-icon"></i>
+                        <p>Total Students</p>
+                        <h3 id="m-stu">0</h3>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-user-friends metric-icon"></i>
+                        <p>Parents / Guardians</p>
+                        <h3 id="m-par">0</h3>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-briefcase metric-icon"></i>
+                        <p>Corporate / Staff</p>
+                        <h3 id="m-stf">0</h3>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-box">
+                        <h3><i class="fas fa-chart-line"></i> Traffic Analytics</h3>
+                        <div style="position: relative; height: 320px; width: 100%;">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-box">
+                        <h3><i class="fas fa-chart-pie"></i> Audience Split</h3>
+                        <div style="position: relative; height: 320px; width: 100%;">
+                            <canvas id="demoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-server"></i> Recent Conversational Leads</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="leadsTableData">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Full Name</th>
+                                    <th>Category</th>
+                                    <th>Mobile Number</th>
+                                    <th>Email Address</th>
+                                    <th>Core Query</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadTableBody">
+                                <tr>
+                                    <td colspan="6"
+                                        style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                        Processing data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <!-- End tab-analytics -->
+
+            <!-- Target Audience Tab -->
+            <div id="tab-audience" class="tab-section" style="display: none;">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <i class="fas fa-street-view metric-icon"></i>
+                        <p>Most Active Location</p>
+                        <h3>Gurugram</h3>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-mobile-alt metric-icon"></i>
+                        <p>Device Preference</p>
+                        <h3>Mobile (68%)</h3>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-bullseye"></i> AI Lead Scoring <span class="badge bg-oth">Coming
+                                Soon</span></h3>
+                    </div>
+                    <p style="color: var(--text-muted); padding: 5px; font-weight: 500;">Beta Feature: Advanced
+                        predictive modeling mapping visitor demographics for admissions probability.</p>
+                </div>
+            </div>
+
+            <!-- System Tools Tab -->
+            <div id="tab-tools" class="tab-section" style="display: none;">
+                <div class="charts-container" style="grid-template-columns: 1fr;">
+                    <div class="chart-box">
+                        <h3><i class="fas fa-cogs"></i> System & Admin Functions</h3>
+                        <p style="color: var(--text-muted); font-weight: 500; margin-bottom: 20px;">Secure adjustments
+                            of cloud server properties.</p>
+                        <button class="btn-export" style="background: var(--primary-light); color: white;"><i
+                                class="fas fa-sync"></i> Refresh Cached Memory</button>
+                        <br>
+                        <button class="btn-export" style="background: #e11d48; color: white;"><i
+                                class="fas fa-server"></i> Hot-Restart Inference Engine Server</button>
                     </div>
                 </div>
             </div>
 
-            <div class="table-container">
-                <div class="table-header">
-                    <h3><i class="fas fa-server"></i> Recent Conversational Leads</h3>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table id="leadsTableData">
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Full Name</th>
-                                <th>Category</th>
-                                <th>Mobile Number</th>
-                                <th>Email Address</th>
-                                <th>Core Query</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leadTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                                    Processing data...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -825,6 +872,14 @@
             goBack();
             document.getElementById('loginOverlay').style.display = 'flex';
             setTimeout(() => document.getElementById('loginOverlay').style.opacity = '1', 50);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-section').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+            document.getElementById('tab-' + tabId).style.display = 'block';
+            document.getElementById('nav-' + tabId).classList.add('active');
         }
 
         // --- DASHBOARD LOGIC ---
