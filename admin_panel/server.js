@@ -17,6 +17,10 @@ app.use('/api/lead', createProxyMiddleware({
     target: 'http://localhost:8000',
     changeOrigin: true
 }));
+app.use('/api/voice-chat', createProxyMiddleware({
+    target: 'http://localhost:8000',
+    changeOrigin: true
+}));
 
 // Middleware
 app.use(cors());

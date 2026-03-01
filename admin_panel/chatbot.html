@@ -261,39 +261,112 @@
             box-shadow: 0 8px 20px rgba(223, 109, 37, 0.3);
         }
 
-        /* Typing Animation */
-        .typing {
-            display: flex;
-            gap: 5px;
+        /* Voice Mode Styles */
+        #voiceOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            z-index: 150;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 30px;
+            animation: slideUp 0.5s ease;
         }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        #voiceOverlay .avatar-circle {
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
+            border: 4px solid var(--primary);
+            background: var(--glass-heavy);
+            margin-bottom: 2rem;
+            position: relative;
+            box-shadow: 0 0 50px rgba(223, 109, 37, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
-        .dot:nth-child(1) {
-            animation-delay: -0.32s;
+        #voiceOverlay .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .dot:nth-child(2) {
-            animation-delay: -0.16s;
+        #voiceOverlay .mic-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
         }
 
-        @keyframes bounce {
+        #voiceOverlay .mic-btn.recording {
+            background: #ef4444;
+            animation: pulse-red 1.5s infinite;
+        }
 
-            0%,
-            80%,
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+            }
+
             100% {
-                transform: scale(0);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
             }
+        }
 
-            40% {
-                transform: scale(1.0);
-            }
+        .voice-subtitles {
+            max-width: 80%;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: #f1f5f9;
+            margin-bottom: 2rem;
+            height: 60px;
+            overflow-y: hidden;
+            font-weight: 500;
+        }
+
+        .close-voice-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -354,6 +427,9 @@
             </div>
             <div style="display: flex; gap: 15px;">
                 <button
+                    style="background: var(--primary); color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; border: none; font-weight: 700; display: flex; align-items: center; gap: 8px;"
+                    onclick="openVoiceMode()"><i class="fas fa-microphone-alt"></i> Talk with AI</button>
+                <button
                     style="background: var(--glass-heavy); border: 1px solid var(--border); color: white; padding: 10px 15px; border-radius: 12px; cursor: pointer;"
                     onclick="location.reload()"><i class="fas fa-redo"></i> Reset</button>
             </div>
@@ -373,6 +449,19 @@
                 autocomplete="off">
             <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
         </div>
+
+        <!-- Voice Mode Overlay -->
+        <div id="voiceOverlay">
+            <button class="close-voice-btn" onclick="closeVoiceMode()">Back to Chat</button>
+            <div class="avatar-circle">
+                <!-- Using a high-quality university avatar placeholder for now -->
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png"
+                    style="width: 70%; height: auto; object-fit: contain; background: white; padding: 20px; border-radius: 50%;">
+            </div>
+            <div class="voice-subtitles" id="voiceSubtitles">Ready to help you. Press the microphone to speak.</div>
+            <button class="mic-btn" id="micBtn"><i class="fas fa-microphone"></i></button>
+            <div id="voiceStatus" style="color: #94a3b8; font-weight: 600;">TAP TO TALK</div>
+        </div>
     </div>
 
     <script>
@@ -381,6 +470,15 @@
         const sendBtn = document.getElementById('sendBtn');
         const leadOverlay = document.getElementById('leadOverlay');
         const leadForm = document.getElementById('chatLeadForm');
+
+        // Voice Mode Vars
+        const voiceOverlay = document.getElementById('voiceOverlay');
+        const voiceSubtitles = document.getElementById('voiceSubtitles');
+        const micBtn = document.getElementById('micBtn');
+        const voiceStatus = document.getElementById('voiceStatus');
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
 
         // Check if lead already captured in this session
         if (sessionStorage.getItem('svsu_lead_captured')) {
@@ -459,6 +557,95 @@
 
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        // --- VOICE MODE LOGIC ---
+        function openVoiceMode() {
+            if (!sessionStorage.getItem('svsu_lead_captured')) {
+                alert("Please fill the registration form first.");
+                return;
+            }
+            voiceOverlay.style.display = 'flex';
+        }
+
+        function closeVoiceMode() {
+            voiceOverlay.style.display = 'none';
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        }
+
+        micBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+
+        async function startRecording() {
+            audioChunks = [];
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = processVoice;
+
+                mediaRecorder.start();
+                isRecording = true;
+                micBtn.classList.add('recording');
+                voiceStatus.innerText = "LISTENING...";
+                voiceSubtitles.innerText = "Speak now...";
+            } catch (err) {
+                alert("Microphone access denied or not available.");
+            }
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            voiceStatus.innerText = "PROCESSING...";
+        }
+
+        async function processVoice() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const formData = new FormData();
+            formData.append('audio_file', audioBlob, 'input.wav');
+
+            try {
+                const response = await fetch('/api/voice-chat', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.transcription) {
+                    voiceSubtitles.innerText = `You: ${data.transcription}`;
+                    setTimeout(() => {
+                        voiceSubtitles.innerText = `AI: ${data.response}`;
+                        // Play response audio
+                        if (data.audio) {
+                            const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+                            audio.play();
+                            voiceStatus.innerText = "SPEAKING...";
+                            audio.onended = () => {
+                                voiceStatus.innerText = "TAP TO TALK";
+                            };
+                        }
+                    }, 1000);
+                } else {
+                    voiceSubtitles.innerText = "Sorry, I couldn't hear you. Try again.";
+                    voiceStatus.innerText = "TAP TO TALK";
+                }
+            } catch (err) {
+                voiceSubtitles.innerText = "Error connecting to AI. Check server.";
+                voiceStatus.innerText = "TAP TO TALK";
+            }
+        }
 
     </script>
 </body>

@@ -1,9 +1,13 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import os
 import pandas as pd
+import base64
+import uuid
+import whisper
 from datetime import datetime
+from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from gtts import gTTS
 from chatbot_engine import get_chatbot_chain
 from dotenv import load_dotenv
 
@@ -11,7 +15,11 @@ load_dotenv()
 
 app = FastAPI()
 
-# Enable CORS for frontend communication
+# Create temp directories for audio processing
+if not os.path.exists("data"): os.makedirs("data")
+if not os.path.exists("temp_audio"): os.makedirs("temp_audio")
+
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,7 +27,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Chatbot Chain
+# Initialize Models
+print("Loading Whisper model (base)...")
+try:
+    voice_model = whisper.load_model("base")
+except Exception as e:
+    print(f"Whisper Load Error: {e}")
+    voice_model = None
+
 qa_chain = get_chatbot_chain()
 
 LEADS_FILE = "data/leads.csv"
@@ -36,21 +51,16 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"status": "SVSU Intelligent API is running"}
+    return {"status": "SVSU Intelligent API with Voice is running"}
 
 @app.post("/api/lead")
 async def save_lead(data: LeadData):
     try:
         lead_dict = data.dict()
         lead_dict['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        if not os.path.exists("data"):
-            os.makedirs("data")
-            
         file_exists = os.path.isfile(LEADS_FILE)
         df = pd.DataFrame([lead_dict])
         df.to_csv(LEADS_FILE, mode='a', index=False, header=not file_exists)
-        
         return {"status": "success", "message": "Lead saved"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -58,15 +68,57 @@ async def save_lead(data: LeadData):
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
     try:
-        # Call the chatbot engine
-        if callable(qa_chain) and not hasattr(qa_chain, 'invoke'):
-            full_response = qa_chain({"question": request.question})
-        else:
-            full_response = qa_chain.invoke(request.question)
-            
-        return {"response": full_response}
+        response = qa_chain({"question": request.question})
+        return {"response": response}
     except Exception as e:
         print(f"Chat Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/voice-chat")
+async def voice_chat(audio_file: UploadFile = File(...)):
+    if not voice_model:
+        raise HTTPException(status_code=503, detail="Voice model not loaded")
+    
+    try:
+        # 1. Save uploaded file to temp_audio
+        file_id = str(uuid.uuid4())
+        input_path = f"temp_audio/{file_id}.wav"
+        
+        with open(input_path, "wb") as f:
+            f.write(await audio_file.read())
+
+        # 2. Transcribe STT
+        print(f"Transcribing audio: {input_path}")
+        result = voice_model.transcribe(input_path)
+        user_text = result["text"].strip()
+        
+        if not user_text:
+            return {"transcription": "", "response": "Sorry, I couldn't hear anything clearly.", "audio": ""}
+
+        # 3. Get LLM Response
+        bot_response = qa_chain({"question": user_text})
+
+        # 4. Convert to Speech (TTS)
+        # Using gTTS for speed and reliability in MVP
+        output_path = f"temp_audio/{file_id}.mp3"
+        tts = gTTS(text=bot_response, lang='en')
+        tts.save(output_path)
+
+        # 5. Read output and encode as base64
+        with open(output_path, "rb") as f:
+            audio_base64 = base64.b64encode(f.read()).decode('utf-8')
+
+        # Cleanup temp files (optional but good practice)
+        os.remove(input_path)
+        os.remove(output_path)
+
+        return {
+            "transcription": user_text,
+            "response": bot_response,
+            "audio": audio_base64
+        }
+    except Exception as e:
+        print(f"Voice Chat Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
