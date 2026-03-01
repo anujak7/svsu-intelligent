@@ -27,13 +27,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Models
-print("Loading Whisper model (base)...")
-try:
-    voice_model = whisper.load_model("base")
-except Exception as e:
-    print(f"Whisper Load Error: {e}")
-    voice_model = None
+# Global model cache
+voice_model = None
+
+def get_voice_model():
+    global voice_model
+    if voice_model is None:
+        print("Loading Whisper model (base) - this may take a moment...")
+        voice_model = whisper.load_model("base")
+    return voice_model
 
 qa_chain = get_chatbot_chain()
 
@@ -76,7 +78,8 @@ async def chat(request: ChatRequest):
 
 @app.post("/api/voice-chat")
 async def voice_chat(audio_file: UploadFile = File(...)):
-    if not voice_model:
+    model = get_voice_model()
+    if not model:
         raise HTTPException(status_code=503, detail="Voice model not loaded")
     
     try:
@@ -89,7 +92,7 @@ async def voice_chat(audio_file: UploadFile = File(...)):
 
         # 2. Transcribe STT
         print(f"Transcribing audio: {input_path}")
-        result = voice_model.transcribe(input_path)
+        result = model.transcribe(input_path)
         user_text = result["text"].strip()
         
         if not user_text:
