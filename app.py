@@ -144,8 +144,9 @@ if "messages" not in st.session_state:
     ]
 
 # Display history
+logo_base64 = f"data:image/png;base64,{get_base64_img('assets/logo-svsu.png')}"
 for message in st.session_state.messages:
-    avatar = "https://svsu.ac.in/img/SVSU-Logo.png" if message["role"] == "assistant" else None
+    avatar = logo_base64 if message["role"] == "assistant" else None
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
@@ -155,8 +156,10 @@ if prompt := st.chat_input("E.g., What are the admission procedures?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    with st.chat_message("assistant", avatar="https://svsu.ac.in/img/SVSU-Logo.png"):
+    with st.chat_message("assistant", avatar=logo_base64):
         with st.spinner("Thinking..."):
+
+
 
             try:
                 # Lazy load the chain only when the user first interacts
