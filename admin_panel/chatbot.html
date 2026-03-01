@@ -377,11 +377,19 @@
 
         /* Voice Mode */
         #voiceOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at center, #1e293b, #020617);
             display: none;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             animation: slideUp 0.5s ease;
             z-index: 100;
+            backdrop-filter: blur(20px);
         }
 
         @keyframes slideUp {
