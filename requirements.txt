@@ -1,0 +1,12 @@
+streamlit
+langchain
+langchain-community
+langchain-huggingface
+langchain-google-genai
+langchain-groq
+python-dotenv
+beautifulsoup4
+pymupdf
+faiss-cpu
+rank_bm25
+sentence-transformers

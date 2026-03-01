@@ -1,0 +1,40 @@
+# ============================
+# SVSU Intelligent - .gitignore
+# ============================
+
+# --- SECRETS (NEVER UPLOAD) ---
+.env
+
+# --- Python Virtual Environment ---
+.venv/
+venv/
+env/
+
+# --- Large AI Model Cache (Download locally) ---
+model_cache/
+
+# --- Generated Knowledge Base (Run ingest.py to rebuild) ---
+faiss_db/
+bm25_docs.pkl
+
+# --- Python Cache ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- Logs & Debug Files ---
+*.log
+error_trace.txt
+*_results.txt
+
+# --- Temp / Debug Scripts ---
+debug_*.py
+test_*.py
+dump_*.py
+audit_*.py
+check_*.py
+generate_*.py
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
