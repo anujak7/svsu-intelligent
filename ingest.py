@@ -22,12 +22,13 @@ def bs4_extractor(html: str) -> str:
 
 def ingest_data():
     documents = []
-    # 1. Load PDFs
+    
+    # 1. Manual PDFs (Start with high-priority files)
     pdf_files = ["A3.pdf", "Document Prospectus-12.pdf"]
     for pdf_file in pdf_files:
         pdf_path = os.path.join(DATA_DIR, pdf_file)
         if os.path.exists(pdf_path):
-            print(f"Loading PDF: {pdf_file}...")
+            print(f"Loading Priority PDF: {pdf_file}...")
             loader = PyMuPDFLoader(pdf_path)
             documents.extend(loader.load())
 
@@ -39,74 +40,77 @@ def ingest_data():
         loader = TextLoader(core_facts_path, encoding="utf8")
         documents.extend(loader.load())
 
-    # 2. Website Crawling (Exhaustive Entrance Points)
+    # 2. Exhaustive Website Crawling (Mega Depth for 600+ pages)
     start_urls = [
         "https://svsu.ac.in/",
         "https://svsu.ac.in/admissions/",
         "https://svsu.ac.in/courses/",
         "https://svsu.ac.in/examinations/",
-        "https://svsu.ac.in/contact-us/"
+        "https://svsu.ac.in/contact-us/",
+        "https://svsu.ac.in/notices/",
+        "https://svsu.ac.in/tenders/",
+        "https://svsu.ac.in/faculty-staff/"
     ]
     
-    print(f"Crawling SVSU website from {len(start_urls)} entry points (Depth 4)...")
+    print(f"🚀 Starting MASSIVE CRAWL (Depth 7) for 600+ pages...")
     for url in start_urls:
-        print(f"Crawling: {url}...")
+        print(f"Deep Crawling: {url}...")
         loader = RecursiveUrlLoader(
             url=url, 
-            max_depth=4, 
+            max_depth=7,  # Increased depth for exhaustive search
             extractor=bs4_extractor, 
             prevent_outside=True,
-            use_async=True
+            use_async=True,
+            timeout=20, # Higher timeout for heavy pages
+            check_response_status=True
         )
         try:
             web_docs = loader.load()
-            print(f"Crawled {len(web_docs)} pages from {url}.")
+            print(f"✅ Crawled {len(web_docs)} pages from {url}.")
             documents.extend(web_docs)
         except Exception as e:
-            print(f"Web crawl failed for {url}: {e}")
+            print(f"❌ Web crawl failed for {url}: {e}")
 
-    # 3. Split Text (Optimized for Accuracy & Granularity)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
-    chunks = text_splitter.split_documents(documents)
+    # 3. Clean and Deduplicate
+    unique_docs = []
+    seen_content = set()
+    for doc in documents:
+        content_hash = hash(doc.page_content)
+        if content_hash not in seen_content:
+            unique_docs.append(doc)
+            seen_content.add(content_hash)
     
-    # Clean up source names in metadata for cleaner display
+    print(f"Total Unique Pages/Docs: {len(unique_docs)}")
+
+    # 4. Split Text (High Precision for Production)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    chunks = text_splitter.split_documents(unique_docs)
+    
     for chunk in chunks:
         if "source" in chunk.metadata:
-            # Map long paths to cleaner names
             s = chunk.metadata["source"]
-            if "Document Prospectus-12.pdf" in s:
-                chunk.metadata["display_source"] = "University Prospectus"
-            elif "A3.pdf" in s:
-                chunk.metadata["display_source"] = "University Brochure"
-            elif s.startswith("http"):
-                chunk.metadata["display_source"] = s
-            else:
-                chunk.metadata["display_source"] = os.path.basename(s)
+            chunk.metadata["display_source"] = s if s.startswith("http") else os.path.basename(s)
                 
-    print(f"Total chunks: {len(chunks)}")
+    print(f"Total Chunks Generated: {len(chunks)}")
 
-    # 4. Save BM25 Docs for Instant Loading
-    print("Saving BM25 documents...")
+    # 5. Save BM25 Docs (For Keyword Accuracy)
+    print("Saving BM25 Knowledge Base...")
     with open(BM25_DOCS_PATH, "wb") as f:
         pickle.dump(chunks, f)
 
-    # 5. Local Embeddings & FAISS (Optimized for speed)
-    print("Initializing local embeddings...")
+    # 6. Build FAISS (Semantic Accuracy)
+    print("Initializing FAISS Vector DB...")
     cache_folder = "./model_cache"
-    if not os.path.exists(cache_folder):
-        os.makedirs(cache_folder)
     os.environ["SENTENCE_TRANSFORMERS_HOME"] = cache_folder
     
-    from langchain_huggingface import HuggingFaceEmbeddings
     embeddings = HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2",
         cache_folder=cache_folder
     )
     
-    print("Building FAISS Database...")
     db = FAISS.from_documents(chunks, embeddings)
     db.save_local(FAISS_DIR)
-    print("Success: Knowledge base updated.")
+    print("✨ SUCCESS: Production Database Ready with Massive Data.")
 
 if __name__ == "__main__":
     ingest_data()
