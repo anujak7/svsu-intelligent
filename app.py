@@ -128,19 +128,9 @@ with st.sidebar:
     st.markdown("### About SVSU Intelligent")
     st.markdown("This is the official AI assistant for Shri Vishwakarma Skill University. Designed to help students, faculty, and visitors find information easily and rapidly.")
     
-    st.markdown("---")
-    if not st.session_state.admin_logged_in:
-        with st.expander("🛡️ Admin Panel"):
-            email = st.text_input("Official Email")
-            password = st.text_input("Password", type="password")
-            if st.button("Login"):
-                if email.endswith("@svsu.ac.in") and password == "svsuindia47":
-                    st.session_state.admin_logged_in = True
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials.")
-    else:
-        st.success("Admin Logged In")
+    if st.session_state.admin_logged_in:
+        st.markdown("---")
+        st.success("👨‍💻 Admin Mode Active")
         if st.button("Logout Admin"):
             st.session_state.admin_logged_in = False
             st.rerun()
@@ -237,40 +227,55 @@ if not st.session_state.lead_captured:
         st.markdown("""
         <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin: 2rem auto; max-width: 600px; color: white;">
             <h2 style="text-align: center; color: #df6d25;">Welcome to SVSU Intelligent</h2>
-            <p style="text-align: center;">Please provide your details to begin the consultation.</p>
+            <p style="text-align: center;">Choose your portal below.</p>
         </div>
         """, unsafe_allow_html=True)
         
-        with st.form("lead_form"):
-            col1, col2 = st.columns(2)
-            with col1:
-                name = st.text_input("Full Name")
-                email = st.text_input("Email Address")
-            with col2:
-                mobile = st.text_input("Mobile Number")
-                destination = st.selectbox("Designation/Category", ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"])
-            
-            purpose = st.text_area("Purpose of Chat (e.g., Admission, Exams, Hiring)")
-            
-            submit = st.form_submit_button("🚀 Start Chatting")
-            
-            if submit:
-                if name and email and mobile:
-                    lead_data = {
-                        "name": name,
-                        "email": email,
-                        "mobile": mobile,
-                        "designation": destination,
-                        "purpose": purpose
-                    }
-                    save_lead(lead_data)
-                    st.session_state.lead_captured = True
-                    st.session_state.user_name = name
-                    st.success(f"Welcome {name}! Let's find what you need.")
+        tab1, tab2 = st.tabs(["🎓 Student / Visitor Chat", "🛡️ Admin Access"])
+        
+        with tab1:
+            with st.form("lead_form"):
+                st.markdown("#### Enter your details to begin")
+                col1, col2 = st.columns(2)
+                with col1:
+                    name = st.text_input("Full Name")
+                    email = st.text_input("Email Address")
+                with col2:
+                    mobile = st.text_input("Mobile Number")
+                    destination = st.selectbox("Designation/Category", ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"])
+                
+                purpose = st.text_area("Purpose of Chat (e.g., Admission, Exams, Hiring)")
+                
+                submit = st.form_submit_button("🚀 Start Chatting")
+                
+                if submit:
+                    if name and email and mobile:
+                        lead_data = {
+                            "name": name,
+                            "email": email,
+                            "mobile": mobile,
+                            "designation": destination,
+                            "purpose": purpose
+                        }
+                        save_lead(lead_data)
+                        st.session_state.lead_captured = True
+                        st.session_state.user_name = name
+                        st.success(f"Welcome {name}! Let's find what you need.")
+                        st.rerun()
+                    else:
+                        st.error("Please fill in Name, Email and Mobile to continue.")
+                        
+        with tab2:
+            st.markdown("#### Staff & Admin Portal")
+            admin_email = st.text_input("Official Email (@svsu.ac.in)")
+            admin_pass = st.text_input("Password", type="password")
+            if st.button("Unlock Dashboard"):
+                if admin_email.endswith("@svsu.ac.in") and admin_pass == "svsuindia47":
+                    st.session_state.admin_logged_in = True
                     st.rerun()
                 else:
-                    st.error("Please fill in Name, Email and Mobile to continue.")
-    st.stop() # Don't show the chat until lead is captured
+                    st.error("Invalid SVSU Administrator credentials.")
+    st.stop() # Don't show the chat until lead is captured/admin is active
 
 # Display history
 logo_base64 = f"data:image/png;base64,{get_base64_img('assets/logo-svsu.png')}"
