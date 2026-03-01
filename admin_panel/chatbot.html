@@ -341,15 +341,18 @@
 
         .card {
             background: white;
-            padding: 1rem 2rem;
+            padding: 2rem 3rem;
             border-radius: 24px;
             width: 95%;
             max-width: 950px;
-            border: 2px solid #e0f2fe;
-            box-shadow: 0 40px 80px rgba(14, 165, 233, 0.12);
+            border: 1px solid #e2e8f0;
+            border-top: 5px solid #0369a1;
+            /* Professional accent border */
+            box-shadow: 0 40px 80px rgba(14, 165, 233, 0.1);
             animation: popIn 0.5s ease-out;
             color: #1e293b;
         }
+
 
 
         @keyframes popIn {
@@ -365,19 +368,19 @@
         }
 
         .card h2 {
-            font-size: 1.5rem;
-            color: #0369a1;
+            font-size: 2rem;
+            color: #1e293b;
             font-weight: 800;
-            margin-bottom: 0px;
+            margin-bottom: 8px;
             text-align: center;
         }
-
 
         .card p {
             text-align: center;
             color: #64748b;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
 
@@ -389,33 +392,47 @@
         }
 
         .form-group label {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-bottom: 4px;
-            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+            /* Darker, more professional charcoal */
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
 
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 25px;
+            /* Increased gap for better alignment */
+            margin-bottom: 25px;
         }
+
 
 
 
         .form-input {
             width: 100%;
-            padding: 0.75rem 1.2rem;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            padding: 0.85rem 1.25rem;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            /* Thicker, more surgical border */
             border-radius: 12px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #1e293b;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .form-input:focus {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
 
 
         .form-input::placeholder {
@@ -658,10 +675,9 @@
 
             <div id="leadFormContainer" style="display: none;">
                 <div class="card premium-card">
-                    <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
-                        style="width: 240px; display: block; margin: 0 auto 0.5rem; background: white; padding: 8px; border-radius: 10px; box-shadow: 0 5px 15px rgba(14,165,233,0.08);">
                     <h2>SVSU Intelligent Guide</h2>
-                    <p style="margin-bottom: 0.8rem;">Select your category to start a consultation.</p>
+                    <p>Enter your details below to start a dedicated consultation session with our AI.</p>
+
 
                     <form id="chatLeadForm">
                         <div class="form-grid">
