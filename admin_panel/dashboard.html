@@ -4,11 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVSU Intelligent - Analytics Dashboard</title>
+    <title>SVSU Intelligent - Analytics Dashboard v2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Flatpickr for Custom Date Range -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
         :root {
@@ -20,7 +24,6 @@
             --card-bg: #ffffff;
             --text-main: #334155;
             --text-muted: #64748b;
-            --glass: rgba(255, 255, 255, 0.7);
         }
 
         * {
@@ -31,9 +34,10 @@
         }
 
         body {
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
             color: var(--text-main);
             overflow-x: hidden;
+            display: flex;
         }
 
         /* Sidebar */
@@ -57,20 +61,20 @@
             background: white;
             padding: 12px;
             border-radius: 12px;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             align-self: center;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 1.2rem;
+            padding: 1rem 1.2rem;
             color: #94a3b8;
             text-decoration: none;
             border-radius: 12px;
             font-weight: 600;
             margin-bottom: 0.8rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
         }
 
         .nav-link:hover,
@@ -82,258 +86,241 @@
 
         .nav-link i {
             margin-right: 15px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
         }
 
-        .logout-btn {
+        .creator-badge {
             margin-top: auto;
-            background: rgba(223, 109, 37, 0.1);
-            border: 1.5px solid var(--primary);
-            color: var(--primary);
-            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
 
-        .logout-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
+        .creator-badge h4 {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .creator-badge p {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .creator-badge .owner-name {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
         }
 
         /* Main Content */
         .main-content {
             margin-left: 280px;
-            padding: 3rem 4rem;
+            padding: 2.5rem 4rem;
+            flex: 1;
             min-height: 100vh;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 3.5rem;
+            align-items: center;
+            margin-bottom: 2.5rem;
         }
 
-        .header-title-area h1 {
+        .header h1 {
             color: #0f172a;
             font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: -1px;
-            margin-bottom: 0.5rem;
         }
 
-        .header-title-area p {
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .status-badge {
-            background: #dcfce7;
-            color: #15803d;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(21, 128, 61, 0.1);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.5);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Metrics Grid */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 3.5rem;
-        }
-
-        .metric-card {
+        /* Filters */
+        .filter-container {
             background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 2.5rem;
             display: flex;
-            flex-direction: column;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
-        }
-
-        .icon-wrap {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-1 .icon-wrap {
-            background: #eff6ff;
-            color: #1e4b8a;
-        }
-
-        .card-2 .icon-wrap {
-            background: #fff7ed;
-            color: #df6d25;
-        }
-
-        .card-3 .icon-wrap {
-            background: #ecfdf5;
-            color: #10b981;
-        }
-
-        .card-4 .icon-wrap {
-            background: #f5f3ff;
-            color: #8b5cf6;
-        }
-
-        .metric-label {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        /* Charts Section */
-        .dashboard-row {
-            display: grid;
-            grid-template-columns: 1.2fr 2fr;
-            gap: 2rem;
-            margin-bottom: 3.5rem;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .card-header h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        /* Search & Filters */
-        .actions-bar {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 20px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
-        }
-
-        .search-box {
-            position: relative;
-            width: 400px;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.8rem 1rem 0.8rem 2.8rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(223, 109, 37, 0.1);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 1rem;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 0.7rem 1.2rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            background: white;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
             font-weight: 600;
-            color: var(--text-main);
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
+        .filter-btn:hover {
+            background: #e2e8f0;
+        }
+
         .filter-btn.active {
-            background: var(--secondary);
+            background: var(--primary);
             color: white;
-            border-color: var(--secondary);
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(223, 109, 37, 0.3);
+        }
+
+        .date-picker-wrap {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .date-input {
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .date-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6rem;
+            color: white;
+        }
+
+        .mc-1 {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .mc-2 {
+            background: linear-gradient(135deg, #df6d25, #ea580c);
+        }
+
+        .mc-3 {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .mc-4 {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .metric-info p {
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .metric-info h3 {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .chart-box h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: #1e293b;
         }
 
         /* Table */
-        .table-responsive {
+        .table-container {
             background: white;
-            border-radius: 24px;
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
+            border-radius: 20px;
+            padding: 2rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-header h3 {
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+
+        .export-btn {
+            background: #10b981;
+            color: white;
+            padding: 0.7rem 1.4rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .export-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
         }
 
         table {
@@ -341,444 +328,362 @@
             border-collapse: collapse;
         }
 
-        thead {
-            background: #f8fafc;
-        }
-
         th {
-            padding: 1.2rem 1.5rem;
             text-align: left;
+            padding: 1.2rem 1rem;
+            color: #64748b;
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-weight: 700;
-            border-bottom: 1px solid #e2e8f0;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         td {
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 1.2rem 1rem;
+            color: #334155;
             font-size: 0.95rem;
-            color: #1e293b;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         tr:hover td {
-            background: #fdfdfd;
-        }
-
-        .user-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar-circle {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--secondary);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-            font-size: 0.9rem;
+            background: #f8fafc;
         }
 
         .badge {
-            padding: 6px 14px;
-            border-radius: 100px;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 700;
         }
 
-        .b-student {
-            background: rgba(30, 75, 138, 0.1);
-            color: #1e4b8a;
+        .bg-stu {
+            background: #dbeafe;
+            color: #1e40af;
         }
 
-        .b-visitor {
-            background: rgba(34, 197, 94, 0.1);
-            color: #15803d;
+        .bg-par {
+            background: #fef3c7;
+            color: #b45309;
         }
 
-        .b-faculty {
-            background: rgba(239, 68, 68, 0.1);
-            color: #b91c1c;
+        .bg-stf {
+            background: #dcfce7;
+            color: #166534;
         }
 
-        .b-other {
+        .bg-oth {
             background: #f1f5f9;
             color: #475569;
-        }
-
-        .download-btn {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.8rem;
-            border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
-        }
-
-        .download-btn:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        /* Empty State */
-        .empty-state {
-            padding: 4rem;
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        .empty-state img {
-            width: 120px;
-            opacity: 0.5;
-            margin-bottom: 2rem;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="sidebar">
+    <aside class="sidebar">
         <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
 
-        <a href="#" class="nav-link active">
-            <i class="fas fa-th-large"></i> Overview
-        </a>
-        <a href="#" class="nav-link">
-            <i class="fas fa-address-book"></i> Full Leads
-        </a>
-        <a href="#" class="nav-link">
-            <i class="fas fa-chart-pie"></i> Reports
-        </a>
+        <a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i> Analytics Overview</a>
+        <a href="#" class="nav-link"><i class="fas fa-users"></i> Lead Database</a>
+        <a href="/api/download-csv" class="nav-link"><i class="fas fa-file-export"></i> Export Data</a>
+        <a href="/" class="nav-link"><i class="fas fa-robot"></i> Test Chatbot</a>
 
-        <a href="#" class="nav-link logout-btn" id="logoutBtn">
-            <i class="fas fa-power-off"></i> Sign Out
-        </a>
-    </div>
+        <div class="creator-badge">
+            <h4>Developed & Governed By</h4>
+            <div class="owner-name">ANUJ KHAN</div>
+            <p>Official Owner & Architect of SVSU Intelligent v2.0</p>
+        </div>
+    </aside>
 
-    <div class="main-content">
+    <main class="main-content">
         <div class="header">
-            <div class="header-title-area">
-                <h1>Dashboard Analytics</h1>
-                <p>Track all leads captured via SVSU Intelligent Chatbot</p>
+            <div>
+                <h1>Data Insights AI</h1>
+                <p>Welcome back, Anuj. Here is the traffic analysis for your chatbot.</p>
             </div>
-            <div class="status-badge">
-                <div class="status-dot"></div>
-                Live Terminal Active
+            <div>
+                <a href="/api/download-csv" class="export-btn"><i class="fas fa-download"></i> Download CSV</a>
             </div>
         </div>
 
-        <!-- Metrics Grid -->
+        <div class="filter-container">
+            <span style="font-weight: 700; color: #64748b; margin-right: 10px;"><i class="fas fa-filter"></i>
+                timeframe:</span>
+            <button class="filter-btn active" onclick="applyFilter('all', this)">All Time</button>
+            <button class="filter-btn" onclick="applyFilter('today', this)">Today</button>
+            <button class="filter-btn" onclick="applyFilter('7d', this)">Last 7 Days</button>
+            <button class="filter-btn" onclick="applyFilter('1m', this)">Last 1 Month</button>
+            <button class="filter-btn" onclick="applyFilter('3m', this)">3 Months</button>
+            <button class="filter-btn" onclick="applyFilter('6m', this)">6 Months</button>
+
+            <div class="date-picker-wrap">
+                <input type="text" id="customDate" class="date-input" placeholder="Select Custom Range...">
+                <button class="filter-btn" onclick="applyCustomFilter()"
+                    style="margin: 0; background: #1e293b; color: white;">Apply</button>
+            </div>
+        </div>
+
         <div class="metrics-grid">
-            <div class="metric-card card-1">
-                <div class="icon-wrap"><i class="fas fa-users-viewfinder"></i></div>
-                <div class="metric-label">Total Traffic</div>
-                <div class="metric-value" id="m-total">0</div>
-            </div>
-            <div class="metric-card card-2">
-                <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
-                <div class="metric-label">Student Enquiries</div>
-                <div class="metric-value" id="m-student">0</div>
-            </div>
-            <div class="metric-card card-3">
-                <div class="icon-wrap"><i class="fas fa-user-check"></i></div>
-                <div class="metric-label">Verified Leads</div>
-                <div class="metric-value" id="m-unique">0</div>
-            </div>
-            <div class="metric-card card-4">
-                <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
-                <div class="metric-label">Today's Inflow</div>
-                <div class="metric-value" id="m-today">0</div>
-            </div>
-        </div>
-
-        <div class="dashboard-row" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Categories</h3>
-                </div>
-                <div style="height: 250px;">
-                    <canvas id="pieChart"></canvas>
+            <div class="metric-card">
+                <div class="icon-wrap mc-1"><i class="fas fa-comments"></i></div>
+                <div class="metric-info">
+                    <p>Total Interactions</p>
+                    <h3 id="m-total">0</h3>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3>Enquiry Timeline</h3>
-                </div>
-                <div style="height: 250px;">
-                    <canvas id="lineChart"></canvas>
+            <div class="metric-card">
+                <div class="icon-wrap mc-2"><i class="fas fa-user-graduate"></i></div>
+                <div class="metric-info">
+                    <p>Students</p>
+                    <h3 id="m-stu">0</h3>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3>Purpose Insights</h3>
+            <div class="metric-card">
+                <div class="icon-wrap mc-3"><i class="fas fa-user-tie"></i></div>
+                <div class="metric-info">
+                    <p>Parents/Guardians</p>
+                    <h3 id="m-par">0</h3>
                 </div>
-                <div id="purposeList" style="height: 250px; overflow-y: auto;">
-                    <!-- Top purposes -->
+            </div>
+            <div class="metric-card">
+                <div class="icon-wrap mc-4"><i class="fas fa-briefcase"></i></div>
+                <div class="metric-info">
+                    <p>Staff/Corporate</p>
+                    <h3 id="m-stf">0</h3>
                 </div>
             </div>
         </div>
 
-        <div class="actions-bar">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search by name, email or mobile...">
+        <div class="charts-container">
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-line" style="color:var(--primary); margin-right:8px;"></i> Traffic &
+                    Interaction Over Time</h3>
+                <canvas id="trafficChart" height="100"></canvas>
             </div>
-            <div class="filter-group">
-                <button class="filter-btn active" data-filter="All">All Leads</button>
-                <button class="filter-btn" data-filter="Student">Students</button>
-                <button class="filter-btn" data-filter="Visitor">Visitors</button>
-                <a href="/api/download-csv" class="download-btn">
-                    <i class="fas fa-file-csv"></i> Download CSV
-                </a>
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-pie" style="color:var(--primary); margin-right:8px;"></i> Audience
+                    Demographics</h3>
+                <canvas id="demoChart" height="200"></canvas>
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table id="leadsTable">
-                <thead>
-                    <tr>
-                        <th>Lead Info</th>
-                        <th>Contact Details</th>
-                        <th>Category</th>
-                        <th>Inquiry Purpose</th>
-                        <th>Captured On</th>
-                    </tr>
-                </thead>
-                <tbody id="leadsBody">
-                    <!-- Dynamic -->
-                </tbody>
-            </table>
-            <div id="noResults" class="empty-state" style="display: none;">
-                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="No data">
-                <h3>No matching leads found</h3>
-                <p>Try adjusting your search or filters</p>
+        <div class="table-container">
+            <div class="table-header">
+                <h3><i class="fas fa-database" style="color:var(--primary); margin-right:8px;"></i> Recent Captured
+                    Leads</h3>
+            </div>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Purpose / Query</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Authentication Guard
-        if (localStorage.getItem('svsu_admin_auth') !== 'true') {
-            window.location.href = 'index.html';
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('svsu_admin_auth');
-            window.location.href = 'index.html';
+        // Init Flatpickr for custom dates
+        const datePicker = flatpickr("#customDate", {
+            mode: "range",
+            dateFormat: "Y-m-d",
         });
 
         let allLeads = [];
         let filteredLeads = [];
-        let currentFilter = 'All';
 
-        async function init() {
+        let trafficChartInstance = null;
+        let demoChartInstance = null;
+
+        async function fetchData() {
             try {
                 const res = await fetch('/api/leads');
-                allLeads = await res.json();
+                const data = await res.json();
+
+                // Sort by timestamp DESC
+                allLeads = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 filteredLeads = [...allLeads];
 
-                renderDashboard();
-                renderTable();
-            } catch (err) {
-                console.error("Dashboard failed to load", err);
+                updateDashboard();
+            } catch (e) {
+                console.error(e);
+                document.getElementById('leadTableBody').innerHTML = '<tr><td colspan="6" style="color:red; text-align:center;">Failed to load data. API offline.</td></tr>';
             }
         }
 
-        function renderDashboard() {
-            const mTotal = allLeads.length;
-            const mStudent = allLeads.filter(l => l.designation?.toLowerCase() === 'student').length;
-            const mUnique = new Set(allLeads.map(l => l.email)).size;
-            const todayStr = new Date().toISOString().split('T')[0];
-            const mToday = allLeads.filter(l => l.timestamp?.includes(todayStr)).length;
+        function applyFilter(timeframe, btnElement) {
+            // Update active state
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+            datePicker.clear();
 
-            document.getElementById('m-total').innerText = mTotal;
-            document.getElementById('m-student').innerText = mStudent;
-            document.getElementById('m-unique').innerText = mUnique;
-            document.getElementById('m-today').innerText = mToday;
+            const now = new Date();
+            filteredLeads = allLeads.filter(lead => {
+                if (!lead.timestamp) return false;
+                const leadDate = new Date(lead.timestamp);
+                const diffTime = Math.abs(now - leadDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            createCharts();
-            renderPurposeStats();
-        }
-
-        function renderPurposeStats() {
-            const purposeCounts = {};
-            allLeads.forEach(l => {
-                const p = (l.purpose || 'General Enquiry').split(',')[0].trim().substring(0, 30);
-                purposeCounts[p] = (purposeCounts[p] || 0) + 1;
+                if (timeframe === 'today') return diffDays <= 1;
+                if (timeframe === '7d') return diffDays <= 7;
+                if (timeframe === '1m') return diffDays <= 30;
+                if (timeframe === '3m') return diffDays <= 90;
+                if (timeframe === '6m') return diffDays <= 180;
+                return true; // all
             });
 
-            const sorted = Object.entries(purposeCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-            const container = document.getElementById('purposeList');
-            container.innerHTML = '';
+            updateDashboard();
+        }
 
-            sorted.forEach(([name, count]) => {
-                const percent = Math.round((count / allLeads.length) * 100) || 0;
-                container.innerHTML += `
-                    <div style="margin-bottom:1.2rem">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem">
-                            <span style="font-weight:600; color:#1e293b">${name}</span>
-                            <span style="font-weight:700; color:var(--primary)">${count}</span>
-                        </div>
-                        <div style="height:6px; background:#f1f5f9; border-radius:10px; overflow:hidden">
-                            <div style="width:${percent}%; height:100%; background:var(--primary); border-radius:10px"></div>
-                        </div>
-                    </div>
-                `;
+        function applyCustomFilter() {
+            const dates = datePicker.selectedDates;
+            if (dates.length !== 2) return alert("Please select a full date range.");
+
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+            // Increment end date by 1 day to make inclusive
+            const endD = new Date(dates[1]);
+            endD.setDate(endD.getDate() + 1);
+
+            filteredLeads = allLeads.filter(lead => {
+                if (!lead.timestamp) return false;
+                const leadDate = new Date(lead.timestamp);
+                return leadDate >= dates[0] && leadDate < endD;
             });
 
-            if (sorted.length === 0) {
-                container.innerHTML = '<div class="empty-state" style="padding:1rem">No purposes captured yet</div>';
-            }
+            updateDashboard();
         }
 
-        function getAvatar(name) {
-            return name ? name.charAt(0).toUpperCase() : '?';
+        function getBadgeClass(val) {
+            let v = (val || '').toLowerCase();
+            if (v.includes('student')) return 'bg-stu';
+            if (v.includes('parent')) return 'bg-par';
+            if (v.includes('staff') || v.includes('faculty') || v.includes('corporate')) return 'bg-stf';
+            return 'bg-oth';
         }
 
-        function getBadge(cat) {
-            cat = cat ? cat.toLowerCase() : '';
-            if (cat.includes('student')) return 'b-student';
-            if (cat.includes('visitor')) return 'b-visitor';
-            if (cat.includes('faculty') || cat.includes('staff')) return 'b-faculty';
-            return 'b-other';
-        }
+        function updateDashboard() {
+            // 1. Update Metrics
+            document.getElementById('m-total').innerText = filteredLeads.length;
 
-        function renderTable() {
-            const body = document.getElementById('leadsBody');
-            body.innerHTML = '';
+            let st = 0, pr = 0, sf = 0;
+            filteredLeads.forEach(l => {
+                let d = (l.designation || '').toLowerCase();
+                if (d.includes('student')) st++;
+                else if (d.includes('parent')) pr++;
+                else if (d.includes('staff') || d.includes('faculty') || d.includes('corporate')) sf++;
+            });
+            document.getElementById('m-stu').innerText = st;
+            document.getElementById('m-par').innerText = pr;
+            document.getElementById('m-stf').innerText = sf;
 
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            // 2. Update Table
+            const tbody = document.getElementById('leadTableBody');
+            tbody.innerHTML = '';
 
-            const displayLeads = filteredLeads.filter(l => {
-                const matchSearch = (l.name?.toLowerCase().includes(searchTerm) ||
-                    l.email?.toLowerCase().includes(searchTerm) ||
-                    l.mobile?.includes(searchTerm));
-
-                const matchFilter = (currentFilter === 'All' || l.designation === currentFilter);
-
-                return matchSearch && matchFilter;
-            }).reverse();
-
-            if (displayLeads.length === 0) {
-                document.getElementById('noResults').style.display = 'block';
+            if (filteredLeads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data found for this period.</td></tr>';
             } else {
-                document.getElementById('noResults').style.display = 'none';
-                displayLeads.forEach(lead => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>
-                            <div class="user-cell">
-                                <div class="avatar-circle">${getAvatar(lead.name)}</div>
-                                <div>
-                                    <div style="font-weight:700">${lead.name || 'Anonymous'}</div>
-                                    <div style="font-size:0.8rem; color:#64748b">ID: ${Math.floor(Math.random() * 10000)}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="font-weight:500">${lead.email}</div>
-                            <div style="font-size:0.85rem; color:#64748b"><i class="fas fa-phone"></i> ${lead.mobile}</div>
-                        </td>
-                        <td><span class="badge ${getBadge(lead.designation)}">${lead.designation || 'Other'}</span></td>
-                        <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis" title="${lead.purpose}">${lead.purpose || 'Not specified'}</td>
-                        <td>
-                            <div style="font-weight:600">${lead.timestamp.split(' ')[0]}</div>
-                            <div style="font-size:0.8rem; color:#94a3b8">${lead.timestamp.split(' ')[1]}</div>
-                        </td>
-                    `;
-                    body.appendChild(tr);
+                // Show only top 50 in table to prevent lag
+                filteredLeads.slice(0, 50).forEach(l => {
+                    let d = new Date(l.timestamp);
+                    let fDate = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    let tr = `<tr>
+                        <td style="color:#64748b; font-size:0.85rem;"><i class="far fa-calendar-alt" style="margin-right:6px;"></i> ${fDate || l.timestamp}</td>
+                        <td style="font-weight:700; color:#0f172a;">${l.name || '-'}</td>
+                        <td><span class="badge ${getBadgeClass(l.designation)}">${l.designation || 'Unknown'}</span></td>
+                        <td>${l.mobile || '-'}</td>
+                        <td>${l.email || '-'}</td>
+                        <td style="max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${l.purpose}">${l.purpose || '-'}</td>
+                    </tr>`;
+                    tbody.innerHTML += tr;
                 });
             }
+
+            // 3. Update Charts
+            updateCharts(st, pr, sf);
         }
 
-        function createCharts() {
-            // Category Distribution
-            const cats = {};
-            allLeads.forEach(l => cats[l.designation || 'Other'] = (cats[l.designation || 'Other'] || 0) + 1);
+        function updateCharts(st, pr, sf) {
+            // Data for Demographics
+            const ctxPie = document.getElementById('demoChart').getContext('2d');
+            if (demoChartInstance) demoChartInstance.destroy();
 
-            new Chart(document.getElementById('pieChart'), {
+            demoChartInstance = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(cats),
+                    labels: ['Students', 'Parents', 'Staff & Corp', 'Others'],
                     datasets: [{
-                        data: Object.values(cats),
-                        backgroundColor: ['#1e4b8a', '#df6d25', '#10b981', '#f59e0b', '#8b5cf6'],
-                        hoverOffset: 15
+                        data: [st, pr, sf, filteredLeads.length - (st + pr + sf)],
+                        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#94a3b8'],
+                        borderWidth: 0,
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
-                    cutout: '75%'
-                }
+                options: { cutout: '70%', plugins: { legend: { position: 'bottom' } } }
             });
 
-            // Timeline
-            const dates = {};
-            allLeads.forEach(l => {
-                const d = l.timestamp.split(' ')[0];
-                dates[d] = (dates[d] || 0) + 1;
+            // Data for Traffic (Group by Date)
+            const dateMap = {};
+            [...filteredLeads].reverse().forEach(l => {
+                if (!l.timestamp) return;
+                const dateStr = l.timestamp.split(' ')[0]; // yyyy-mm-dd assumed
+                dateMap[dateStr] = (dateMap[dateStr] || 0) + 1;
             });
-            const sortedDates = Object.keys(dates).sort().slice(-7);
 
-            new Chart(document.getElementById('lineChart'), {
+            const labels = Object.keys(dateMap);
+            const counts = Object.values(dateMap);
+
+            const ctxLine = document.getElementById('trafficChart').getContext('2d');
+            if (trafficChartInstance) trafficChartInstance.destroy();
+
+            // Create gradient
+            let gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(223, 109, 37, 0.5)');
+            gradient.addColorStop(1, 'rgba(223, 109, 37, 0.0)');
+
+            trafficChartInstance = new Chart(ctxLine, {
                 type: 'line',
                 data: {
-                    labels: sortedDates,
+                    labels: labels,
                     datasets: [{
-                        label: 'Hourly Inflow',
-                        data: sortedDates.map(d => dates[d]),
+                        label: 'Interactions Generated',
+                        data: counts,
                         borderColor: '#df6d25',
-                        backgroundColor: 'rgba(223, 109, 37, 0.1)',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#df6d25',
+                        pointRadius: 4,
                         fill: true,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointHoverRadius: 8,
-                        pointBackgroundColor: '#df6d25'
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
                         x: { grid: { display: false } }
-                    },
-                    plugins: { legend: { display: false } }
+                    }
                 }
             });
         }
 
-        // Search Listener
-        document.getElementById('searchInput').addEventListener('input', renderTable);
-
-        // Filter Listener
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
-                renderTable();
-            });
-        });
-
-        init();
+        // Init
+        fetchData();
     </script>
 </body>
 
