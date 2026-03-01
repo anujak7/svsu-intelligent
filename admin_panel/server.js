@@ -5,7 +5,7 @@ const path = require('path');
 const csv = require('csv-parser');
 
 const app = express();
-const PORT = 3000; // Local port, will run on a different port than Streamlit
+const PORT = 8503; // Accessible port
 
 // Middleware
 app.use(cors());
