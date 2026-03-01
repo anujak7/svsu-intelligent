@@ -441,17 +441,18 @@
         }
 
         .ai-orb {
-            width: 140px;
-            height: 140px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1e4b8a, #df6d25);
-            box-shadow: 0 0 30px rgba(223, 109, 37, 0.4);
-            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #2563eb, #1e4b8a);
+            box-shadow: 0 0 40px rgba(37, 99, 235, 0.4);
+            margin-bottom: 3.5rem;
             animation: orbFloat 4s ease-in-out infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            transition: all 0.4s ease;
         }
 
         .ai-orb::before {
@@ -461,9 +462,10 @@
             height: 100%;
             border-radius: 50%;
             background: inherit;
-            filter: blur(20px);
-            opacity: 0.6;
+            filter: blur(25px);
+            opacity: 0.7;
             z-index: -1;
+            transition: all 0.4s ease;
         }
 
         @keyframes orbFloat {
@@ -473,7 +475,6 @@
 
             50% {
                 transform: translateY(-15px) scale(1.05);
-                box-shadow: 0 0 50px rgba(30, 75, 138, 0.6);
             }
 
             100% {
@@ -481,61 +482,63 @@
             }
         }
 
+        .ai-orb.listening {
+            background: linear-gradient(135deg, #df6d25, #ef4444);
+            box-shadow: 0 0 60px rgba(223, 109, 37, 0.6);
+            animation: orbPulse 1.2s infinite alternate;
+        }
+
+        .ai-orb.analyzing {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.5);
+            animation: orbSpin 1s infinite linear;
+        }
+
+        @keyframes orbSpin {
+            to {
+                transform: rotate(360deg) scale(1.1);
+            }
+        }
+
         .ai-orb.speaking {
-            animation: orbPulse 0.4s infinite alternate;
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 0 80px rgba(16, 185, 129, 0.6);
+            animation: orbPulseFast 0.3s infinite alternate;
+        }
+
+        @keyframes orbPulseFast {
+            from {
+                transform: scale(1.1);
+            }
+
+            to {
+                transform: scale(1.25);
+                filter: brightness(1.2);
+            }
         }
 
         @keyframes orbPulse {
             from {
                 transform: scale(1);
-                box-shadow: 0 0 40px rgba(223, 109, 37, 0.6);
             }
 
             to {
                 transform: scale(1.15);
-                box-shadow: 0 0 80px rgba(223, 109, 37, 1);
                 filter: brightness(1.2);
             }
         }
 
         .voice-subtitles {
-            max-width: 80%;
+            max-width: 85%;
             text-align: center;
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-style: italic;
-            font-size: 1.1rem;
-            height: 60px;
-        }
-
-        .wave-container {
+            color: #e2e8f0;
+            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            font-weight: 500;
+            height: 80px;
             display: flex;
-            gap: 4px;
-            height: 40px;
             align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .wave-bar {
-            width: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-            height: 10px;
-            transition: height 0.2s ease;
-        }
-
-        .recording .wave-bar {
-            animation: wave 0.6s infinite alternate;
-        }
-
-        @keyframes wave {
-            from {
-                height: 10px;
-            }
-
-            to {
-                height: 40px;
-            }
+            justify-content: center;
         }
 
         .btn-mic {
@@ -676,20 +679,9 @@
                 <i class="fas fa-arrow-left"></i> Exit
             </button>
 
-            <div class="ai-orb"></div>
+            <div class="ai-orb" id="aiOrb"></div>
 
             <div class="voice-subtitles" id="voiceSubtitles">Ready to speak. Tap the mic.</div>
-
-            <div class="wave-container" id="waveContainer">
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-            </div>
 
             <button class="btn-mic" id="micBtn"><i class="fas fa-microphone"></i></button>
             <div id="voiceStatus" style="color: #64748b; font-weight: 700; margin-top: 1rem; letter-spacing: 1px;">TAP
@@ -710,7 +702,7 @@
         const voiceSubtitles = document.getElementById('voiceSubtitles');
         const micBtn = document.getElementById('micBtn');
         const voiceStatus = document.getElementById('voiceStatus');
-        const waveContainer = document.getElementById('waveContainer');
+        const aiOrb = document.getElementById('aiOrb');
 
         let mediaRecorder;
         let audioChunks = [];
@@ -829,19 +821,21 @@
                 mediaRecorder.onstop = processVoice;
                 mediaRecorder.start();
                 isRecording = true;
+
+                aiOrb.className = 'ai-orb listening';
                 micBtn.classList.add('active');
-                waveContainer.classList.add('recording');
                 voiceStatus.innerText = "LISTENING...";
-                voiceSubtitles.innerText = "What would you like to know?";
+                voiceSubtitles.innerText = "I'm listening...";
             } catch (err) { alert("Mic access blocked by browser! Browsers only allow Microphone access on 'https://' domains or 'http://localhost'. For testing on an IP, please use local port forwarding."); }
         }
 
         function stopRecording() {
             mediaRecorder.stop();
             isRecording = false;
+            aiOrb.className = 'ai-orb analyzing';
             micBtn.classList.remove('active');
-            waveContainer.classList.remove('recording');
             voiceStatus.innerText = "ANALYZING...";
+            voiceSubtitles.innerText = "Thinking...";
         }
 
         async function processVoice() {
@@ -860,24 +854,30 @@
                                 const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
                                 audio.play();
                                 voiceStatus.innerText = "SPEAKING...";
-                                document.querySelector('.ai-orb').classList.add('speaking');
+                                aiOrb.className = 'ai-orb speaking';
                                 audio.onended = () => {
                                     voiceStatus.innerText = "TAP TO TALK";
-                                    document.querySelector('.ai-orb').classList.remove('speaking');
+                                    aiOrb.className = 'ai-orb';
                                 };
                             } else {
                                 voiceStatus.innerText = "TAP TO TALK";
+                                aiOrb.className = 'ai-orb';
                             }
                         } else {
                             voiceSubtitles.innerText = "Server returned an empty response.";
                             voiceStatus.innerText = "TAP TO TALK";
+                            aiOrb.className = 'ai-orb';
                         }
-                    }, 500);
+                    }, 100);
                 } else {
                     voiceSubtitles.innerText = "Could not transcribe audio.";
                     voiceStatus.innerText = "TAP TO TALK";
+                    aiOrb.className = 'ai-orb';
                 }
-            } catch (err) { voiceStatus.innerText = "ERROR"; }
+            } catch (err) {
+                voiceStatus.innerText = "ERROR";
+                aiOrb.className = 'ai-orb';
+            }
         }
     </script>
 </body>

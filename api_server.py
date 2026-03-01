@@ -2,12 +2,12 @@ import os
 import pandas as pd
 import base64
 import uuid
-import whisper
 from datetime import datetime
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from gtts import gTTS
+import edge_tts
+from groq import Groq
 from chatbot_engine import get_chatbot_chain
 from dotenv import load_dotenv
 
@@ -27,15 +27,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global model cache
-voice_model = None
+# Groq Client Initialization
+groq_client = None
 
-def get_voice_model():
-    global voice_model
-    if voice_model is None:
-        print("Loading Whisper model (base) - this may take a moment...")
-        voice_model = whisper.load_model("base")
-    return voice_model
+def get_groq_client():
+    global groq_client
+    if groq_client is None:
+        groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    return groq_client
 
 qa_chain = get_chatbot_chain()
 
@@ -78,9 +77,9 @@ async def chat(request: ChatRequest):
 
 @app.post("/api/voice-chat")
 async def voice_chat(audio_file: UploadFile = File(...)):
-    model = get_voice_model()
-    if not model:
-        raise HTTPException(status_code=503, detail="Voice model not loaded")
+    client = get_groq_client()
+    if not client:
+        raise HTTPException(status_code=503, detail="Groq API not configured")
     
     try:
         # 1. Save uploaded file to temp_audio
@@ -90,10 +89,18 @@ async def voice_chat(audio_file: UploadFile = File(...)):
         with open(input_path, "wb") as f:
             f.write(await audio_file.read())
 
-        # 2. Transcribe STT
-        print(f"Transcribing audio: {input_path}")
-        result = model.transcribe(input_path)
-        user_text = result["text"].strip()
+        # 2. Transcribe STT using Groq Whisper API (Lightning Fast)
+        print(f"Transcribing audio with Groq API: {input_path}")
+        with open(input_path, "rb") as fileData:
+            transcription = client.audio.transcriptions.create(
+                file=(input_path, fileData.read()),
+                model="whisper-large-v3",
+                response_format="json",
+                language="en",
+                temperature=0.0
+            )
+
+        user_text = transcription.text.strip()
         
         if not user_text:
             return {"transcription": "", "response": "Sorry, I couldn't hear anything clearly.", "audio": ""}
@@ -101,19 +108,18 @@ async def voice_chat(audio_file: UploadFile = File(...)):
         # 3. Get LLM Response
         bot_response = qa_chain({"question": user_text})
 
-        # 4. Convert to Speech (TTS)
-        # Using gTTS for speed and reliability in MVP
+        # 4. Convert to Speech (TTS) using edge-tts (Lightning Fast & Ultra Natural)
         output_path = f"temp_audio/{file_id}.mp3"
-        tts = gTTS(text=bot_response, lang='en')
-        tts.save(output_path)
+        communicate = edge_tts.Communicate(bot_response, "en-US-AriaNeural")
+        await communicate.save(output_path)
 
         # 5. Read output and encode as base64
         with open(output_path, "rb") as f:
             audio_base64 = base64.b64encode(f.read()).decode('utf-8')
 
-        # Cleanup temp files (optional but good practice)
-        os.remove(input_path)
-        os.remove(output_path)
+        # Cleanup temp files
+        if os.path.exists(input_path): os.remove(input_path)
+        if os.path.exists(output_path): os.remove(output_path)
 
         return {
             "transcription": user_text,
