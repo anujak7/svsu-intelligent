@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVSU Intelligent - Official AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #df6d25;
+            --secondary: #1e4b8a;
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-heavy: rgba(255, 255, 255, 0.2);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+                url('https://svsu.ac.in/img/SVSU-Home-Banner.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Glassmorphism Layout */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            height: 90vh;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* Header */
+        .chat-header {
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header img {
+            height: 50px;
+            background: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .chat-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        /* Chat Bubbles */
+        .message {
+            max-width: 80%;
+            padding: 1.2rem 1.8rem;
+            border-radius: 20px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-msg {
+            align-self: flex-start;
+            background: var(--glass-heavy);
+            border-left: 5px solid var(--primary);
+            border-radius: 20px 20px 20px 5px;
+        }
+
+        .user-msg {
+            align-self: flex-end;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px 20px 5px 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 1.5rem 2.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-area input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-area input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: #f07e32;
+        }
+
+        /* Lead Form Overlay */
+        #leadOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 30px;
+        }
+
+        .lead-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 500px;
+            color: #1e293b;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .lead-form h2 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .lead-form p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .form-btn:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 8px 20px rgba(223, 109, 37, 0.3);
+        }
+
+        /* Typing Animation */
+        .typing {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1.0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Lead Form Overlay -->
+        <div id="leadOverlay">
+            <div class="lead-form">
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
+                    style="width: 150px; display: block; margin: 0 auto 1.5rem;">
+                <h2>Welcome to SVSU AI</h2>
+                <p>Register yourself to start chatting with <b>SVSU Intelligent</b></p>
+
+                <form id="chatLeadForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="l-name" placeholder="John Doe" required>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Email</label>
+                            <input type="email" id="l-email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Mobile</label>
+                            <input type="text" id="l-mobile" placeholder="+91 0000000000" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="l-desig">
+                            <option>Student</option>
+                            <option>Parent</option>
+                            <option>Faculty/Staff</option>
+                            <option>Visitor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Purpose</label>
+                        <textarea id="l-purpose" rows="2" placeholder="Admission inquiry, Exam schedule, etc."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="form-btn">Start Chatting Now</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat Header -->
+        <header class="chat-header">
+            <div class="logo-area">
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="Logo">
+                <div>
+                    <h1>SVSU Intelligent</h1>
+                    <small style="color: #94a3b8; font-weight: 600;">🟢 Online AI Assistant</small>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button
+                    style="background: var(--glass-heavy); border: 1px solid var(--border); color: white; padding: 10px 15px; border-radius: 12px; cursor: pointer;"
+                    onclick="location.reload()"><i class="fas fa-redo"></i> Reset</button>
+            </div>
+        </header>
+
+        <!-- Chat Area -->
+        <main class="chat-area" id="chatArea">
+            <div class="message bot-msg">
+                Hello! I am <b>SVSU Intelligent</b>. Once you fill the form, I will be ready to help you with everything
+                related to Shri Vishwakarma Skill University.
+            </div>
+        </main>
+
+        <!-- Input Box -->
+        <div class="input-area">
+            <input type="text" id="chatInput" placeholder="Ask me anything... (e.g. Admission 2026 dates)"
+                autocomplete="off">
+            <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const leadOverlay = document.getElementById('leadOverlay');
+        const leadForm = document.getElementById('chatLeadForm');
+
+        // Check if lead already captured in this session
+        if (sessionStorage.getItem('svsu_lead_captured')) {
+            leadOverlay.style.display = 'none';
+        }
+
+        // Handle Lead Form
+        leadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const leadData = {
+                name: document.getElementById('l-name').value,
+                email: document.getElementById('l-email').value,
+                mobile: document.getElementById('l-mobile').value,
+                designation: document.getElementById('l-desig').value,
+                purpose: document.getElementById('l-purpose').value
+            };
+
+            try {
+                // Call Python API to save lead
+                await fetch('http://' + window.location.hostname + ':8000/api/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData)
+                });
+
+                sessionStorage.setItem('svsu_lead_captured', 'true');
+                sessionStorage.setItem('user_name', leadData.name);
+                leadOverlay.style.display = 'none';
+
+                addMessage('bot', `Welcome <b>${leadData.name}</b>! How can I assist you today?`);
+            } catch (err) {
+                alert("Connection to server failed. Please try again.");
+            }
+        });
+
+        // Handle Chat
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage('user', text);
+            chatInput.value = '';
+
+            // Show Typing
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-msg typing-box';
+            typingDiv.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+            chatArea.appendChild(typingDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            try {
+                const response = await fetch('http://' + window.location.hostname + ':8000/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: text })
+                });
+                const data = await response.json();
+
+                chatArea.removeChild(typingDiv);
+                addMessage('bot', data.response);
+            } catch (err) {
+                chatArea.removeChild(typingDiv);
+                addMessage('bot', "Bhai, server se connect nahi ho pa raha hoon. Ek baar check karo api chal rahi hai kya.");
+            }
+        }
+
+        function addMessage(role, text) {
+            const div = document.createElement('div');
+            div.className = `message ${role === 'bot' ? 'bot-msg' : 'user-msg'}`;
+            // Convert markdown style bold to HTML
+            text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            div.innerHTML = text;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+    </script>
+</body>
+
+</html>

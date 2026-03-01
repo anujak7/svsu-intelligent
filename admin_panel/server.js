@@ -47,12 +47,17 @@ app.get('/api/download-csv', (req, res) => {
     }
 });
 
-// Serve main page
+// Serve Main Chatbot Landing Page
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'chatbot.html'));
+});
+
+// Admin Login
+app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve dashboard page
+// Admin Dashboard
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
