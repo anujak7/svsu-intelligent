@@ -21,9 +21,9 @@ img_base64 = get_base64_img("assets/campus.png")
 # Modern, Premium Glassmorphism UI
 st.markdown(f"""
 <style>
-    /* Full Page Background with Image */
+    /* Full Page Background with Image (ORIGINAL COLORS) */
     .stApp {{
-        background: linear-gradient(rgba(30, 75, 138, 0.7), rgba(0, 0, 0, 0.8)), 
+        background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2)), 
                     url("data:image/png;base64,{img_base64}");
         background-size: cover;
         background-position: center;
