@@ -4,514 +4,760 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVSU Analytics Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>SVSU Intelligent - Analytics Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --primary: #df6d25;
+            --primary-dark: #c85a1a;
+            --secondary: #1e4b8a;
+            --bg-dark: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: #f8fafc;
-            color: #334e68;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 250px;
-            background: #102a43;
+            width: 280px;
+            background: var(--sidebar-bg);
             color: white;
             position: fixed;
             height: 100vh;
             left: 0;
             top: 0;
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem;
             display: flex;
             flex-direction: column;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar img {
-            width: 180px;
+            width: 200px;
             background: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 2rem;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 3rem;
             align-self: center;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            color: #bcccdc;
+            padding: 1.2rem;
+            color: #94a3b8;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link:hover,
         .nav-link.active {
-            background: #df6d25;
+            background: var(--primary);
             color: white;
+            transform: translateX(5px);
         }
 
         .nav-link i {
             margin-right: 15px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .logout-btn {
             margin-top: auto;
-            background: transparent;
-            border: 1px solid #df6d25;
-            color: #df6d25;
+            background: rgba(223, 109, 37, 0.1);
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            justify-content: center;
         }
 
         .logout-btn:hover {
-            background: #df6d25;
+            background: var(--primary);
             color: white;
+            transform: translateY(-2px);
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 250px;
-            padding: 2rem 3rem;
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            min-height: 100vh;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
+            align-items: flex-start;
+            margin-bottom: 3.5rem;
         }
 
-        .header h1 {
-            color: #102a43;
-            font-size: 2rem;
+        .header-title-area h1 {
+            color: #0f172a;
+            font-size: 2.2rem;
             font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
         }
 
-        /* Metrics grid */
+        .header-title-area p {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(21, 128, 61, 0.1);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Metrics Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
         }
 
         .metric-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             display: flex;
-            align-items: center;
-            transition: transform 0.3s ease;
+            flex-direction: column;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
         }
 
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+        .icon-wrap {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
-            margin-right: 1rem;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
         }
 
-        div[data-type="total"] .icon-box {
+        .card-1 .icon-wrap {
+            background: #eff6ff;
+            color: #1e4b8a;
+        }
+
+        .card-2 .icon-wrap {
+            background: #fff7ed;
+            color: #df6d25;
+        }
+
+        .card-3 .icon-wrap {
+            background: #ecfdf5;
+            color: #10b981;
+        }
+
+        .card-4 .icon-wrap {
+            background: #f5f3ff;
+            color: #8b5cf6;
+        }
+
+        .metric-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        /* Charts Section */
+        .dashboard-row {
+            display: grid;
+            grid-template-columns: 1.2fr 2fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* Search & Filters */
+        .actions-bar {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-box {
+            position: relative;
+            width: 400px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(223, 109, 37, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.2rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Table */
+        .table-responsive {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        tr:hover td {
+            background: #fdfdfd;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .b-student {
             background: rgba(30, 75, 138, 0.1);
             color: #1e4b8a;
         }
 
-        div[data-type="student"] .icon-box {
-            background: rgba(223, 109, 37, 0.1);
-            color: #df6d25;
+        .b-visitor {
+            background: rgba(34, 197, 94, 0.1);
+            color: #15803d;
         }
 
-        div[data-type="unique"] .icon-box {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+        .b-faculty {
+            background: rgba(239, 68, 68, 0.1);
+            color: #b91c1c;
         }
 
-        div[data-type="today"] .icon-box {
-            background: rgba(139, 92, 246, 0.1);
-            color: #8b5cf6;
-        }
-
-        .metric-info h3 {
-            font-size: 0.9rem;
-            color: #64748b;
-            font-weight: 500;
-            margin-bottom: 0.3rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .metric-info p {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #102a43;
-        }
-
-        /* Charts Section */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .chart-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        }
-
-        .chart-card h3 {
-            margin-bottom: 1.5rem;
-            color: #1e4b8a;
-            font-size: 1.2rem;
-        }
-
-        /* Table Section */
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            overflow: hidden;
-        }
-
-        .table-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .b-other {
+            background: #f1f5f9;
+            color: #475569;
         }
 
         .download-btn {
             background: #10b981;
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
+            padding: 0.8rem 1.8rem;
+            border-radius: 14px;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: 600;
             display: flex;
             align-items: center;
+            gap: 10px;
             text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
         }
 
-        .download-btn i {
-            margin-right: 8px;
+        .download-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(16, 185, 129, 0.3);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+        /* Empty State */
+        .empty-state {
+            padding: 4rem;
+            text-align: center;
+            color: var(--text-muted);
         }
 
-        th {
-            background: #f8fafc;
-            padding: 1rem 1.5rem;
-            color: #64748b;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334e68;
-        }
-
-        tbody tr:hover {
-            background: #f8fafc;
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .badge-student {
-            background: rgba(30, 75, 138, 0.1);
-            color: #1e4b8a;
-        }
-
-        .badge-faculty {
-            background: #fee2e2;
-            color: #ef4444;
-        }
-
-        .badge-visitor {
-            background: #dcfce7;
-            color: #22c55e;
-        }
-
-        .badge-other {
-            background: #f3f4f6;
-            color: #4b5563;
+        .empty-state img {
+            width: 120px;
+            opacity: 0.5;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
 
         <a href="#" class="nav-link active">
-            <i class="fas fa-chart-line"></i> Analytics Overview
+            <i class="fas fa-th-large"></i> Overview
         </a>
         <a href="#" class="nav-link">
-            <i class="fas fa-users"></i> Lead Database
+            <i class="fas fa-address-book"></i> Full Leads
         </a>
         <a href="#" class="nav-link">
-            <i class="fas fa-cog"></i> Settings
+            <i class="fas fa-chart-pie"></i> Reports
         </a>
 
         <a href="#" class="nav-link logout-btn" id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i> Logout Securely
+            <i class="fas fa-power-off"></i> Sign Out
         </a>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="header">
-            <h1>Visitor Insights & Leads</h1>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <span style="color: #64748b; font-weight: 500;">🟢 Live System Active</span>
+            <div class="header-title-area">
+                <h1>Dashboard Analytics</h1>
+                <p>Track all leads captured via SVSU Intelligent Chatbot</p>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                Live Terminal Active
             </div>
         </div>
 
-        <!-- Metrics -->
+        <!-- Metrics Grid -->
         <div class="metrics-grid">
-            <div class="metric-card" data-type="total">
-                <div class="icon-box"><i class="fas fa-eye"></i></div>
-                <div class="metric-info">
-                    <h3>Total Visitors</h3>
-                    <p id="m-total">0</p>
+            <div class="metric-card card-1">
+                <div class="icon-wrap"><i class="fas fa-users-viewfinder"></i></div>
+                <div class="metric-label">Total Traffic</div>
+                <div class="metric-value" id="m-total">0</div>
+            </div>
+            <div class="metric-card card-2">
+                <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+                <div class="metric-label">Student Enquiries</div>
+                <div class="metric-value" id="m-student">0</div>
+            </div>
+            <div class="metric-card card-3">
+                <div class="icon-wrap"><i class="fas fa-user-check"></i></div>
+                <div class="metric-label">Verified Leads</div>
+                <div class="metric-value" id="m-unique">0</div>
+            </div>
+            <div class="metric-card card-4">
+                <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
+                <div class="metric-label">Today's Inflow</div>
+                <div class="metric-value" id="m-today">0</div>
+            </div>
+        </div>
+
+        <div class="dashboard-row" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Categories</h3>
+                </div>
+                <div style="height: 250px;">
+                    <canvas id="pieChart"></canvas>
                 </div>
             </div>
-            <div class="metric-card" data-type="student">
-                <div class="icon-box"><i class="fas fa-user-graduate"></i></div>
-                <div class="metric-info">
-                    <h3>Students/Aspirants</h3>
-                    <p id="m-student">0</p>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Enquiry Timeline</h3>
+                </div>
+                <div style="height: 250px;">
+                    <canvas id="lineChart"></canvas>
                 </div>
             </div>
-            <div class="metric-card" data-type="unique">
-                <div class="icon-box"><i class="fas fa-fingerprint"></i></div>
-                <div class="metric-info">
-                    <h3>Unique Leads</h3>
-                    <p id="m-unique">0</p>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Purpose Insights</h3>
                 </div>
-            </div>
-            <div class="metric-card" data-type="today">
-                <div class="icon-box"><i class="fas fa-calendar-day"></i></div>
-                <div class="metric-info">
-                    <h3>Leads Today</h3>
-                    <p id="m-today">0</p>
+                <div id="purposeList" style="height: 250px; overflow-y: auto;">
+                    <!-- Top purposes -->
                 </div>
             </div>
         </div>
 
-        <!-- Charts -->
-        <div class="charts-grid">
-            <div class="chart-card">
-                <h3>Visitor Demographics</h3>
-                <canvas id="pieChart"></canvas>
+        <div class="actions-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, email or mobile...">
             </div>
-            <div class="chart-card">
-                <h3>Lead Generation Timeline (Last 7 Days)</h3>
-                <canvas id="lineChart" style="max-height: 300px;"></canvas>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="All">All Leads</button>
+                <button class="filter-btn" data-filter="Student">Students</button>
+                <button class="filter-btn" data-filter="Visitor">Visitors</button>
+                <a href="/api/download-csv" class="download-btn">
+                    <i class="fas fa-file-csv"></i> Download CSV
+                </a>
             </div>
         </div>
 
-        <!-- Table -->
-        <div class="table-container">
-            <div class="table-header">
-                <h3>Recent Incoming Leads</h3>
-                <button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> Export CSV
-                    Dataset</button>
-            </div>
+        <div class="table-responsive">
             <table id="leadsTable">
                 <thead>
                     <tr>
-                        <th>Date & Time</th>
-                        <th>Full Name</th>
-                        <th>Email Contact</th>
-                        <th>Mobile</th>
+                        <th>Lead Info</th>
+                        <th>Contact Details</th>
                         <th>Category</th>
-                        <th>Purpose of Visit</th>
+                        <th>Inquiry Purpose</th>
+                        <th>Captured On</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Populated by JS -->
+                <tbody id="leadsBody">
+                    <!-- Dynamic -->
                 </tbody>
             </table>
+            <div id="noResults" class="empty-state" style="display: none;">
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="No data">
+                <h3>No matching leads found</h3>
+                <p>Try adjusting your search or filters</p>
+            </div>
         </div>
     </div>
 
-
     <script>
-        // Check Authentication!
+        // Authentication Guard
         if (localStorage.getItem('svsu_admin_auth') !== 'true') {
             window.location.href = 'index.html';
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
+        document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('svsu_admin_auth');
             window.location.href = 'index.html';
         });
 
-        // ----------------- DATA FETCHING -----------------
-        async function fetchDashboardData() {
+        let allLeads = [];
+        let filteredLeads = [];
+        let currentFilter = 'All';
+
+        async function init() {
             try {
-                // We will create this backend Node endpoint
-                const response = await fetch('/api/leads');
-                const data = await response.json();
+                const res = await fetch('/api/leads');
+                allLeads = await res.json();
+                filteredLeads = [...allLeads];
 
-                updateDashboard(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
+                renderDashboard();
+                renderTable();
+            } catch (err) {
+                console.error("Dashboard failed to load", err);
             }
         }
 
-        function getBadgeClass(category) {
-            category = category ? category.toLowerCase() : '';
-            if (category.includes('student')) return 'badge-student';
-            if (category.includes('faculty') || category.includes('staff')) return 'badge-faculty';
-            if (category.includes('visitor')) return 'badge-visitor';
-            return 'badge-other';
+        function renderDashboard() {
+            const mTotal = allLeads.length;
+            const mStudent = allLeads.filter(l => l.designation?.toLowerCase() === 'student').length;
+            const mUnique = new Set(allLeads.map(l => l.email)).size;
+            const todayStr = new Date().toISOString().split('T')[0];
+            const mToday = allLeads.filter(l => l.timestamp?.includes(todayStr)).length;
+
+            document.getElementById('m-total').innerText = mTotal;
+            document.getElementById('m-student').innerText = mStudent;
+            document.getElementById('m-unique').innerText = mUnique;
+            document.getElementById('m-today').innerText = mToday;
+
+            createCharts();
+            renderPurposeStats();
         }
 
-        function updateDashboard(leads) {
-            // Metrics
-            document.getElementById('m-total').innerText = leads.length;
-
-            const students = leads.filter(l => l.designation && l.designation.toLowerCase() === 'student').length;
-            document.getElementById('m-student').innerText = students;
-
-            const uniqueEmails = new Set(leads.map(l => l.email)).size;
-            document.getElementById('m-unique').innerText = uniqueEmails;
-
-            const today = new Date().toISOString().split('T')[0];
-            const todayLeads = leads.filter(l => l.timestamp && l.timestamp.includes(today)).length;
-            document.getElementById('m-today').innerText = todayLeads;
-
-
-            // Table
-            const tbody = document.querySelector('#leadsTable tbody');
-            tbody.innerHTML = '';
-
-            // Show top 20 latest
-            const recentLeads = [...leads].reverse().slice(0, 20);
-
-            for (let lead of recentLeads) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${lead.timestamp}</td>
-                    <td style="font-weight: 500; color: #102a43;">${lead.name}</td>
-                    <td>${lead.email}</td>
-                    <td>${lead.mobile}</td>
-                    <td><span class="badge ${getBadgeClass(lead.designation)}">${lead.designation || 'Unknown'}</span></td>
-                    <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${lead.purpose}">${lead.purpose}</td>
-                `;
-                tbody.appendChild(tr);
-            }
-
-
-            // Charts Processing
-            let categoryCounts = {};
-            let timelineCounts = {};
-
-            leads.forEach(l => {
-                // Category Pie
-                const desig = l.designation || 'Other';
-                categoryCounts[desig] = (categoryCounts[desig] || 0) + 1;
-
-                // Timeline Date
-                if (l.timestamp) {
-                    const date = l.timestamp.split(' ')[0];
-                    timelineCounts[date] = (timelineCounts[date] || 0) + 1;
-                }
+        function renderPurposeStats() {
+            const purposeCounts = {};
+            allLeads.forEach(l => {
+                const p = (l.purpose || 'General Enquiry').split(',')[0].trim().substring(0, 30);
+                purposeCounts[p] = (purposeCounts[p] || 0) + 1;
             });
 
-            // Pie Chart
+            const sorted = Object.entries(purposeCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            const container = document.getElementById('purposeList');
+            container.innerHTML = '';
+
+            sorted.forEach(([name, count]) => {
+                const percent = Math.round((count / allLeads.length) * 100) || 0;
+                container.innerHTML += `
+                    <div style="margin-bottom:1.2rem">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem">
+                            <span style="font-weight:600; color:#1e293b">${name}</span>
+                            <span style="font-weight:700; color:var(--primary)">${count}</span>
+                        </div>
+                        <div style="height:6px; background:#f1f5f9; border-radius:10px; overflow:hidden">
+                            <div style="width:${percent}%; height:100%; background:var(--primary); border-radius:10px"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (sorted.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="padding:1rem">No purposes captured yet</div>';
+            }
+        }
+
+        function getAvatar(name) {
+            return name ? name.charAt(0).toUpperCase() : '?';
+        }
+
+        function getBadge(cat) {
+            cat = cat ? cat.toLowerCase() : '';
+            if (cat.includes('student')) return 'b-student';
+            if (cat.includes('visitor')) return 'b-visitor';
+            if (cat.includes('faculty') || cat.includes('staff')) return 'b-faculty';
+            return 'b-other';
+        }
+
+        function renderTable() {
+            const body = document.getElementById('leadsBody');
+            body.innerHTML = '';
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            const displayLeads = filteredLeads.filter(l => {
+                const matchSearch = (l.name?.toLowerCase().includes(searchTerm) ||
+                    l.email?.toLowerCase().includes(searchTerm) ||
+                    l.mobile?.includes(searchTerm));
+
+                const matchFilter = (currentFilter === 'All' || l.designation === currentFilter);
+
+                return matchSearch && matchFilter;
+            }).reverse();
+
+            if (displayLeads.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+            } else {
+                document.getElementById('noResults').style.display = 'none';
+                displayLeads.forEach(lead => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar-circle">${getAvatar(lead.name)}</div>
+                                <div>
+                                    <div style="font-weight:700">${lead.name || 'Anonymous'}</div>
+                                    <div style="font-size:0.8rem; color:#64748b">ID: ${Math.floor(Math.random() * 10000)}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:500">${lead.email}</div>
+                            <div style="font-size:0.85rem; color:#64748b"><i class="fas fa-phone"></i> ${lead.mobile}</div>
+                        </td>
+                        <td><span class="badge ${getBadge(lead.designation)}">${lead.designation || 'Other'}</span></td>
+                        <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis" title="${lead.purpose}">${lead.purpose || 'Not specified'}</td>
+                        <td>
+                            <div style="font-weight:600">${lead.timestamp.split(' ')[0]}</div>
+                            <div style="font-size:0.8rem; color:#94a3b8">${lead.timestamp.split(' ')[1]}</div>
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+            }
+        }
+
+        function createCharts() {
+            // Category Distribution
+            const cats = {};
+            allLeads.forEach(l => cats[l.designation || 'Other'] = (cats[l.designation || 'Other'] || 0) + 1);
+
             new Chart(document.getElementById('pieChart'), {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(categoryCounts),
+                    labels: Object.keys(cats),
                     datasets: [{
-                        data: Object.values(categoryCounts),
-                        backgroundColor: ['#1e4b8a', '#df6d25', '#10b981', '#f59e0b', '#8b5cf6', '#64748b'],
-                        borderWidth: 0
+                        data: Object.values(cats),
+                        backgroundColor: ['#1e4b8a', '#df6d25', '#10b981', '#f59e0b', '#8b5cf6'],
+                        hoverOffset: 15
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    },
-                    cutout: '70%'
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+                    cutout: '75%'
                 }
             });
 
-            // Line Chart
-            // Sort dates
-            const sortedDates = Object.keys(timelineCounts).sort();
-            const dateGraphLabs = sortedDates.slice(-7); // Last 7 days
-            const dateGraphData = dateGraphLabs.map(d => timelineCounts[d]);
+            // Timeline
+            const dates = {};
+            allLeads.forEach(l => {
+                const d = l.timestamp.split(' ')[0];
+                dates[d] = (dates[d] || 0) + 1;
+            });
+            const sortedDates = Object.keys(dates).sort().slice(-7);
 
             new Chart(document.getElementById('lineChart'), {
                 type: 'line',
                 data: {
-                    labels: dateGraphLabs,
+                    labels: sortedDates,
                     datasets: [{
-                        label: 'Leads per Day',
-                        data: dateGraphData,
+                        label: 'Hourly Inflow',
+                        data: sortedDates.map(d => dates[d]),
                         borderColor: '#df6d25',
                         backgroundColor: 'rgba(223, 109, 37, 0.1)',
-                        tension: 0.4,
                         fill: true,
-                        pointBackgroundColor: '#df6d25',
-                        pointBorderWidth: 2,
-                        pointRadius: 4
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#df6d25'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
                         x: { grid: { display: false } }
                     },
                     plugins: { legend: { display: false } }
@@ -519,14 +765,20 @@
             });
         }
 
-        // CSV Download Logic
-        document.getElementById('downloadBtn').addEventListener('click', async () => {
-            // Directly fetch CSV from backend
-            window.location.href = '/api/download-csv';
+        // Search Listener
+        document.getElementById('searchInput').addEventListener('input', renderTable);
+
+        // Filter Listener
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                renderTable();
+            });
         });
 
-        fetchDashboardData();
-
+        init();
     </script>
 </body>
 
