@@ -301,8 +301,7 @@
             left: 0;
             width: 100%;
             height: calc(100% - 70px);
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(15px);
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
             z-index: 50;
             display: flex;
             justify-content: center;
@@ -571,8 +570,8 @@
             <div class="card">
                 <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
                     style="width: 120px; display: block; margin: 0 auto 1.2rem;">
-                <h2>University AI Guide</h2>
-                <p>Register to start your conversation with <b>SVSU Intelligent</b></p>
+                <h2>Welcome to SVSU Intelligent</h2>
+                <p>Register below to start your conversation with your AI Guide</p>
                 <form id="chatLeadForm">
                     <input type="text" id="l-name" class="form-input" style="margin-bottom:12px;"
                         placeholder="Full Name" required>
@@ -592,11 +591,8 @@
             </div>
         </div>
 
-        <!-- Chat Area -->
+        <!-- Chat Area (Starts Empty, populated by JS) -->
         <main class="chat-area" id="chatArea">
-            <div class="message bot-msg">
-                Greetings! I am <b>SVSU Intelligent</b>. Once you fill the form, I will be ready to guide you.
-            </div>
         </main>
 
         <!-- Input Box -->
@@ -653,6 +649,7 @@
         // Check if lead already captured
         if (sessionStorage.getItem('svsu_lead_captured')) {
             leadOverlay.style.display = 'none';
+            addMessage('bot', 'Welcome back! I am your SVSU Intelligent assistant. How may I assist you today?');
         }
 
         leadForm.addEventListener('submit', async (e) => {
