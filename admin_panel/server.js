@@ -10,12 +10,10 @@ const PORT = 8503; // Accessible port
 
 // API Proxy for AI Chatbot (FastAPI on Port 8000)
 // We proxy /api/ to the backend while keeping the /api prefix
-app.use('/api', createProxyMiddleware({
+app.use(createProxyMiddleware({
+    context: (path) => path.startsWith('/api'),
     target: 'http://localhost:8000',
-    changeOrigin: true,
-    pathRewrite: {
-        '^/api': '/api', // This keeps the /api/ prefix in the forwarded request
-    }
+    changeOrigin: true
 }));
 
 // Admin Proxy (Optional if we want to separate other things, but fine as is)
