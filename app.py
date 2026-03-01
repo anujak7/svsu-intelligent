@@ -107,10 +107,90 @@ st.markdown(f"""
         color: white !important;
     }}
 
+    /* --- LEAD FORM PREMIUM STYLING --- */
+    .lead-container {
+        background: rgba(255, 255, 255, 0.08); /* Dark Glass */
+        backdrop-filter: blur(25px);
+        padding: 3rem;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        margin: 2rem auto;
+        max-width: 900px;
+        color: white;
+        text-align: center;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lead-logo {
+        width: 320px !important; /* Larger Logo */
+        margin-bottom: 30px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .lead-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #f8fafc;
+        margin-bottom: 5px;
+        letter-spacing: -0.5px;
+    }
+
+    .lead-subtitle {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    /* Input Field Styling */
+    .stTextInput input, .stSelectbox select, .stTextArea textarea {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 12px !important;
+        color: white !important;
+        padding: 12px !important;
+    }
+
+    .stTextInput input:focus, .stSelectbox select:focus {
+        border-color: #df6d25 !important;
+        box-shadow: 0 0 0 2px rgba(223, 109, 37, 0.2) !important;
+    }
+
+    /* Horizontal Form Submit Button */
+    .stButton button {
+        width: 100%;
+        background: linear-gradient(135deg, #df6d25, #f59e0b) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 10px 20px rgba(223, 109, 37, 0.3) !important;
+        margin-top: 15px;
+    }
+
+    .stButton button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 15px 30px rgba(223, 109, 37, 0.4) !important;
+    }
+
     /* Hide defaults */
-    #MainMenu, footer {{visibility: hidden;}}
+    #MainMenu, footer {visibility: hidden;}
 
 </style>
+
 """, unsafe_allow_html=True)
 
 
@@ -160,26 +240,38 @@ if "messages" not in st.session_state:
 # ----------------- CHAT UI & LEAD FORM -----------------
 # 1. Capture Leads First
 if not st.session_state.lead_captured:
-    with st.container():
-        st.markdown("""
-        <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin: 2rem auto; max-width: 600px; color: white;">
-            <h2 style="text-align: center; color: #df6d25;">Welcome to SVSU Intelligent</h2>
-            <p style="text-align: center;">Please provide your details to begin the consultation.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
+    st.markdown(f"""
+    <div class="lead-container">
+        <img src="https://svsu.ac.in/img/SVSU-Logo.png" class="lead-logo">
+        <h1 class="lead-title">SVSU Intelligent Guide</h1>
+        <p class="lead-subtitle">Initiate a dedicated consultation session by providing your details below.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Custom Container for Form to handle alignment
+    form_placeholder = st.empty()
+    with form_placeholder.container():
         with st.form("lead_form"):
-            col1, col2 = st.columns(2)
-            with col1:
-                name = st.text_input("Full Name")
-                email = st.text_input("Email Address")
-            with col2:
-                mobile = st.text_input("Mobile Number")
-                destination = st.selectbox("Designation/Category", ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"])
+            # Horizontal Group 1
+            r1c1, r1c2 = st.columns(2)
+            with r1c1:
+                name = st.text_input("Full Name", placeholder="e.g. John Doe")
+            with r1c2:
+                mobile = st.text_input("Mobile Number", placeholder="e.g. 9876543210")
             
-            purpose = st.text_area("Purpose of Chat (e.g., Admission, Exams, Hiring)")
+            # Horizontal Group 2
+            r2c1, r2c2 = st.columns(2)
+            with r2c1:
+                email = st.text_input("Email Address", placeholder="e.g. john@svsu.ac.in")
+            with r2c2:
+                categories = ["Student", "Parent", "Faculty", "Staff", "Visitor", "Recruiter"]
+                destination = st.selectbox("Designation/Category", categories, index=0)
             
-            submit = st.form_submit_button("Start Chatting")
+            # Full Width Field
+            purpose = st.text_area("Purpose of Chat (How can we help you today?)", placeholder="Admission, Exams, Placements, etc.")
+            
+            submit = st.form_submit_button("Start Intelligent Consulting")
+
             
             if submit:
                 if name and email and mobile:
