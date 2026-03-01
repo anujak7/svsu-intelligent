@@ -399,8 +399,8 @@
             };
 
             try {
-                // Call Python API to save lead
-                await fetch('http://' + window.location.hostname + ':8000/api/lead', {
+                // Call Python API (Proxied via Node server)
+                await fetch('/api/lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(leadData)
@@ -432,7 +432,7 @@
             chatArea.scrollTop = chatArea.scrollHeight;
 
             try {
-                const response = await fetch('http://' + window.location.hostname + ':8000/api/chat', {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ question: text })

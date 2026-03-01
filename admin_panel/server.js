@@ -3,9 +3,20 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 const PORT = 8503; // Accessible port
+
+// API Proxy for AI Chatbot (FastAPI on Port 8000)
+app.use('/api/chat', createProxyMiddleware({
+    target: 'http://localhost:8000',
+    changeOrigin: true
+}));
+app.use('/api/lead', createProxyMiddleware({
+    target: 'http://localhost:8000',
+    changeOrigin: true
+}));
 
 // Middleware
 app.use(cors());
