@@ -1,4 +1,8 @@
 import os
+# Prevent OpenMP deadlocks on Windows (common with FAISS + HuggingFace)
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["OMP_NUM_THREADS"] = "1"
+
 import re
 import pickle
 from dotenv import load_dotenv
@@ -35,15 +39,21 @@ _bm25_retriever = None
 def get_embeddings():
     global _embeddings
     if _embeddings is None:
-        google_key = os.getenv("GOOGLE_API_KEY")
-        if not google_key:
-            return None
+        # HIGH-PERFORMANCE LOCAL EMBEDDINGS (ULTRA STABLE)
+        # Ensure the model "all-MiniLM-L6-v2" is downloaded to HF_CACHE_DIR
+        # You can pre-download it using:
+        # from transformers import AutoTokenizer, AutoModel
+        # AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2", cache_dir=HF_CACHE_DIR)
+        # AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2", cache_dir=HF_CACHE_DIR)
         
-        # CLOUD-BASED EMBEDDINGS (ZERO CPU LOAD - ULTRA FAST)
-        from langchain_google_genai import GoogleGenerativeAIEmbeddings
-        _embeddings = GoogleGenerativeAIEmbeddings(
-            model="text-embedding-004",
-            google_api_key=google_key
+        # Create cache directory if it doesn't exist
+        cache_folder = "./model_cache"
+        os.makedirs(cache_folder, exist_ok=True)
+
+        _embeddings = HuggingFaceEmbeddings(
+            model_name="all-MiniLM-L6-v2",
+            cache_folder=cache_folder,
+            model_kwargs={'local_files_only': True}
         )
     return _embeddings
 
@@ -137,7 +147,11 @@ Question: {question}"""
             return "Hello! I am SVSU Intelligent v2.0. How can I assist you with Shri Vishwakarma Skill University today?"
 
         # 2. RAG RETRIEVAL
-        docs = retriever.invoke(input_data["question"])
+        try:
+            docs = retriever.invoke(input_data["question"])
+        except Exception as e:
+            raise e
+            
         context_str = format_docs(docs)
         source_str = extract_sources(docs)
         
@@ -147,7 +161,11 @@ Question: {question}"""
             question=input_data["question"]
         )
         
-        response = llm.invoke(full_prompt)
+        try:
+            response = llm.invoke(full_prompt)
+        except Exception as e:
+            raise e
+            
         content = response.content if hasattr(response, 'content') else str(response)
         
         # Only show sources if the response isn't a "don't know" style or very short
@@ -157,3 +175,4 @@ Question: {question}"""
         return f"{content}\n\n{source_str}"
 
     return final_response
+
