@@ -12,9 +12,11 @@
         :root {
             --primary: #df6d25;
             --secondary: #1e4b8a;
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-heavy: rgba(255, 255, 255, 0.2);
-            --border: rgba(255, 255, 255, 0.2);
+            --accent: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-thick: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.15);
+            --primary-gradient: linear-gradient(135deg, #df6d25 0%, #f07e32 100%);
         }
 
         * {
@@ -25,61 +27,125 @@
         }
 
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-                url('https://svsu.ac.in/img/SVSU-Home-Banner.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: #0f172a;
+            /* Fallback */
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             color: white;
+            position: relative;
         }
 
-        /* Glassmorphism Layout */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://svsu.ac.in/img/SVSU-Home-Banner.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(5px) brightness(0.4);
+            z-index: -1;
+        }
+
+        /* App Layout */
         .app-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: auto;
-            height: 90vh;
+            height: 85vh;
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
-            border-radius: 30px;
+            border-radius: 32px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
         }
 
         /* Header */
         .chat-header {
-            padding: 1.5rem 2.5rem;
+            padding: 1.25rem 2rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .chat-header .logo-area {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .chat-header img {
-            height: 50px;
+            height: 44px;
             background: white;
-            padding: 5px;
-            border-radius: 10px;
+            padding: 4px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .chat-header h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--primary));
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #cbd5e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 6px;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-talk {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 16px rgba(223, 109, 37, 0.3);
+        }
+
+        .btn-talk:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(223, 109, 37, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: #e2e8f0;
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
         }
 
         /* Chat Area */
@@ -89,25 +155,26 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.25rem;
             scrollbar-width: thin;
-            scrollbar-color: var(--primary) transparent;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
 
-        /* Chat Bubbles */
+        /* Messages */
         .message {
             max-width: 80%;
-            padding: 1.2rem 1.8rem;
+            padding: 1rem 1.5rem;
             border-radius: 20px;
-            font-size: 1.05rem;
-            line-height: 1.6;
-            animation: fadeIn 0.4s ease;
+            font-size: 1rem;
+            line-height: 1.55;
+            animation: slideIn 0.35s ease-out;
+            position: relative;
         }
 
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(12px);
             }
 
             to {
@@ -118,164 +185,184 @@
 
         .bot-msg {
             align-self: flex-start;
-            background: var(--glass-heavy);
-            border-left: 5px solid var(--primary);
-            border-radius: 20px 20px 20px 5px;
+            background: var(--glass-thick);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+            color: #f1f5f9;
+        }
+
+        .bot-msg b {
+            color: var(--primary);
         }
 
         .user-msg {
             align-self: flex-end;
-            background: var(--secondary);
+            background: var(--primary-gradient);
             color: white;
-            border-radius: 20px 20px 5px 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 10px 25px rgba(223, 109, 37, 0.25);
+            font-weight: 500;
         }
 
-        /* Input Area */
-        .input-area {
-            padding: 1.5rem 2.5rem;
+        /* Typing Indicator */
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0;
+        }
+
+        .typing span {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+                opacity: 0.3;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Input Bar */
+        .input-container {
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid var(--border);
             display: flex;
-            gap: 15px;
-            align-items: center;
+            gap: 12px;
         }
 
-        .input-area input {
+        .input-container input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            padding: 1rem 1.5rem;
-            border-radius: 15px;
+            padding: 0.9rem 1.4rem;
+            border-radius: 16px;
             color: white;
             font-size: 1rem;
             outline: none;
             transition: all 0.3s;
         }
 
-        .input-area input:focus {
-            background: rgba(255, 255, 255, 0.2);
+        .input-container input:focus {
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(223, 109, 37, 0.15);
         }
 
-        .send-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
+        .btn-send {
+            background: var(--primary-gradient);
             width: 50px;
             height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 1.25rem;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .send-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            background: #f07e32;
+        .btn-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(223, 109, 37, 0.35);
         }
 
-        /* Lead Form Overlay */
-        #leadOverlay {
+        /* Overlays (Lead & Voice) */
+        .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             z-index: 100;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 30px;
+            animation: fadeIn 0.4s ease;
         }
 
-        .lead-form {
+        .card {
             background: white;
-            padding: 3rem;
-            border-radius: 25px;
-            width: 100%;
-            max-width: 500px;
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 480px;
             color: #1e293b;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4);
         }
 
-        .lead-form h2 {
-            margin-bottom: 1rem;
+        .card h2 {
             color: var(--secondary);
             font-weight: 800;
-            text-align: center;
-        }
-
-        .lead-form p {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #64748b;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
+            text-align: center;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .card p {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            outline: none;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
             font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .form-group input:focus {
+        .form-input:focus {
             border-color: var(--primary);
         }
 
-        .form-btn {
+        .btn-form {
             width: 100%;
             padding: 1rem;
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1.1rem;
             font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
-        .form-btn:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 8px 20px rgba(223, 109, 37, 0.3);
-        }
-
-        /* Voice Mode Styles */
+        /* Voice Mode */
         #voiceOverlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            z-index: 150;
+            background: radial-gradient(circle at center, #1e293b, #020617);
             display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 30px;
-            animation: slideUp 0.5s ease;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideUp {
@@ -288,85 +375,79 @@
             }
         }
 
-        #voiceOverlay .avatar-circle {
-            width: 200px;
-            height: 200px;
+        .avatar-frame {
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            border: 4px solid var(--primary);
-            background: var(--glass-heavy);
-            margin-bottom: 2rem;
+            padding: 8px;
+            background: var(--primary-gradient);
+            box-shadow: 0 0 60px rgba(223, 109, 37, 0.4);
+            margin-bottom: 2.5rem;
             position: relative;
-            box-shadow: 0 0 50px rgba(223, 109, 37, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
         }
 
-        #voiceOverlay .avatar-circle img {
+        .avatar-frame img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
+            border: 4px solid #0f172a;
         }
 
-        #voiceOverlay .mic-btn {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+        .wave-container {
+            display: flex;
+            gap: 4px;
+            height: 40px;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .wave-bar {
+            width: 4px;
             background: var(--primary);
-            border: none;
+            border-radius: 2px;
+            height: 10px;
+            transition: height 0.2s ease;
+        }
+
+        .recording .wave-bar {
+            animation: wave 0.6s infinite alternate;
+        }
+
+        @keyframes wave {
+            from {
+                height: 10px;
+            }
+
+            to {
+                height: 40px;
+            }
+        }
+
+        .btn-mic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
             color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-size: 2.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 1rem;
-        }
-
-        #voiceOverlay .mic-btn.recording {
-            background: #ef4444;
-            animation: pulse-red 1.5s infinite;
-        }
-
-        @keyframes pulse-red {
-            0% {
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            }
-        }
-
-        .voice-subtitles {
-            max-width: 80%;
-            text-align: center;
-            font-size: 1.2rem;
-            line-height: 1.5;
-            color: #f1f5f9;
-            margin-bottom: 2rem;
-            height: 60px;
-            overflow-y: hidden;
-            font-weight: 500;
-        }
-
-        .close-voice-btn {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
+            border: none;
             cursor: pointer;
+            box-shadow: 0 0 30px rgba(223, 109, 37, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-mic:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-mic.active {
+            background: #ef4444;
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -375,43 +456,27 @@
 
     <div class="app-container">
         <!-- Lead Form Overlay -->
-        <div id="leadOverlay">
-            <div class="lead-form">
+        <div id="leadOverlay" class="overlay">
+            <div class="card">
                 <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU"
-                    style="width: 150px; display: block; margin: 0 auto 1.5rem;">
-                <h2>Welcome to SVSU AI</h2>
-                <p>Register yourself to start chatting with <b>SVSU Intelligent</b></p>
-
+                    style="width: 140px; display: block; margin: 0 auto 1.5rem;">
+                <h2>University AI Guide</h2>
+                <p>Register to start your conversation with <b>SVSU Intelligent</b></p>
                 <form id="chatLeadForm">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="l-name" placeholder="John Doe" required>
-                    </div>
+                    <input type="text" id="l-name" class="form-input" placeholder="Your Full Name" required>
                     <div style="display: flex; gap: 1rem;">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Email</label>
-                            <input type="email" id="l-email" placeholder="john@example.com" required>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Mobile</label>
-                            <input type="text" id="l-mobile" placeholder="+91 0000000000" required>
-                        </div>
+                        <input type="email" id="l-email" class="form-input" placeholder="Professional Email" required>
+                        <input type="text" id="l-mobile" class="form-input" placeholder="Mobile No." required>
                     </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="l-desig">
-                            <option>Student</option>
-                            <option>Parent</option>
-                            <option>Faculty/Staff</option>
-                            <option>Visitor</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Purpose</label>
-                        <textarea id="l-purpose" rows="2" placeholder="Admission inquiry, Exam schedule, etc."
-                            required></textarea>
-                    </div>
-                    <button type="submit" class="form-btn">Start Chatting Now</button>
+                    <select id="l-desig" class="form-input">
+                        <option>Interested Student</option>
+                        <option>Parent / Guardian</option>
+                        <option>Academic Staff</option>
+                        <option>Industry Partner</option>
+                    </select>
+                    <textarea id="l-purpose" class="form-input" rows="2"
+                        placeholder="Primary interest (e.g. Admission in MBA)" required></textarea>
+                    <button type="submit" class="btn-form">Begin Consultation</button>
                 </form>
             </div>
         </div>
@@ -419,48 +484,71 @@
         <!-- Chat Header -->
         <header class="chat-header">
             <div class="logo-area">
-                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="Logo">
+                <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
                 <div>
-                    <h1>SVSU Intelligent</h1>
-                    <small style="color: #94a3b8; font-weight: 600;">🟢 Online AI Assistant</small>
+                    <h1>SVSU Intelligent <span
+                            style="font-size: 0.7rem; vertical-align: middle; color: #94a3b8; margin-left: 8px;">v3.0</span>
+                    </h1>
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: 2px;">
+                        <span class="status-dot"></span> Official Support AI
+                    </div>
                 </div>
             </div>
-            <div style="display: flex; gap: 15px;">
-                <button
-                    style="background: var(--primary); color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; border: none; font-weight: 700; display: flex; align-items: center; gap: 8px;"
-                    onclick="openVoiceMode()"><i class="fas fa-microphone-alt"></i> Talk with AI</button>
-                <button
-                    style="background: var(--glass-heavy); border: 1px solid var(--border); color: white; padding: 10px 15px; border-radius: 12px; cursor: pointer;"
-                    onclick="location.reload()"><i class="fas fa-redo"></i> Reset</button>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-talk" onclick="openVoiceMode()">
+                    <i class="fas fa-microphone-alt"></i> Voice Talk
+                </button>
+                <button class="btn btn-reset" onclick="location.reload()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
             </div>
         </header>
 
         <!-- Chat Area -->
         <main class="chat-area" id="chatArea">
             <div class="message bot-msg">
-                Hello! I am <b>SVSU Intelligent</b>. Once you fill the form, I will be ready to help you with everything
-                related to Shri Vishwakarma Skill University.
+                Greetings! I am <b>SVSU Intelligent</b>, your official digital guide. I am ready to provide documented
+                facts about admissions, courses, and university life.
             </div>
         </main>
 
         <!-- Input Box -->
-        <div class="input-area">
-            <input type="text" id="chatInput" placeholder="Ask me anything... (e.g. Admission 2026 dates)"
-                autocomplete="off">
-            <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        <div class="input-container">
+            <input type="text" id="chatInput" placeholder="How can I help you today?" autocomplete="off">
+            <button class="btn-send" id="sendBtn"><i class="fas fa-arrow-up"></i></button>
         </div>
 
         <!-- Voice Mode Overlay -->
-        <div id="voiceOverlay">
-            <button class="close-voice-btn" onclick="closeVoiceMode()">Back to Chat</button>
-            <div class="avatar-circle">
-                <!-- Using a high-quality university avatar placeholder for now -->
-                <img src="https://svsu.ac.in/img/SVSU-Logo.png"
-                    style="width: 70%; height: auto; object-fit: contain; background: white; padding: 20px; border-radius: 50%;">
+        <div id="voiceOverlay" class="overlay">
+            <button class="btn btn-reset" style="position: absolute; top: 2rem; left: 2rem; padding: 0.75rem 1.5rem;"
+                onclick="closeVoiceMode()">
+                <i class="fas fa-chevron-left"></i> Exit Voice
+            </button>
+
+            <div class="avatar-frame">
+                <!-- Using the generated Premium Avatar -->
+                <img src="avatar.png" alt="AI Avatar">
             </div>
-            <div class="voice-subtitles" id="voiceSubtitles">Ready to help you. Press the microphone to speak.</div>
-            <button class="mic-btn" id="micBtn"><i class="fas fa-microphone"></i></button>
-            <div id="voiceStatus" style="color: #94a3b8; font-weight: 600;">TAP TO TALK</div>
+
+            <div class="voice-subtitles" id="voiceSubtitles"
+                style="color: #94a3b8; margin-bottom: 2rem; font-style: italic;">
+                Ready to speak. Tap the mic.
+            </div>
+
+            <div class="wave-container" id="waveContainer">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+
+            <button class="btn-mic" id="micBtn"><i class="fas fa-microphone"></i></button>
+            <div id="voiceStatus" style="color: #64748b; font-weight: 700; margin-top: 1rem; letter-spacing: 1px;">TAP
+                TO START</div>
         </div>
     </div>
 
@@ -471,21 +559,20 @@
         const leadOverlay = document.getElementById('leadOverlay');
         const leadForm = document.getElementById('chatLeadForm');
 
-        // Voice Mode Vars
         const voiceOverlay = document.getElementById('voiceOverlay');
         const voiceSubtitles = document.getElementById('voiceSubtitles');
         const micBtn = document.getElementById('micBtn');
         const voiceStatus = document.getElementById('voiceStatus');
+        const waveContainer = document.getElementById('waveContainer');
+
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
 
-        // Check if lead already captured in this session
         if (sessionStorage.getItem('svsu_lead_captured')) {
             leadOverlay.style.display = 'none';
         }
 
-        // Handle Lead Form
         leadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const leadData = {
@@ -497,35 +584,26 @@
             };
 
             try {
-                // Call Python API (Proxied via Node server)
                 await fetch('/api/lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(leadData)
                 });
-
                 sessionStorage.setItem('svsu_lead_captured', 'true');
-                sessionStorage.setItem('user_name', leadData.name);
                 leadOverlay.style.display = 'none';
-
-                addMessage('bot', `Welcome <b>${leadData.name}</b>! How can I assist you today?`);
-            } catch (err) {
-                alert("Connection to server failed. Please try again.");
-            }
+                addMessage('bot', `Welcome <b>${leadData.name}</b>! I am at your service.`);
+            } catch (err) { alert("Server connection failed."); }
         });
 
-        // Handle Chat
         async function sendMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
-
             addMessage('user', text);
             chatInput.value = '';
 
-            // Show Typing
             const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot-msg typing-box';
-            typingDiv.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+            typingDiv.className = 'message bot-msg';
+            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
             chatArea.appendChild(typingDiv);
             chatArea.scrollTop = chatArea.scrollHeight;
 
@@ -536,19 +614,17 @@
                     body: JSON.stringify({ question: text })
                 });
                 const data = await response.json();
-
                 chatArea.removeChild(typingDiv);
                 addMessage('bot', data.response);
             } catch (err) {
                 chatArea.removeChild(typingDiv);
-                addMessage('bot', "Bhai, server se connect nahi ho pa raha hoon. Ek baar check karo api chal rahi hai kya.");
+                addMessage('bot', "Bhai, server error. Please retry.");
             }
         }
 
         function addMessage(role, text) {
             const div = document.createElement('div');
             div.className = `message ${role === 'bot' ? 'bot-msg' : 'user-msg'}`;
-            // Convert markdown style bold to HTML
             text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
             div.innerHTML = text;
             chatArea.appendChild(div);
@@ -558,7 +634,6 @@
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-        // --- VOICE MODE LOGIC ---
         function openVoiceMode() {
             if (!sessionStorage.getItem('svsu_lead_captured')) {
                 alert("Please fill the registration form first.");
@@ -569,17 +644,12 @@
 
         function closeVoiceMode() {
             voiceOverlay.style.display = 'none';
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-            }
+            if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
         }
 
-        micBtn.addEventListener('click', async () => {
-            if (!isRecording) {
-                startRecording();
-            } else {
-                stopRecording();
-            }
+        micBtn.addEventListener('click', () => {
+            if (!isRecording) startRecording();
+            else stopRecording();
         });
 
         async function startRecording() {
@@ -587,66 +657,46 @@
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
-
-                mediaRecorder.ondataavailable = (event) => {
-                    audioChunks.push(event.data);
-                };
-
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
                 mediaRecorder.onstop = processVoice;
-
                 mediaRecorder.start();
                 isRecording = true;
-                micBtn.classList.add('recording');
+                micBtn.classList.add('active');
+                waveContainer.classList.add('recording');
                 voiceStatus.innerText = "LISTENING...";
-                voiceSubtitles.innerText = "Speak now...";
-            } catch (err) {
-                alert("Microphone access denied or not available.");
-            }
+                voiceSubtitles.innerText = "What would you like to know?";
+            } catch (err) { alert("Mic access required."); }
         }
 
         function stopRecording() {
             mediaRecorder.stop();
             isRecording = false;
-            micBtn.classList.remove('recording');
-            voiceStatus.innerText = "PROCESSING...";
+            micBtn.classList.remove('active');
+            waveContainer.classList.remove('recording');
+            voiceStatus.innerText = "ANALYZING...";
         }
 
         async function processVoice() {
             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
             const formData = new FormData();
             formData.append('audio_file', audioBlob, 'input.wav');
-
             try {
-                const response = await fetch('/api/voice-chat', {
-                    method: 'POST',
-                    body: formData
-                });
+                const response = await fetch('/api/voice-chat', { method: 'POST', body: formData });
                 const data = await response.json();
-
                 if (data.transcription) {
                     voiceSubtitles.innerText = `You: ${data.transcription}`;
                     setTimeout(() => {
-                        voiceSubtitles.innerText = `AI: ${data.response}`;
-                        // Play response audio
+                        voiceSubtitles.innerText = `${data.response}`;
                         if (data.audio) {
                             const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
                             audio.play();
                             voiceStatus.innerText = "SPEAKING...";
-                            audio.onended = () => {
-                                voiceStatus.innerText = "TAP TO TALK";
-                            };
+                            audio.onended = () => { voiceStatus.innerText = "TAP TO TALK"; };
                         }
-                    }, 1000);
-                } else {
-                    voiceSubtitles.innerText = "Sorry, I couldn't hear you. Try again.";
-                    voiceStatus.innerText = "TAP TO TALK";
+                    }, 500);
                 }
-            } catch (err) {
-                voiceSubtitles.innerText = "Error connecting to AI. Check server.";
-                voiceStatus.innerText = "TAP TO TALK";
-            }
+            } catch (err) { voiceStatus.innerText = "ERROR"; }
         }
-
     </script>
 </body>
 
