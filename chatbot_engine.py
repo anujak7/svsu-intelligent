@@ -131,6 +131,10 @@ Question: {question}"""
         # User requested to hide sources or make them less intrusive
         return "" # Hide for now as requested by user
 
+    def format_docs(docs):
+        if not docs: return "No additional records."
+        return "\n\n---\n\n".join([d.page_content for d in docs])
+
     def final_response(input_data):
         query = input_data["question"].lower().strip()
         
