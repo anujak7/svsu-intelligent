@@ -770,7 +770,7 @@
                 waveContainer.classList.add('recording');
                 voiceStatus.innerText = "LISTENING...";
                 voiceSubtitles.innerText = "What would you like to know?";
-            } catch (err) { alert("Mic access required."); }
+            } catch (err) { alert("Mic access blocked by browser! Browsers only allow Microphone access on 'https://' domains or 'http://localhost'. For testing on an IP, please use local port forwarding."); }
         }
 
         function stopRecording() {
