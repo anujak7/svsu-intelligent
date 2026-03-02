@@ -866,21 +866,6 @@
             <button class="btn-send" id="sendBtn"><i class="fas fa-arrow-up"></i></button>
         </div>
 
-        <!-- Voice Mode Overlay -->
-        <div id="voiceOverlay" class="overlay">
-            <button class="btn btn-reset" style="position: absolute; top: 1.5rem; left: 1.5rem;"
-                onclick="closeVoiceMode()">
-                <i class="fas fa-arrow-left"></i> Exit
-            </button>
-
-            <div class="ai-orb" id="aiOrb"></div>
-
-            <div class="voice-subtitles" id="voiceSubtitles">Ready to speak. Tap the mic.</div>
-
-            <button class="btn-mic" id="micBtn"><i class="fas fa-microphone"></i></button>
-            <div id="voiceStatus" style="color: #64748b; font-weight: 700; margin-top: 1rem; letter-spacing: 1px;">TAP
-                TO TALK</div>
-        </div>
     </div>
 
     <script>
@@ -891,16 +876,6 @@
         const initialGreeting = document.getElementById('initialGreeting');
         const leadForm = document.getElementById('chatLeadForm');
         const inputContainer = document.getElementById('inputContainer');
-
-        const voiceOverlay = document.getElementById('voiceOverlay');
-        const voiceSubtitles = document.getElementById('voiceSubtitles');
-        const micBtn = document.getElementById('micBtn');
-        const voiceStatus = document.getElementById('voiceStatus');
-        const aiOrb = document.getElementById('aiOrb');
-
-        let mediaRecorder;
-        let audioChunks = [];
-        let isRecording = false;
 
         let initialBotMessageShown = false;
 
@@ -1023,85 +998,7 @@
                 alert("Please fill the registration form first.");
                 return;
             }
-            voiceOverlay.style.display = 'flex';
-        }
-
-        function closeVoiceMode() {
-            voiceOverlay.style.display = 'none';
-            if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-        }
-
-        micBtn.addEventListener('click', () => {
-            if (!isRecording) startRecording();
-            else stopRecording();
-        });
-
-        async function startRecording() {
-            audioChunks = [];
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = processVoice;
-                mediaRecorder.start();
-                isRecording = true;
-
-                aiOrb.className = 'ai-orb listening';
-                micBtn.classList.add('active');
-                voiceStatus.innerText = "LISTENING...";
-                voiceSubtitles.innerText = "I'm listening...";
-            } catch (err) { alert("Mic access blocked by browser! Browsers only allow Microphone access on 'https://' domains or 'http://localhost'. For testing on an IP, please use local port forwarding."); }
-        }
-
-        function stopRecording() {
-            mediaRecorder.stop();
-            isRecording = false;
-            aiOrb.className = 'ai-orb analyzing';
-            micBtn.classList.remove('active');
-            voiceStatus.innerText = "ANALYZING...";
-            voiceSubtitles.innerText = "Thinking...";
-        }
-
-        async function processVoice() {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            const formData = new FormData();
-            formData.append('audio_file', audioBlob, 'input.wav');
-            try {
-                const response = await fetch('/api/voice-chat', { method: 'POST', body: formData });
-                const data = await response.json();
-                if (data.transcription) {
-                    voiceSubtitles.innerText = `You: ${data.transcription}`;
-                    setTimeout(() => {
-                        if (data.response) {
-                            voiceSubtitles.innerText = `${data.response}`;
-                            if (data.audio) {
-                                const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
-                                audio.play();
-                                voiceStatus.innerText = "SPEAKING...";
-                                aiOrb.className = 'ai-orb speaking';
-                                audio.onended = () => {
-                                    voiceStatus.innerText = "TAP TO TALK";
-                                    aiOrb.className = 'ai-orb';
-                                };
-                            } else {
-                                voiceStatus.innerText = "TAP TO TALK";
-                                aiOrb.className = 'ai-orb';
-                            }
-                        } else {
-                            voiceSubtitles.innerText = "Server returned an empty response.";
-                            voiceStatus.innerText = "TAP TO TALK";
-                            aiOrb.className = 'ai-orb';
-                        }
-                    }, 100);
-                } else {
-                    voiceSubtitles.innerText = "Could not transcribe audio.";
-                    voiceStatus.innerText = "TAP TO TALK";
-                    aiOrb.className = 'ai-orb';
-                }
-            } catch (err) {
-                voiceStatus.innerText = "ERROR";
-                aiOrb.className = 'ai-orb';
-            }
+            window.location.href = 'talk.html';
         }
     </script>
 </body>

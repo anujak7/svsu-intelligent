@@ -19,6 +19,7 @@ app = FastAPI()
 
 # Mount the admin_panel directory to serve static HTML files
 app.mount("/admin_panel", StaticFiles(directory="admin_panel"), name="admin_panel")
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
 # Create temp directories for audio processing
 if not os.path.exists("data"): os.makedirs("data")
