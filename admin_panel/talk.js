@@ -24,7 +24,7 @@ let isRecording = false;
 function initThreeJS() {
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
     camera.position.set(0, 1.4, 2.8); // Framed roughly waist-up
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
