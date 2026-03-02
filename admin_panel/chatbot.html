@@ -628,6 +628,42 @@
             animation: pulse 1.5s infinite;
         }
 
+        .mode-btn {
+            width: 100%;
+            padding: 1.2rem;
+            margin-bottom: 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+        }
+
+        .mode-talk {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        .mode-chat {
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.4);
+        }
+
+        .mode-chat:hover {
+            background: #e2e8f0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
         /* RESPONSIVE DESIGN FOR MOBILE */
         @media screen and (max-width: 768px) {
             .app-container {
@@ -783,6 +819,25 @@
 
         </main>
 
+        <!-- Mode Selection Overlay -->
+        <div id="modeSelectionContainer"
+            style="display: none; height: 100%; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.5s;">
+            <div class="card premium-card" style="text-align: center; padding: 3rem 2rem; max-width: 450px;">
+                <h2 style="font-size: 1.8rem;">How can we connect?</h2>
+                <p style="margin-bottom: 30px;">Select your preferred interactive mode with SVSU AI.</p>
+
+                <button class="mode-btn mode-talk" onclick="selectMode('talk')">
+                    <i class="fas fa-microphone" style="font-size: 1.5rem;"></i>
+                    <span style="font-size: 1.2rem; font-weight: 700;">Start Voice Conversation</span>
+                </button>
+
+                <button class="mode-btn mode-chat" onclick="selectMode('chat')">
+                    <i class="fas fa-keyboard" style="font-size: 1.5rem;"></i>
+                    <span style="font-size: 1.2rem; font-weight: 700;">Text / Type Chat</span>
+                </button>
+            </div>
+        </div>
+
         <!-- Input Box -->
         <div class="input-container" id="inputContainer">
             <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off">
@@ -825,16 +880,20 @@
         let audioChunks = [];
         let isRecording = false;
 
+        let initialBotMessageShown = false;
+
         // Check if lead already captured
         if (sessionStorage.getItem('svsu_lead_captured')) {
             leadFormContainer.style.display = 'none';
             initialGreeting.style.display = 'none';
-            inputContainer.style.display = 'flex';
-            addMessage('bot', 'Welcome back! I am your SVSU Intelligent assistant. How may I assist you today?');
+            inputContainer.style.display = 'none';
+            chatArea.style.display = 'none';
+            document.getElementById('modeSelectionContainer').style.display = 'flex';
         } else {
             inputContainer.style.display = 'none';
             initialGreeting.style.display = 'flex';
             leadFormContainer.style.display = 'flex';
+            document.getElementById('modeSelectionContainer').style.display = 'none';
         }
 
         leadForm.addEventListener('submit', async (e) => {
@@ -847,6 +906,8 @@
                 purpose: document.getElementById('l-purpose').value
             };
 
+            sessionStorage.setItem('svsu_lead_name', leadData.name);
+
             try {
                 await fetch('/api/lead', {
                     method: 'POST',
@@ -855,15 +916,32 @@
                 });
                 sessionStorage.setItem('svsu_lead_captured', 'true');
 
-                // Hide Form & Reveal Chat Interface
+                // Hide Form & Reveal Mode Selection
                 leadFormContainer.style.display = 'none';
                 initialGreeting.style.display = 'none';
-                inputContainer.style.display = 'flex';
-                inputContainer.style.animation = 'popIn 0.5s';
+                chatArea.style.display = 'none';
 
-                addMessage('bot', `Welcome <b>${leadData.name}</b>! I am your assistant. How may I assist you today?`);
+                document.getElementById('modeSelectionContainer').style.display = 'flex';
+
             } catch (err) { alert("Server connection failed."); }
         });
+
+        function selectMode(mode) {
+            document.getElementById('modeSelectionContainer').style.display = 'none';
+            chatArea.style.display = 'block';
+            inputContainer.style.display = 'flex';
+            inputContainer.style.animation = 'popIn 0.5s';
+
+            if (!initialBotMessageShown) {
+                const uname = sessionStorage.getItem('svsu_lead_name') || 'Guest';
+                addMessage('bot', `Welcome <b>${uname}</b>! I am your SVSU Intelligent assistant. Let's begin our consultation.`);
+                initialBotMessageShown = true;
+            }
+
+            if (mode === 'talk') {
+                openVoiceMode();
+            }
+        }
 
         async function sendMessage() {
             const text = chatInput.value.trim();
