@@ -13,7 +13,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI()
+
+# Mount the admin_panel directory to serve static HTML files
+app.mount("/admin_panel", StaticFiles(directory="admin_panel"), name="admin_panel")
 
 # Create temp directories for audio processing
 if not os.path.exists("data"): os.makedirs("data")
@@ -132,4 +137,4 @@ async def voice_chat(audio_file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=80)
