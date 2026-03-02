@@ -628,6 +628,63 @@
             animation: pulse 1.5s infinite;
         }
 
+        /* RESPONSIVE DESIGN FOR MOBILE */
+        @media screen and (max-width: 768px) {
+            .app-container {
+                width: 100vw;
+                height: 100dvh;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            .chat-header {
+                padding: 0.8rem 1.2rem;
+            }
+
+            .chat-header img {
+                height: 55px;
+            }
+
+            .chat-header h1 {
+                font-size: 1.1rem;
+            }
+
+            .card {
+                padding: 1.5rem 1.2rem;
+                border-radius: 16px;
+                width: 92%;
+            }
+
+            .card h2 {
+                font-size: 1.5rem;
+            }
+
+            .card p {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .btn-talk span {
+                display: none;
+            }
+
+            .btn-talk {
+                width: 45px;
+                padding: 0;
+            }
+
+            .input-container {
+                padding: 0.8rem 1rem;
+                border-radius: 0;
+            }
+        }
+
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -642,6 +699,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
