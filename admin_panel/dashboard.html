@@ -826,7 +826,7 @@
         // --- SECURE LOGIN LOGIC ---
         function checkEmail() {
             const email = document.getElementById('loginEmail').value;
-            if (email.toLowerCase() === 'admin.bot@svsu.ac.in') {
+            if (email.toLowerCase() === 'anuj@svsu.ac.in' || email.toLowerCase() === 'admin.bot@svsu.ac.in') {
                 document.getElementById('emailError').style.display = 'none';
                 document.getElementById('emailStep').style.display = 'none';
                 document.getElementById('passwordStep').style.display = 'block';
@@ -856,7 +856,7 @@
 
         function checkPassword() {
             const pass = document.getElementById('loginPassword').value;
-            if (pass === 'svsu@2026') {
+            if (pass === 'svsuindia@2026') {
                 document.getElementById('passError').style.display = 'none';
                 document.getElementById('loginOverlay').style.opacity = '0';
                 setTimeout(() => {
