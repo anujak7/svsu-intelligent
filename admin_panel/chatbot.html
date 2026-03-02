@@ -411,6 +411,10 @@
             margin-bottom: 25px;
         }
 
+        .form-grid.fg-2 {
+            grid-template-columns: 1fr 2fr;
+        }
+
 
 
 
@@ -671,48 +675,65 @@
                 height: 100dvh;
                 border-radius: 0;
                 margin: 0;
+                border: none;
             }
 
             .chat-header {
-                padding: 0.8rem 1.2rem;
+                padding: 0.6rem 1rem;
+                gap: 10px;
             }
 
             .chat-header img {
-                height: 55px;
+                height: 40px;
+                padding: 4px;
             }
 
             .chat-header h1 {
                 font-size: 1.1rem;
+                line-height: 1.2;
+            }
+
+            .hide-mobile {
+                display: none !important;
+            }
+
+            .btn {
+                padding: 0.5rem;
+            }
+
+            .btn-talk,
+            .btn-reset {
+                width: 40px;
+                height: 40px;
+                justify-content: center;
             }
 
             .card {
                 padding: 1.5rem 1.2rem;
                 border-radius: 16px;
-                width: 92%;
+                width: 95%;
             }
 
             .card h2 {
                 font-size: 1.5rem;
             }
 
-            .card p {
+            .message {
+                padding: 0.8rem 1rem;
                 font-size: 0.95rem;
+            }
+
+            .card p {
+                font-size: 0.9rem;
                 margin-bottom: 1.5rem;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr !important;
-                gap: 15px;
-                margin-bottom: 15px;
-            }
-
-            .btn-talk span {
-                display: none;
-            }
-
-            .btn-talk {
-                width: 45px;
-                padding: 0;
+            .form-grid,
+            .form-grid.fg-2 {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 12px;
+                margin-bottom: 12px;
             }
 
             .input-container {
@@ -750,11 +771,12 @@
                 </div>
 
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 8px;">
                 <button class="btn btn-talk" onclick="openVoiceMode()">
-                    <i class="fas fa-microphone-alt"></i> Talk
+                    <i class="fas fa-microphone-alt"></i> <span class="hide-mobile">Talk</span>
                 </button>
-                <button class="btn btn-reset" onclick="sessionStorage.clear(); location.reload();">
+                <button class="btn btn-reset" onclick="sessionStorage.clear(); location.reload();"
+                    title="Reset Session">
                     <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
@@ -790,7 +812,7 @@
                                     required>
                             </div>
                         </div>
-                        <div class="form-grid" style="grid-template-columns: 1fr 2fr;">
+                        <div class="form-grid fg-2">
                             <div class="form-group">
                                 <label>Designation/Category</label>
                                 <select id="l-desig" class="form-input" required>
