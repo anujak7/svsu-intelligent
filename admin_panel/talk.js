@@ -55,20 +55,28 @@ function initThreeJS() {
         const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
 
-        // Place avatar relative to center/feet without scaling to prevent armature distortion
-        avatarGltf.position.x = -center.x;
-        avatarGltf.position.y = -box.min.y;
-        avatarGltf.position.z = -center.z;
-
+        // Center the model relative to itself
+        avatarGltf.position.sub(center);
         scene.add(avatarGltf);
 
-        // Frame the camera dynamically based on the model's actual height
-        const height = size.y > 0 ? size.y : 1.8;
-        const cameraY = height * 0.75; // Roughly chest/face level
-        const cameraZ = height * 1.5;  // Far enough to see upper body
+        // Calculate maximum dimension for framing
+        const maxDim = Math.max(size.x, size.y, size.z);
 
-        camera.position.set(0, cameraY, cameraZ);
-        camera.lookAt(0, cameraY, 0);
+        // Configure camera correctly to avoid clipping while preserving depth precision
+        camera.near = 0.1;
+        camera.far = maxDim * 20;
+
+        // Calculate correct camera distance using FOV
+        const fov = camera.fov * (Math.PI / 180);
+        let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+        cameraZ *= 1.5; // Back up slightly more for waist framing
+
+        // Set waist-up framing (roughly 60% up the height)
+        camera.position.set(0, size.y * 0.1, cameraZ);
+        camera.lookAt(0, size.y * 0.1, 0);
+
+        // Crucial: update projection matrix after changing near/far limits
+        camera.updateProjectionMatrix();
 
         // Map bones to enable lip sync
         avatarGltf.traverse((child) => {
