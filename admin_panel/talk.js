@@ -33,23 +33,44 @@ function initThreeJS() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
     dirLight.position.set(2, 5, 5);
     scene.add(dirLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
+    hemiLight.position.set(0, 20, 0);
+    scene.add(hemiLight);
 
     clock = new THREE.Clock();
 
     const loader = new THREE.GLTFLoader();
     // GLB file provided by the user
-    loader.load('/assets/models/louise.glb', function (gltf) {
+    loader.load('/assets/models/avatar.glb', function (gltf) {
         avatarGltf = gltf.scene;
-        scene.add(avatarGltf);
 
-        // Adjust the position of the avatar slightly if needed
-        avatarGltf.position.set(0, -1.0, 0);
+        // Auto-scale to roughly human size (1.8 units tall)
+        const box = new THREE.Box3().setFromObject(avatarGltf);
+        const size = box.getSize(new THREE.Vector3());
+
+        if (size.y > 0) {
+            const desiredHeight = 1.8;
+            const scaleFactor = desiredHeight / size.y;
+            avatarGltf.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        }
+
+        // Re-compute bounding box after scale
+        box.setFromObject(avatarGltf);
+        const center = box.getCenter(new THREE.Vector3());
+
+        // Offset so waist/chest is centered vertically but standing on floor
+        avatarGltf.position.x = -center.x;
+        avatarGltf.position.y = -box.min.y - 0.7; // Lowered by 0.7 units to frame upper body
+        avatarGltf.position.z = -center.z;
+
+        scene.add(avatarGltf);
 
         // Map bones to enable lip sync
         avatarGltf.traverse((child) => {
@@ -77,7 +98,7 @@ function initThreeJS() {
         animate();
     }, undefined, function (error) {
         console.error("Error loading avatar:", error);
-        subtitleText.innerText = "Error: Avatar model not found at /assets/models/louise.glb";
+        subtitleText.innerText = "Error: Avatar model not found at /assets/models/avatar.glb";
         loaderOverlay.style.display = 'none';
 
         // Even if missing, let the loop run for debugging
