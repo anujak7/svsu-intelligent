@@ -51,26 +51,24 @@ function initThreeJS() {
     loader.load('/assets/models/avatar.glb', function (gltf) {
         avatarGltf = gltf.scene;
 
-        // Auto-scale to roughly human size (1.8 units tall)
         const box = new THREE.Box3().setFromObject(avatarGltf);
         const size = box.getSize(new THREE.Vector3());
-
-        if (size.y > 0) {
-            const desiredHeight = 1.8;
-            const scaleFactor = desiredHeight / size.y;
-            avatarGltf.scale.set(scaleFactor, scaleFactor, scaleFactor);
-        }
-
-        // Re-compute bounding box after scale
-        box.setFromObject(avatarGltf);
         const center = box.getCenter(new THREE.Vector3());
 
-        // Offset so waist/chest is centered vertically but standing on floor
+        // Place avatar relative to center/feet without scaling to prevent armature distortion
         avatarGltf.position.x = -center.x;
-        avatarGltf.position.y = -box.min.y - 0.7; // Lowered by 0.7 units to frame upper body
+        avatarGltf.position.y = -box.min.y;
         avatarGltf.position.z = -center.z;
 
         scene.add(avatarGltf);
+
+        // Frame the camera dynamically based on the model's actual height
+        const height = size.y > 0 ? size.y : 1.8;
+        const cameraY = height * 0.75; // Roughly chest/face level
+        const cameraZ = height * 1.5;  // Far enough to see upper body
+
+        camera.position.set(0, cameraY, cameraZ);
+        camera.lookAt(0, cameraY, 0);
 
         // Map bones to enable lip sync
         avatarGltf.traverse((child) => {
