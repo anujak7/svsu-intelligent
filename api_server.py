@@ -80,7 +80,26 @@ async def chat(request: ChatRequest):
         print(f"Chat Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/voice-chat")
+from fastapi.responses import FileResponse
+
+@app.get("/api/leads")
+async def get_leads():
+    if not os.path.exists(LEADS_FILE):
+        return []
+    try:
+        df = pd.read_csv(LEADS_FILE)
+        # Replace NaN with empty string for JSON compatibility
+        df = df.fillna("")
+        return df.to_dict(orient="records")
+    except Exception as e:
+        print(f"Error reading leads: {e}")
+        return []
+
+@app.get("/api/download-csv")
+async def download_csv():
+    if not os.path.exists(LEADS_FILE):
+        raise HTTPException(status_code=404, detail="Lead data file not found")
+    return FileResponse(LEADS_FILE, media_type="text/csv", filename="svsu_leads.csv")
 async def voice_chat(audio_file: UploadFile = File(...)):
     client = get_groq_client()
     if not client:
