@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVSU 3D Intelligent Assistant</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+            /* Let clicks pass to canvas if needed */
+        }
+
+        header {
+            padding: 2rem;
+            text-align: center;
+            pointer-events: auto;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 2rem;
+            text-align: center;
+            pointer-events: auto;
+            font-size: 1.2rem;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .chat-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .controls {
+            padding: 2rem;
+            text-align: center;
+            pointer-events: auto;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        #talk-btn {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        #talk-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.8);
+        }
+
+        #talk-btn.recording {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+        }
+
+        #talk-btn svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            }
+
+            50% {
+                transform: scale(1.15);
+                box-shadow: 0 0 50px rgba(239, 68, 68, 0.8);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            }
+        }
+
+        .loader {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        #close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-layer">
+        <header>
+            <h1>SVSU AI Guide</h1>
+            <p>I am listening to you. Tap the microphone to speak.</p>
+        </header>
+
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end;">
+            <div id="chat-bubble" class="chat-bubble">Hello! I am ready to help you with anything related to SVSU.</div>
+
+            <div class="controls">
+                <div class="loader" id="loader"></div>
+                <button id="talk-btn">
+                    <!-- Mic Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                    </svg>
+                </button>
+                <p id="status-text" style="color: #cbd5e1; margin-top: 15px;">Tap to Talk</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Three.js as ES Modules -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 1. Three JS Scene Setup
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0f172a, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 1.4, 2.5); // position camera at face level
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(0, 1.3, 0); // Target face
+        controls.enablePan = false;
+        controls.minDistance = 1.5;
+        controls.maxDistance = 4;
+        controls.maxPolarAngle = Math.PI / 2 + 0.1;
+
+        // Lighting
+        const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
+        hemiLight.position.set(0, 20, 0);
+        scene.add(hemiLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+        dirLight.position.set(3, 10, 10);
+        scene.add(dirLight);
+
+        const pointLight = new THREE.PointLight(0x0ea5e9, 5, 10);
+        pointLight.position.set(-2, 1.5, 2);
+        scene.add(pointLight);
+
+        // 2. Load the Model
+        let mixer;
+        let headBone = null;
+        let jawBone = null;
+        const clock = new THREE.Clock();
+
+        const loader = new GLTFLoader();
+        loader.load('models/avatar.glb', function (gltf) {
+            const model = gltf.scene;
+            scene.add(model);
+
+            // Re-center model if needed, usually Mixamo is y=0
+            model.position.y = 0;
+
+            // Setup animations if present
+            if (gltf.animations && gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(model);
+                const action = mixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
+
+            // Find Bones for lip-sync
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.material.envMapIntensity = 1.0;
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+                if (child.isBone) {
+                    if (child.name.includes('Head')) headBone = child;
+                    if (child.name.includes('Jaw')) jawBone = child;
+                }
+            });
+
+            // If no jaw, fallback to head nodding
+            if (!jawBone) jawBone = headBone;
+
+            // Show introductory bubble
+            setTimeout(() => {
+                document.getElementById('chat-bubble').classList.add('visible');
+            }, 500);
+
+        }, undefined, function (e) {
+            console.error(e);
+        });
+
+        // 3. Audio & Lip-Sync Setup
+        let audioContext, analyser, dataArray;
+        let isAudioPlaying = false;
+        let baseJawRotation = null;
+
+        function playAudioAndAnimate(base64Audio) {
+            const audio = new Audio("data:audio/mp3;base64," + base64Audio);
+
+            // Setup Web Audio API for analyzing frequencies
+            if (!audioContext) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            const source = audioContext.createMediaElementSource(audio);
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+
+            audio.play();
+            isAudioPlaying = true;
+
+            // Remember base rotation for resetting
+            if (jawBone && !baseJawRotation) {
+                baseJawRotation = jawBone.rotation.clone();
+            }
+
+            audio.onended = () => {
+                isAudioPlaying = false;
+                if (jawBone && baseJawRotation) jawBone.rotation.copy(baseJawRotation);
+            };
+        }
+
+        // 4. Render Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            if (mixer) mixer.update(delta);
+            controls.update();
+
+            // Simple Lip-Sync effect
+            if (isAudioPlaying && analyser && jawBone) {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < 30; i++) { // average lower frequencies
+                    sum += dataArray[i];
+                }
+                const average = sum / 30;
+
+                // Map audio amplitude (0-255) to rotation angle
+                const scale = (average / 255);
+
+                // Rotate Jaw or Head bone slightly up and down
+                if (jawBone.name.includes('Jaw')) {
+                    jawBone.rotation.x = baseJawRotation.x + (scale * 0.3);
+                } else if (headBone) {
+                    // Nod head if jaw not found
+                    headBone.rotation.x = baseJawRotation.x + (scale * 0.1);
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 5. Window Resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+
+        // 6. Voice Recording Logic
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        const talkBtn = document.getElementById('talk-btn');
+        const statusText = document.getElementById('status-text');
+        const loaderUi = document.getElementById('loader');
+        const chatBubble = document.getElementById('chat-bubble');
+
+        talkBtn.addEventListener('click', toggleRecording);
+
+        async function toggleRecording() {
+            if (!isRecording) {
+                // Start Recording
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = sendAudioToServer;
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    talkBtn.classList.add('recording');
+                    statusText.innerText = "Listening... Tap again to send.";
+                    chatBubble.classList.remove('visible'); // hide bubble
+
+                } catch (e) {
+                    alert("Microphone access denied or error: " + e.message);
+                }
+            } else {
+                // Stop Recording
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop()); // release mic
+                isRecording = false;
+                talkBtn.classList.remove('recording');
+                statusText.innerText = "Processing...";
+                talkBtn.style.display = 'none';
+                loaderUi.style.display = 'block';
+            }
+        }
+
+        async function sendAudioToServer() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('audio_file', audioBlob, 'recording.webm');
+
+            try {
+                // The API URL should be dynamic based on the host
+                const response = await fetch('/api/voice', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error("API returned " + response.statusText);
+
+                const data = await response.json();
+
+                // Show Answer text in bubble
+                chatBubble.innerText = data.response;
+                chatBubble.classList.add('visible');
+
+                // Play Audio
+                if (data.audio) {
+                    playAudioAndAnimate(data.audio);
+                }
+
+            } catch (e) {
+                console.error(e);
+                chatBubble.innerText = "Connection error. Please check the backend log.";
+                chatBubble.classList.add('visible');
+            } finally {
+                talkBtn.style.display = 'flex';
+                loaderUi.style.display = 'none';
+                statusText.innerText = "Tap to Talk";
+            }
+        }
+
+    </script>
+</body>
+
+</html>

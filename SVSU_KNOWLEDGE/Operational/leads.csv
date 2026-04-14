@@ -1,0 +1,6 @@
+name,email,mobile,designation,purpose,timestamp,lead_id,bot_type,created_at,updated_at,stage,latest_course,application_count,last_application_at
+anuj,anuj@gmail.com,7355841214,Student/Inquirer,admission,2026-03-09 15:09:55,,intelligent,2026-03-09 15:09:55,2026-03-09 15:09:55,purpose_selected,,0,
+Test,test@example.com,9876543210,Student/Inquirer,general,2026-03-13 18:38:40,,intelligent,2026-03-13 18:38:40,2026-03-13 18:38:40,purpose_selected,,0,
+Anuj Khan,test@example.com,9999999999,Student/Inquirer,general,2026-03-13 18:57:59,,intelligent,2026-03-13 18:57:59,2026-03-13 18:57:59,purpose_selected,,0,
+Anuj,anuj@gmail.com,7355841215,Student/Inquirer,general,2026-03-09 15:08:53,lead_mnr9713s_918lqx,general,2026-03-09 15:08:53,2026-04-09 14:37:19,purpose_selected,,0,
+Anuj,anujkhan0123@gmail.com,7355841215,Student/Inquirer,general,2026-03-13 18:40:54,lead_mnrb7zoj_63rgb3,general,2026-03-13 18:40:54,2026-04-09 15:35:38,application_submitted,B.Tech Computer Science & Engineering (AI/ML),1,2026-04-09T08:33:05.842Z

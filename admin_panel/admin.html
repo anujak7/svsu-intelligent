@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVSU Intel Admin | Premium Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar-width: 280px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--secondary);
+            position: fixed;
+            left: 0;
+            top: 0;
+            color: white;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+        }
+
+        .logo-box img {
+            height: 60px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1rem;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link i {
+            width: 20px;
+            font-size: 1.1rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: inset 4px 0 0 white;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem 3rem;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-msg h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .welcome-msg p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-sync {
+            background: white;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-sync:hover {
+            background: #f1f5f9;
+        }
+
+        .btn-sync.spinning i {
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-export {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* --- Stats Cards --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .icon-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .icon-purple {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .icon-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .icon-orange {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .stat-info .label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-info .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .stat-info .trend {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend.up {
+            color: var(--success);
+        }
+
+        .trend.down {
+            color: var(--danger);
+        }
+
+        /* --- Charts Grid --- */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* --- Tables --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-general {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-admission {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* --- Tabs --- */
+        .tabs {
+            margin-bottom: 1.5rem;
+            background: white;
+            padding: 6px;
+            border-radius: 14px;
+            display: inline-flex;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .tab-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* --- Auth Overlay --- */
+        #loginOverlay {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            width: 400px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .login-card img {
+            height: 80px;
+            margin-bottom: 2rem;
+        }
+
+        .login-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-weight: 500;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* --- Mail Modal --- */
+        #mailModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 500px;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-send {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 10px;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mail Modal -->
+    <div id="mailModal"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content"
+            style="background: white; width: 500px; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow-lg);">
+            <div class="modal-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Compose Professional Mail</h3>
+                <button onclick="closeMailModal()" style="border:none; background:none; cursor:pointer;"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label>To:</label>
+                <input type="text" id="mailRecipient" readonly
+                    style="background: #f8fafc; width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div class="form-group">
+                <label>Subject:</label>
+                <input type="text" id="mailSubject" placeholder="Inquiry regarding SVSU Admission"
+                    style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div class="form-group">
+                <label>Message:</label>
+                <textarea id="mailBody" placeholder="Write your message here..."
+                    style="width: 100%; min-height: 150px; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
+            </div>
+            <div class="modal-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn-cancel" onclick="closeMailModal()"
+                    style="background: #f1f5f9; color: var(--text-muted); padding: 0.8rem 2rem; border-radius: 12px; font-weight: 700; border: none; cursor: pointer;">Cancel</button>
+                <button class="btn-send" id="sendMailBtn" onclick="submitMail()"
+                    style="background: var(--primary); color: white; padding: 0.8rem 2rem; border-radius: 12px; font-weight: 700; border: none; cursor: pointer;">Send
+                    Mail</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Overlay -->
+    <div id="loginOverlay">
+        <div class="login-card">
+            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
+            <h2>Admin Login</h2>
+            <p>Access the Intelligence Portal</p>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" placeholder="admin@svsu.ac.in">
+            </div>
+            <div class="form-group">
+                <label>Access Key</label>
+                <input type="password" id="loginPass" placeholder="••••••••">
+            </div>
+            <button class="btn-login" onclick="handleLogin()">Login to Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-box">
+            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="Logo">
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" onclick="showSection('overview')">
+                    Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('traffic')">
+                    Traffic Insights
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('leads')">
+                    Lead Hub
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('registry')">
+                    Admission Interest Forms
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link" style="color: #ef4444;" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="dashboard-header"
+            style="margin-bottom: 25px; padding: 0 5px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">SVSU Intelligent Dashboard</h1>
+                <p id="currentDateDisplay" style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;"></p>
+            </div>
+            <div
+                style="background: white; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
+                <span
+                    style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-main);">LIVE SYSTEM ACTIVE</span>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p class="label">TODAY'S ENGAGEMENT</p>
+                    <p class="value" id="statToday">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p class="label">TOTAL LEADS</p>
+                    <p class="value" id="statLeads">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p class="label">TOTAL ADMISSION INTEREST APPLICATIONS</p>
+                    <p class="value" id="statApps">0</p>
+                </div>
+            </div>
+            <div class="stat-card" style="cursor: pointer; position: relative;" onclick="showSection('traffic')">
+                <div style="position: absolute; top: 12px; right: 15px; font-size: 0.65rem; color: var(--primary); font-weight: 800; opacity: 0.7;">
+                    DETAILS
+                </div>
+                <div class="stat-info">
+                    <p class="label">TOTAL BOT TRAFFIC</p>
+                    <p class="value" id="statTotalTraffic">0</p>
+                    <div id="statBots" style="display: flex; gap: 8px; font-size: 0.75rem; margin-top: 5px;">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Overview -->
+        <section id="overviewSection">
+            <div class="charts-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Engagement Trend</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Course Interest Breakdown</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="programsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Leads Hub -->
+        <section id="leadsSection" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Lead Hub - Master Database</h3>
+                    <div class="header-actions">
+                        <input type="text" id="leadSearch" placeholder="Search leads..."
+                            style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border); outline: none;"
+                            onkeyup="filterLeads()">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="leadsTableMain">
+                        <thead>
+                            <tr>
+                                <th>Identity</th>
+                                <th>Mobile</th>
+                                <th>Bot Mode</th>
+                                <th>Interest Area</th>
+                                <th>Date/Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsBody">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Registry -->
+        <section id="registrySection" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Admission Interest Forms</h3>
+                    <div class="header-actions">
+                        <input type="text" id="appSearch" placeholder="Filter by Program/Course..."
+                            style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border); outline: none; margin-right: 15px;"
+                            onkeyup="filterApps()">
+                        <button class="btn btn-sync" onclick="exportAdmissionCSV()"><i class="fas fa-file-csv"></i>
+                            Export CSV</button>
+                        <button class="btn btn-export" onclick="exportAdmissionPDF()"><i class="fas fa-file-pdf"></i>
+                            Export PDF</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="appsTableMain">
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Course Requested</th>
+                                <th>Contact</th>
+                                <th>City</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appsBody">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Traffic Insights -->
+        <section id="trafficSection" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">System Traffic Insights</h3>
+                    <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                        <div id="customRangeBox" style="display: none; align-items: center; gap: 5px;">
+                            <input type="date" id="trafficStart"
+                                style="padding: 6px; border-radius: 6px; border: 1px solid var(--border);">
+                            <span style="color: var(--text-muted)">to</span>
+                            <input type="date" id="trafficEnd"
+                                style="padding: 6px; border-radius: 6px; border: 1px solid var(--border);">
+                            <button class="btn btn-sync" onclick="loadTrafficAnalytics()"
+                                style="padding: 6px 12px; margin-right: 15px;">Apply</button>
+                        </div>
+                        <select id="trafficRange" onchange="toggleTrafficRange()"
+                            style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+                            <option value="7days">Last 1 month</option>
+                            <option value="30days">Last 3 month </option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 30px;">
+                    <div class="stat-card" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                        <div class="stat-info">
+                            <p class="label">TODAY</p>
+                            <p class="value" id="trafficToday" style="font-size: 1.5rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                        <div class="stat-info">
+                            <p class="label">YESTERDAY</p>
+                            <p class="value" id="trafficYesterday" style="font-size: 1.5rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                        <div class="stat-info">
+                            <p class="label">LAST 7 DAYS</p>
+                            <p class="value" id="traffic7d" style="font-size: 1.5rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: var(--primary); color: white;">
+                        <div class="stat-info">
+                            <p class="label" style="color: rgba(255,255,255,0.8)">TOTAL SYSTEM VISITS</p>
+                            <p class="value" id="trafficTotal" style="font-size: 1.5rem;">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-wrapper" style="height: 400px; padding: 20px;">
+                    <canvas id="trafficDetailChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Analytics -->
+        <section id="analyticsSection" style="display: none;">
+            <div class="card" style="text-align: center; padding: 100px;">
+                <i class="fas fa-brain" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
+                <h2>Advanced Conversion Analytics</h2>
+                <p>Calculating demographic split and ROI from specialized bot variants...</p>
+            </div>
+        </section>
+
+        </section>
+
+    </main>
+
+    <script>
+        // Init Date
+        if (document.getElementById('currentDateDisplay')) {
+            document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) + ' | SVSU Intelligent Agent';
+        }
+
+        let trendChart, botChart, trafficChart, autoSyncHandle = null;
+
+        // Login Logic
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.toLowerCase();
+            const pass = document.getElementById('loginPass').value;
+
+            const authorizedEmails = ['anuj@svsu.ac.in', 'admin.bot@svsu.ac.in', 'anujak7@gmail.com', 'svsuintelligent@svsu.ac.in', 'admin@svsu.ac.in'];
+
+            if (authorizedEmails.includes(email) && pass === "svsuindia@2026") {
+                document.getElementById('loginOverlay').style.display = 'none';
+                syncData();
+                if (!autoSyncHandle) autoSyncHandle = setInterval(syncData, 30000);
+            } else {
+                alert("Invalid Credentials. Please use authorized SVSU access.");
+            }
+        }
+
+        function logout() {
+            window.location.reload();
+        }
+
+        function showSection(name) {
+            if (document.getElementById('overviewSection')) document.getElementById('overviewSection').style.display = 'none';
+            if (document.getElementById('leadsSection')) document.getElementById('leadsSection').style.display = 'none';
+            if (document.getElementById('registrySection')) document.getElementById('registrySection').style.display = 'none';
+            if (document.getElementById('trafficSection')) document.getElementById('trafficSection').style.display = 'none';
+
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+            // Toggle sections
+            if (name === 'overview' && document.getElementById('overviewSection')) {
+                document.getElementById('overviewSection').style.display = 'block';
+            } else if (name === 'leads' && document.getElementById('leadsSection')) {
+                document.getElementById('leadsSection').style.display = 'block';
+            } else if (name === 'registry' && document.getElementById('registrySection')) {
+                document.getElementById('registrySection').style.display = 'block';
+            } else if (name === 'traffic' && document.getElementById('trafficSection')) {
+                document.getElementById('trafficSection').style.display = 'block';
+                loadTrafficAnalytics();
+            }
+
+            // Highlight active link manually
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(name)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        async function syncData() {
+            const btn = document.getElementById('syncBtn');
+            if (btn) btn.classList.add('spinning');
+
+            try {
+                const response = await fetch('/api/dashboard-stats');
+                const data = await response.json();
+                const engagement = data.engagement || { today: 0, yesterday: 0, this_month: 0 };
+
+                // Update Stats
+                if (document.getElementById('statToday')) document.getElementById('statToday').innerText = engagement.today || 0;
+                if (document.getElementById('statLeads')) document.getElementById('statLeads').innerText = data.total_leads;
+                if (document.getElementById('statApps')) document.getElementById('statApps').innerText = data.total_apps;
+                if (document.getElementById('statTotalTraffic')) document.getElementById('statTotalTraffic').innerText = data.total_traffic || 0;
+
+                // Update specific bot traffic details
+                const bots = data.bot_distribution || {};
+                const i_count = bots.intelligent || 0;
+                const g_count = bots.general || 0;
+                const a_count = bots.admission || 0;
+
+                if (document.getElementById('statBots')) {
+                    document.getElementById('statBots').innerHTML = `
+                        <span style="color:#2563eb;">INT: <b>${i_count}</b></span>
+                        <span style="color:#0ea5e9;">GEN: <b>${g_count}</b></span>
+                        <span style="color:#f97316;">ADM: <b>${a_count}</b></span>
+                    `;
+                }
+
+                // Update Leads & Applications FIRST
+                loadLeads();
+                loadApplications();
+
+                // Then try Charts
+                try {
+                    initCharts(data);
+                } catch (chartErr) {
+                    console.error("Charts Init Failure:", chartErr);
+                }
+
+            } catch (err) {
+                console.error("Sync Error:", err);
+            } finally {
+                if (btn) setTimeout(() => btn.classList.remove('spinning'), 1000);
+            }
+        }
+
+        function initCharts(data) {
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            const ctxBot = document.getElementById('programsChart').getContext('2d');
+
+            if (trendChart) trendChart.destroy();
+            if (botChart) botChart.destroy();
+
+            // Trend Chart
+            trendChart = new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: data.daily_trend.labels.length > 0 ? data.daily_trend.labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Interactions',
+                        data: data.daily_trend.data.length > 0 ? data.daily_trend.data : [10, 25, 40, 55, 65, 80, 95],
+                        borderColor: '#f97316',
+                        backgroundColor: (context) => {
+                            const chart = context.chart;
+                            const { ctx, chartArea } = chart;
+                            if (!chartArea) return null;
+                            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                            gradient.addColorStop(0, 'rgba(249, 115, 22, 0.05)');
+                            gradient.addColorStop(1, 'rgba(249, 115, 22, 0.4)');
+                            return gradient;
+                        },
+                        fill: true,
+                        tension: 0.3,
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'white',
+                        pointBorderColor: '#f97316'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: '#f1f5f9' }, 
+                            border: { display: false },
+                            ticks: { precision: 0 }
+                        },
+                        x: { 
+                            grid: { display: false } 
+                        }
+                    }
+                }
+            });
+
+            // Course Interest Breakdown
+            const defaultCourses = ['B.Voc', 'M.Voc', 'B.Tech', 'MBA', 'D.Voc'];
+            const defaultCounts = [30, 20, 15, 10, 5];
+
+            let cLabels = defaultCourses;
+            let cValues = defaultCounts;
+
+            if (data.top_courses && data.top_courses.length > 0) {
+                cLabels = data.top_courses.map(c => c.course);
+                cValues = data.top_courses.map(c => c.count);
+            }
+
+            botChart = new Chart(ctxBot, {
+                type: 'doughnut',
+                data: {
+                    labels: cLabels,
+                    datasets: [{
+                        data: cValues,
+                        backgroundColor: ['#2563eb', '#8b5cf6', '#ec4899', '#f97316', '#10b981'],
+                        borderWidth: 0,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                font: { weight: 600, size: 11 },
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getBadgeClass(type) {
+            const cleanType = String(type || '').toLowerCase();
+            if (cleanType === 'intelligent') return 'badge badge-general';
+            if (cleanType === 'admission') return 'badge badge-admission';
+            return 'badge badge-general';
+        }
+
+        function formatStage(stage) {
+            return String(stage || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        async function loadLeads() {
+            try {
+                const r = await fetch('/api/leads');
+                const leads = await r.json();
+                const body = document.getElementById('leadsBody');
+                body.innerHTML = '';
+
+                leads.forEach(l => {
+                    const tr = document.createElement('tr');
+                    const nameStr = String(l.name || 'Anonymous');
+                    const initials = nameStr.split(' ').map(n => n[0]).join('').toUpperCase();
+                    const safeEmail = escapeHtml(String(l.email || '--'));
+                    const safeMobile = escapeHtml(String(l.mobile || '--'));
+                    const safePurpose = escapeHtml(String(l.purpose || '--'));
+                    const safeTimestamp = escapeHtml(String(l.updated_at || l.timestamp || '--'));
+                    const stageText = l.stage ? `<div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Stage: ${escapeHtml(formatStage(l.stage))}</div>` : '';
+                    const courseText = l.latest_course ? `<div style="font-size: 0.72rem; color: var(--primary); margin-top: 4px;">Course: ${escapeHtml(String(l.latest_course))}</div>` : '';
+                    const badgeClass = getBadgeClass(l.bot_type);
+                    const emailAction = String(l.email || '').trim()
+                        ? `<button class="action-btn" title="Send Mail" onclick="openMailModal('${escapeHtml(String(l.email))}')" style="background: #2563eb; color: white; border: none;"><i class="fas fa-envelope"></i></button>`
+                        : `<button class="action-btn" title="Email Missing" style="background: #cbd5e1; color: white; border: none; cursor:not-allowed;" disabled><i class="fas fa-envelope"></i></button>`;
+                    tr.innerHTML = `
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar">${initials.substring(0, 2)}</div>
+                                <div>
+                                    <div style="font-weight: 700;">${escapeHtml(nameStr)}</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted)">${safeEmail}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${safeMobile}</td>
+                        <td><span class="${badgeClass}">${escapeHtml(String(l.bot_type || 'general').toUpperCase())}</span></td>
+                        <td>
+                            <div>${safePurpose.toUpperCase()}</div>
+                            ${stageText}
+                            ${courseText}
+                        </td>
+                        <td style="color: var(--text-muted)">${safeTimestamp}</td>
+                        <td style="display: flex; gap: 8px;">
+                             ${emailAction}
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+            } catch (e) {
+                console.error("Leads Loading Error:", e);
+            }
+        }
+
+        async function loadApplications() {
+            try {
+                const r = await fetch('/api/applications');
+                const apps = await r.json();
+                const body = document.getElementById('appsBody');
+                body.innerHTML = '';
+
+                apps.forEach(a => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 700;">${escapeHtml(String(a.name || 'Anonymous'))}</td>
+                        <td style="color: var(--primary); font-weight: 600;">${escapeHtml(String(a.course || '--'))}</td>
+                        <td style="font-size: 0.85rem;">
+                            <div>${escapeHtml(String(a.mobile || '--'))}</div>
+                            <div style="color: var(--text-muted)">${escapeHtml(String(a.email || '--'))}</div>
+                        </td>
+                        <td>
+                            <div>${escapeHtml(String(a.city || '--'))}</div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(String(a.qualification || '--'))}</div>
+                        </td>
+                        <td style="color: var(--text-muted)">${escapeHtml(String(a.timestamp || '--'))}</td>
+                    `;
+                    body.appendChild(tr);
+                });
+            } catch (e) {
+                console.error("Apps Loading Error:", e);
+            }
+        }
+
+        function downloadLeads() {
+            window.location.href = '/api/download-csv';
+        }
+
+        function filterLeads() {
+            const q = document.getElementById('leadSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#leadsBody tr');
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+            });
+        }
+
+        function filterApps() {
+            const q = document.getElementById('appSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#appsBody tr');
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+            });
+        }
+
+        // --- Mail Modal Logic ---
+        function openMailModal(email) {
+            document.getElementById('mailRecipient').value = email;
+            document.getElementById('mailModal').style.display = 'flex';
+        }
+
+        function closeMailModal() {
+            document.getElementById('mailModal').style.display = 'none';
+        }
+
+        async function submitMail() {
+            const btn = document.getElementById('sendMailBtn');
+            const data = {
+                to_email: document.getElementById('mailRecipient').value,
+                subject: document.getElementById('mailSubject').value,
+                body: document.getElementById('mailBody').value
+            };
+
+            if (!data.subject || !data.body) {
+                alert("Please fill subject and body");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Sending...";
+
+            try {
+                const res = await fetch('/api/send-custom-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.status === 'success') {
+                    alert("Professional email sent successfully!");
+                    closeMailModal();
+                } else {
+                    alert("Error: " + result.message);
+                }
+            } catch (err) {
+                alert("Failed to send email");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Send Mail";
+            }
+        }
+
+        async function exportAdmissionCSV() {
+            try {
+                const r = await fetch('/api/applications');
+                const apps = await r.json();
+                let csv = 'Name,Course,Mobile,Email,City,Timestamp\n';
+                apps.forEach(a => {
+                    csv += `"${a.name}","${a.course}","${a.mobile}","${a.email}","${a.city}","${a.timestamp}"\n`;
+                });
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('download', 'SVSU_Admission_Registry.csv');
+                a.click();
+            } catch (e) { alert("Download failed"); }
+        }
+
+        async function exportAdmissionPDF() {
+            // Admission Registry Export Logic
+            const { jsPDF } = window.jspdf || {};
+            if (!jsPDF) {
+                // Inline load if not available
+                const script = document.createElement('script');
+                script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+                script.onload = () => {
+                    const script2 = document.createElement('script');
+                    script2.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js";
+                    script2.onload = generatePDF;
+                    document.head.appendChild(script2);
+                };
+                document.head.appendChild(script);
+            } else {
+                generatePDF();
+            }
+
+            async function generatePDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const r = await fetch('/api/applications');
+                const apps = await r.json();
+
+                doc.setFontSize(18);
+                doc.text("SVSU Admission Interest Registry", 14, 20);
+                doc.setFontSize(10);
+                doc.text("Generated on: " + new Date().toLocaleString(), 14, 28);
+
+                const rows = apps.map(a => [a.name, a.course, a.mobile, a.city, a.timestamp]);
+                doc.autoTable({
+                    head: [['Applicant', 'Course Interest', 'Mobile', 'City', 'Date/Time']],
+                    body: rows,
+                    startY: 35,
+                    theme: 'grid',
+                    headStyles: { fillColor: [37, 99, 235] }
+                });
+                doc.save("SVSU_Admission_Registry.pdf");
+            }
+        }
+
+        function toggleTrafficRange() {
+            const range = document.getElementById('trafficRange').value;
+            const box = document.getElementById('customRangeBox');
+            if (range === 'custom') {
+                box.style.display = 'flex';
+                // Set default dates (past 7 days)
+                const end = new Date();
+                const start = new Date();
+                start.setDate(end.getDate() - 7);
+                document.getElementById('trafficEnd').value = end.toISOString().split('T')[0];
+                document.getElementById('trafficStart').value = start.toISOString().split('T')[0];
+            } else {
+                box.style.display = 'none';
+                loadTrafficAnalytics();
+            }
+        }
+
+        async function loadTrafficAnalytics() {
+            const range = document.getElementById('trafficRange').value;
+            let url = `/api/traffic-analytics?range_type=${range}`;
+
+            if (range === 'custom') {
+                const s = document.getElementById('trafficStart').value;
+                const e = document.getElementById('trafficEnd').value;
+                if (!s || !e) return alert("Select start and end date");
+                url += `&start_date=${s}&end_date=${e}`;
+            }
+
+            try {
+                const r = await fetch(url);
+                const data = await r.json();
+
+                // Update Summary Stats
+                if (document.getElementById('trafficToday')) document.getElementById('trafficToday').innerText = data.summary.today;
+                if (document.getElementById('trafficYesterday')) document.getElementById('trafficYesterday').innerText = data.summary.yesterday;
+                if (document.getElementById('traffic7d')) document.getElementById('traffic7d').innerText = data.summary.last_7_days;
+                if (document.getElementById('trafficTotal')) document.getElementById('trafficTotal').innerText = data.summary.total;
+
+                // Build Chart
+                const canvas = document.getElementById('trafficDetailChart');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    if (trafficChart) trafficChart.destroy();
+
+                    trafficChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'System Visits',
+                                data: data.data,
+                                borderColor: '#2563eb',
+                                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3,
+                                pointRadius: 5,
+                                pointHoverRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { precision: 0 } },
+                                x: { grid: { display: false } }
+                            }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Traffic Analytics Error:", err);
+            }
+        }
+    </script>
+</body>
+
+</html>

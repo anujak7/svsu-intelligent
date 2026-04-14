@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVSU Admin Access - Secure Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e4b8a; /* University Navy */
+            --accent: #df6d25; /* University Orange */
+            --bg: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f1f5f9 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://svsu.ac.in/img/SVSU-Home-Banner.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(15px) grayscale(0.5) brightness(0.9);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 420px;
+            padding: 50px 40px;
+            border-radius: 28px;
+            box-shadow: 0 40px 100px rgba(15, 23, 42, 0.15);
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-area img {
+            height: 90px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
+        }
+
+        h2 { font-size: 1.75rem; color: #0f172a; font-weight: 800; margin-bottom: 8px; }
+        p { color: #64748b; font-size: 0.9rem; margin-bottom: 35px; font-weight: 500; }
+
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        
+        input {
+            width: 100%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: #1e293b;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(30, 75, 138, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center; gap: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 75, 138, 0.25);
+            filter: brightness(1.1);
+        }
+
+        #error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 20px;
+            display: none;
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo-area">
+            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU Logo">
+        </div>
+        <h2>ADMINISTRATOR ACCESS</h2>
+        <p>Verified SVSU Command Entry</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Administrator Email</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="admin@svsu.ac.in" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Secure Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                Verify & Enter <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div id="error-msg">Access Denied: Invalid Credentials.</div>
+        
+        <div style="margin-top: 40px; font-size: 0.7rem; color: #cbd5e1; font-weight: 600;">
+            SECURE ACCESS ONLY • SVSU AI SYSTEMS 2026
+        </div>
+    </div>
+
+    <script>
+        const SECRETS = {
+            emails: ['anuj@svsu.ac.in', 'admin.bot@svsu.ac.in', 'anujak7@gmail.com', 'svsuintelligent@svsu.ac.in'],
+            pass: 'svsuindia@2026'
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.toLowerCase();
+            const pass = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const err = document.getElementById('error-msg');
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+            setTimeout(() => {
+                if (SECRETS.emails.includes(email) && pass === SECRETS.pass) {
+                    sessionStorage.setItem('admin_auth', 'true');
+                    window.location.href = 'admin_dashboard.html';
+                } else {
+                    err.style.display = 'block';
+                    btn.innerHTML = 'Verify & Enter <i class="fas fa-arrow-right"></i>';
+                    setTimeout(() => err.style.display = 'none', 3000);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

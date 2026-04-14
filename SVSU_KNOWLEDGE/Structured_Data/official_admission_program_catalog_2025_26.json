@@ -1,0 +1,1236 @@
+{
+  "session": "2025-26",
+  "source": {
+    "title": "SVSU Information Bulletin Admission 2025-26",
+    "url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+    "pdf_path": "C:\\Users\\USER\\Desktop\\BOT-SVSU\\BOT_BACKEND\\data\\official_admission_bulletin_2025_26.pdf"
+  },
+  "program_count": 50,
+  "programs": [
+    {
+      "serial_no": 1,
+      "canonical_title": "Bachelor of Vocation (B. Voc.) Agriculture",
+      "display_title": "B.Voc Agriculture",
+      "faculty": "Skill Faculty of Agriculture",
+      "industry_partner": "Farmus, Grow my Crops, Sabri.AI, Edible Routes, Bluegreens",
+      "eligibility": "10+2 or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Voc Agriculture",
+        "Bachelor of Vocation (B. Voc.) Agriculture",
+        "B.Voc. Agriculture"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 2,
+      "canonical_title": "Master of Vocation (M. Voc.) Agriculture",
+      "display_title": "M.Voc Agriculture",
+      "faculty": "Skill Faculty of Agriculture",
+      "industry_partner": "Farmus, Grow my Crops, Sabri.AI, Edible Routes, Bluegreens",
+      "eligibility": "B.Voc Agriculture or Graduation in any discipline with 50% marks",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "Master of Vocation (M.Voc.), Agriculture",
+      "aliases": [
+        "M.Voc Agriculture",
+        "Master of Vocation (M. Voc.) Agriculture",
+        "M.Voc. Agriculture"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 3,
+      "canonical_title": "Diploma in Vocation (D.Voc.) Horticulture",
+      "display_title": "D.Voc Horticulture",
+      "faculty": "Skill Faculty of Agriculture",
+      "industry_partner": "Bluegreens, Shivansh Farming",
+      "eligibility": "10th Pass or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "D.Voc Horticulture",
+        "Diploma in Vocation (D.Voc.) Horticulture"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 4,
+      "canonical_title": "B. Com Hons. /Hons. with Research",
+      "display_title": "B.Com (Hons. / Hons. with Research)",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "",
+      "eligibility": "10+2 in Commerce or 10+2 in other stream with Mathematics/Economics with minimum 50% marks or any other Equivalent Examination",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Com (Hons. / Hons. with Research)",
+        "B. Com Hons. /Hons. with Research",
+        "B.Com (Honors/Research)",
+        "B.Com (Hons./Research)"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 5,
+      "canonical_title": "B. Voc. Management (Financial Services) Hons. /Hons. With Research",
+      "display_title": "B.Voc Management-Financial Services",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Voc Management-Financial Services",
+        "B. Voc. Management (Financial Services) Hons. /Hons. With Research",
+        "B.Voc. Management-Financial Services"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 6,
+      "canonical_title": "MBA",
+      "display_title": "MBA",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Mazars, Desire",
+      "eligibility": "Graduation With 50% Marks",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "MBA"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 7,
+      "canonical_title": "MBA (Business Analytics)",
+      "display_title": "MBA (Business Analytics)",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Mazars, Desire",
+      "eligibility": "Graduation With 50% Marks",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "MBA (Business Analytics)",
+      "aliases": [
+        "MBA (Business Analytics)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 8,
+      "canonical_title": "Bachelor of Hotel Management",
+      "display_title": "Bachelor of Hotel Management",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Courtyard, Bikanerwala, Roseate, Country, Sarvatra",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "4 Years",
+      "ncrf_level": "6",
+      "legacy_catalog_title": "Bachelor of Hotel Management",
+      "aliases": [
+        "Bachelor of Hotel Management",
+        "Bachelor in Hotel Management"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 9,
+      "canonical_title": "Diploma of Vocation (D.Voc) Office Management",
+      "display_title": "D.Voc Office Management",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "",
+      "eligibility": "10th or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "D.Voc Office Management",
+        "Diploma of Vocation (D.Voc) Office Management"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 10,
+      "canonical_title": "BBA - BPM and Analytics (Hons. / Hons. With Research)",
+      "display_title": "BBA - BPM and Analytics (Hons. / Hons. with Research)",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Concentrix, Cyfuture",
+      "eligibility": "10+2 or 10th plus (2Years or 3 years) Diploma or 10th plus ITI (2 Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "BBA - BPM and Analytics (Hons. / Hons. with Research)",
+        "BBA - BPM and Analytics (Hons. / Hons. With Research)",
+        "B.Voc Management-BPM and Analytics",
+        "BBA BPM and Analytics"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 11,
+      "canonical_title": "BBA",
+      "display_title": "BBA",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "MSIL/ Spencer/ Frontier Group",
+      "eligibility": "10+2 or Equivalent",
+      "intake": "120",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "BBA",
+        "BBA (General)"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 12,
+      "canonical_title": "Undergraduate Diploma in Airlines Management",
+      "display_title": "Undergraduate Diploma in Airlines Management",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Undergraduate Diploma in Airlines Management"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 13,
+      "canonical_title": "Undergraduate Certificate in Food Production & Traditional Sweets",
+      "display_title": "Undergraduate Certificate in Food Production & Traditional Sweets",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Courtyard, Biiyani by Kilo, Bikanerwala, Roseate, Country, Sarvatra",
+      "eligibility": "10+2 or 10th with two years of experience or Equivalent",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Undergraduate Certificate in Food Production & Traditional Sweets"
+      ],
+      "menu_level": "UG Certificate",
+      "menu_category": "Official UG Certificate Programmes"
+    },
+    {
+      "serial_no": 14,
+      "canonical_title": "MBA (Working Professional)",
+      "display_title": "MBA (Working Professional)",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "",
+      "eligibility": "Graduation with 3yr. Experience",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "MBA (Working Professional)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 15,
+      "canonical_title": "M.Voc. Management (HRM)",
+      "display_title": "M.Voc Management-HRM",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "Mount Talent, Dzire Group",
+      "eligibility": "B.Voc./ Graduation with 50% Marks",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "M.Voc Management-HRM",
+        "M.Voc. Management (HRM)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 16,
+      "canonical_title": "M.Voc Management Banking & Finance",
+      "display_title": "M.Voc Management Banking & Finance",
+      "faculty": "Skill Faculty of Management Research and Studies (SFMSR)",
+      "industry_partner": "HDFC Bank, J & K Bank",
+      "eligibility": "Graduation with 50% Marks",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "M.Voc Management Banking & Finance",
+      "aliases": [
+        "M.Voc Management Banking & Finance"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 17,
+      "canonical_title": "Bachelor of Technology (B.Tech.) Computer Engineering",
+      "display_title": "B.Tech Computer Engineering",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Tech Computer Engineering",
+        "Bachelor of Technology (B.Tech.) Computer Engineering"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Engineering / Computing Programmes"
+    },
+    {
+      "serial_no": 18,
+      "canonical_title": "Bachelor of Technology (B.Tech.) Computer Science & Engineering (AI & ML)",
+      "display_title": "B.Tech Computer Science & Engineering (AI/ML)",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Falconix, Zetrance, Airport Authority of India, Darkblue Devops",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Tech Computer Science & Engineering (AI/ML)",
+        "Bachelor of Technology (B.Tech.) Computer Science & Engineering (AI & ML)",
+        "B.Tech Computer Science & Engineering (AI & ML)"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Engineering / Computing Programmes"
+    },
+    {
+      "serial_no": 19,
+      "canonical_title": "Bachelor of Technology (B.Tech.) Electrical Engineering",
+      "display_title": "B.Tech Electrical Engineering",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Zetrance, JBM Group",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Tech Electrical Engineering",
+        "Bachelor of Technology (B.Tech.) Electrical Engineering"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Engineering / Computing Programmes"
+    },
+    {
+      "serial_no": 20,
+      "canonical_title": "Bachelor of Technology (B.Tech.) Mechanical and Smart Manufacturing",
+      "display_title": "B.Tech Mechanical and Smart Manufacturing",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Schneider Electric, JBM Group, Zetrance, HL Mando Softtech Pvt. Ltd.",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Tech Mechanical and Smart Manufacturing",
+        "Bachelor of Technology (B.Tech.) Mechanical and Smart Manufacturing"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Engineering / Computing Programmes"
+    },
+    {
+      "serial_no": 21,
+      "canonical_title": "Bachelor in Computer Applications BCA/ BCA (Honours) Specialization in AI&ML/Data Science/ BCA (Honours with Research)",
+      "display_title": "BCA / BCA (Honours / Honours with Research)",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "Passed 10+2 examination or equivalent examination from any recognized board with 50% marks in aggregate (45% in case of candidates belonging to SC/ST category of Haryana only).",
+      "intake": "120",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "BCA / BCA (Honours / Honours with Research)",
+        "Bachelor in Computer Applications BCA/ BCA (Honours) Specialization in AI&ML/Data Science/ BCA (Honours with Research)",
+        "BCA",
+        "BCA - MCA (Integrated)",
+        "Bachelor in Computer Applications"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 22,
+      "canonical_title": "Master of Computer Application (MCA)",
+      "display_title": "MCA",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Darkblue Devops Vastav Intellect Globus Eight YBI Foundation",
+      "eligibility": "Passed any graduation degree (e.g.: B.E. / B.Tech./ B.Sc / B.Com. / B.A./ B. Voc./ BCA etc.,) preferably with Mathematics at 10+2 level or at Graduation Level.",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "MCA",
+        "Master of Computer Application (MCA)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 23,
+      "canonical_title": "Bachelor of Vocation (B. Voc.) Solar Technology",
+      "display_title": "B.Voc Solar Technology",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Quadsun, Solar Solution",
+      "eligibility": "10+2 (PCM) or 10+2 with L4 Certificate in relevant field or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "5.5",
+      "legacy_catalog_title": "Bachelor of Vocation (B.Voc.) Solar Technology",
+      "aliases": [
+        "B.Voc Solar Technology",
+        "Bachelor of Vocation (B. Voc.) Solar Technology"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 24,
+      "canonical_title": "Bachelor of Vocation (B.Voc.) Mechanical Manufacturing",
+      "display_title": "B.Voc Mechanical Manufacturing",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Anand Group, Hero",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate in Automotive/Capital Goods &Manufacturing sector or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "5.5",
+      "legacy_catalog_title": "Bachelor of Vocation (B.Voc.) Mechanical Manufacturing",
+      "aliases": [
+        "B.Voc Mechanical Manufacturing",
+        "Bachelor of Vocation (B.Voc.) Mechanical Manufacturing"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 26,
+      "canonical_title": "Bachelor of Vocation (B.Voc.) Mechatronics",
+      "display_title": "B.Voc Mechatronics",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "Hero MotoCorp",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate in Automotive/Capital Goods &Manufacturing sector or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "5.5",
+      "legacy_catalog_title": "Bachelor of Vocation (B.Voc.) Mechatronics",
+      "aliases": [
+        "B.Voc Mechatronics",
+        "Bachelor of Vocation (B.Voc.) Mechatronics"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 27,
+      "canonical_title": "Bachelor of Vocation (B.Voc. / Hons. with Research) Robotics and Automation",
+      "display_title": "B.Voc Robotics and Automation (Hons. / Research)",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "JBM Group",
+      "eligibility": "10+2 (PCM) or 10+2 with Mathematics and L4 Certificate in relevant field or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Voc Robotics and Automation (Hons. / Research)",
+        "Bachelor of Vocation (B.Voc. / Hons. with Research) Robotics and Automation",
+        "B.Voc Robotics and Automation"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 28,
+      "canonical_title": "Diploma in Computer Science & Engineering",
+      "display_title": "Diploma in Computer Science & Engineering",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Diploma in Computer Science & Engineering"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 29,
+      "canonical_title": "Diploma Mechanical Engineering",
+      "display_title": "Diploma in Mechanical Engineering",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "JBM Group",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Diploma in Mechanical Engineering",
+        "Diploma Mechanical Engineering"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 30,
+      "canonical_title": "Diploma of Vocation (D. Voc.) Draughtsmanship (Civil)",
+      "display_title": "D.Voc Draughtsmanship (Civil)",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "NCB, BMTPC",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "4",
+      "legacy_catalog_title": "Diploma of Vocation (D. Voc.) Draughtsmanship (Civil)",
+      "aliases": [
+        "D.Voc Draughtsmanship (Civil)",
+        "Diploma of Vocation (D. Voc.) Draughtsmanship (Civil)",
+        "D.Voc Draughtmanship (Civil)"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 31,
+      "canonical_title": "Diploma of Vocation (D. Voc.) Mechanical Manufacturing",
+      "display_title": "D.Voc Mechanical Manufacturing",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "SKH/SI, Roop Auto",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "D.Voc Mechanical Manufacturing",
+        "Diploma of Vocation (D. Voc.) Mechanical Manufacturing"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 33,
+      "canonical_title": "Diploma in Industrial Electronics",
+      "display_title": "Diploma in Industrial Electronics",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "East West Automation Pvt. Ltd., Padget Electronics Pvt. Ltd.",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "4.5",
+      "legacy_catalog_title": "Diploma in Industrial Electronics",
+      "aliases": [
+        "Diploma in Industrial Electronics"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 34,
+      "canonical_title": "Diploma Computer Generative AI / Cyber Security",
+      "display_title": "Diploma Computer Generative AI / Cyber Security",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Diploma Computer Generative AI / Cyber Security",
+        "Diploma Computer (Generative AI/Cyber Security)"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 36,
+      "canonical_title": "Master of Technology (M.Tech.) Robotics and Automation",
+      "display_title": "M.Tech Robotics and Automation",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "JBM Group, Orangewood",
+      "eligibility": "B.Tech / B.E. in ECE/CSE/IT/Mechanical/ M.Sc. (Electronics / IT) / MCA or Other related disciplines from any recognized university/institutions with a minimum of 55% marks or Equivalent grade(45% marks or Equivalent grade for Scheduled Caste/ Schedule Tribes). GATE qualified / Industry Experience candidates will be given preference.",
+      "intake": "18",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "7",
+      "legacy_catalog_title": "Master of Technology (M.Tech.) Robotics and Automation",
+      "aliases": [
+        "M.Tech Robotics and Automation",
+        "Master of Technology (M.Tech.) Robotics and Automation"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 37,
+      "canonical_title": "PG Diploma in Semiconductor Device Packaging(PGDSDP)",
+      "display_title": "PG Diploma in Semiconductor Device Packaging (PGDSDP)",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "- B.E /B.Tech completed students of the following branches: Electronics/Electronics & Communication / Electrical/ Electrical and Electronics/Instrumentation/ Biomedical /Computer Science/Information Technology/ or M.Sc. in Electronics/Physics (with relevant specialization). - B.E /B.Tech ongoing students of the above branches are eligible to enrol however preference will be given to applicants with experience. - Minimum 50% aggregate - Basic knowledge of semiconductor devices and circuits preferred",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "1 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "PG Diploma in Semiconductor Device Packaging (PGDSDP)",
+      "aliases": [
+        "PG Diploma in Semiconductor Device Packaging (PGDSDP)",
+        "PG Diploma in Semiconductor Device Packaging(PGDSDP)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official PG Diploma Programmes"
+    },
+    {
+      "serial_no": 38,
+      "canonical_title": "Undergraduate Diploma in Interior Design",
+      "display_title": "Undergraduate Diploma in Interior Design",
+      "faculty": "Skill Faculty of Engineering & Technology (SFET)",
+      "industry_partner": "",
+      "eligibility": "12th plus PCM to 12th (Any stream)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "5",
+      "legacy_catalog_title": "Undergraduate Diploma in Interior Design",
+      "aliases": [
+        "Undergraduate Diploma in Interior Design"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 39,
+      "canonical_title": "Undergraduate Diploma in Japanese Language",
+      "display_title": "Undergraduate Diploma in Japanese Language",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "5",
+      "legacy_catalog_title": "Undergraduate Diploma in Japanese Language",
+      "aliases": [
+        "Undergraduate Diploma in Japanese Language",
+        "Diploma in Japanese Language"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 40,
+      "canonical_title": "Undergraduate Certificate in Music (Folk Art - Banchari/Instrumental/Vocal)",
+      "display_title": "Undergraduate Certificate in Music (Folk Art - Banchari / Instrumental / Vocal)",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Undergraduate Certificate in Music (Folk Art - Banchari / Instrumental / Vocal)",
+        "Undergraduate Certificate in Music (Folk Art - Banchari/Instrumental/Vocal)",
+        "UG Certificate in Music (Folk Art)",
+        "Undergraduate Certificate in Music (Folk Art)"
+      ],
+      "menu_level": "UG Certificate",
+      "menu_category": "Official UG Certificate Programmes"
+    },
+    {
+      "serial_no": 41,
+      "canonical_title": "Undergraduate Certificate in Animation, Multimedia and Graphics",
+      "display_title": "Undergraduate Certificate in Animation, Multimedia and Graphics",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "10+2 or 10 plus ( 2 Years or 3 Years) Diploma or 10th Plus ITI (Two Years) with one Language Subject (Hindi/English)",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "Undergraduate Certificate in Animation, Multimedia and Graphics",
+        "UG Certificate in Animation, Multimedia and Graphics"
+      ],
+      "menu_level": "UG Certificate",
+      "menu_category": "Official UG Certificate Programmes"
+    },
+    {
+      "serial_no": 42,
+      "canonical_title": "B.Sc. (Yoga & Spiritual Science)",
+      "display_title": "B.Sc. (Yoga & Spiritual Science)",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "Ayush Department",
+      "eligibility": "10+2 or 10 plus ( 2 Years or 3 Years) Diploma or 10th Plus ITI (Two Years) with one Language Subject (Hindi/English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "5.5",
+      "legacy_catalog_title": "B.Sc. (Yoga & Spiritual Science)",
+      "aliases": [
+        "B.Sc. (Yoga & Spiritual Science)"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 43,
+      "canonical_title": "M.Sc. MLT (Microbiology)",
+      "display_title": "M.Sc. MLT (Microbiology)",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "B.Voc. MLT/B.Sc. MLT/BMLS/BMLT",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "M.Sc. MLT (Microbiology)",
+      "aliases": [
+        "M.Sc. MLT (Microbiology)"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 44,
+      "canonical_title": "B.Voc. (Medical Laboratory Technology) Honours with Research",
+      "display_title": "B.Voc (Medical Laboratory Technology) Honours with Research",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "Healthians, QRG, Shri Sathya Sai Sanjeevni Hospital, Neuberg",
+      "eligibility": "10+2 (PCB) or 10+2 and L4 Certificate in relevant field or 10th plus (2 Years or 3 Years) Diploma in relevant field for Lateral Entry in 2nd Year.",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "4 Years",
+      "ncrf_level": "6",
+      "legacy_catalog_title": "B.Voc. (MLT) Honours with Research",
+      "aliases": [
+        "B.Voc (Medical Laboratory Technology) Honours with Research",
+        "B.Voc. (Medical Laboratory Technology) Honours with Research",
+        "B.Voc Medical Laboratory Technology",
+        "B.Voc (MLT) Honours with Research"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 45,
+      "canonical_title": "Undergraduate Diploma in German Language",
+      "display_title": "Undergraduate Diploma in German Language",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "Concentrix",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "5",
+      "legacy_catalog_title": "Undergraduate Diploma in German Language",
+      "aliases": [
+        "Undergraduate Diploma in German Language",
+        "Diploma in German Language"
+      ],
+      "menu_level": "Diploma",
+      "menu_category": "Official Diploma / D.Voc / UG Diploma Programmes"
+    },
+    {
+      "serial_no": 46,
+      "canonical_title": "B.Voc. (Public Services)",
+      "display_title": "B.Voc Public Services",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "UDAAN IAS Academy",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "3 Years",
+      "ncrf_level": "5.5",
+      "legacy_catalog_title": "B.Voc. (Public Services)",
+      "aliases": [
+        "B.Voc Public Services",
+        "B.Voc. (Public Services)"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official B.Voc Programmes"
+    },
+    {
+      "serial_no": 47,
+      "canonical_title": "B.Sc. Mathematics and Computing (Hons. with Research)",
+      "display_title": "B.Sc. Mathematics and Computing (Hons. with Research)",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "10+2 or equivalent with Mathematics as a compulsory subject with a minimum 50% marks. Relaxation as per UGC norms.",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "4 Years",
+      "ncrf_level": "6",
+      "legacy_catalog_title": "B.Sc. in Mathematics and Computing",
+      "aliases": [
+        "B.Sc. Mathematics and Computing (Hons. with Research)",
+        "B.Sc. in Mathematics and Computing"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 48,
+      "canonical_title": "B.Sc. Clinical Psychology",
+      "display_title": "B.Sc. Clinical Psychology",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "Tulasi Healthcare, Citizen Hospital, Shri Sathya Sai Sanjeevni Hospital",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "B.Sc. Clinical Psychology"
+      ],
+      "menu_level": "Undergraduate",
+      "menu_category": "Official Undergraduate Programmes"
+    },
+    {
+      "serial_no": 49,
+      "canonical_title": "PG Diploma Criminal Forensics",
+      "display_title": "PG Diploma Criminal Forensics",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "PG Diploma Criminal Forensics"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official PG Diploma Programmes"
+    },
+    {
+      "serial_no": 50,
+      "canonical_title": "M.Sc. Geo-informatics",
+      "display_title": "M.Sc. Geo-informatics",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "GMDA",
+      "eligibility": "Bachelor's degree in the fields of Geography / Environmental Science / Forestry / Chemistry / Physics / Geology / Geophysics / Mathematics / Oceanography/ Agriculture/ Atmospheric Sciences/ Climatology/ Information Science/ Computer Science/ Disaster Management/ Engineering / Town Planning / Architecture / Botany/ Zoology/ allied disciplines with at least 50% marks or OR Masters in Geography with at least 50% marks or equivalent grade in aggregate",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "M.Sc. (Geo- Informatics)",
+      "aliases": [
+        "M.Sc. Geo-informatics"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 51,
+      "canonical_title": "PG Diploma Public Policy",
+      "display_title": "PG Diploma Public Policy",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "IMPRL",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "PG Diploma Public Policy",
+        "PG Diploma in Public Policy"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official PG Diploma Programmes"
+    },
+    {
+      "serial_no": 52,
+      "canonical_title": "M.Sc. Clinical Psychology",
+      "display_title": "M.Sc. Clinical Psychology",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "Tulasi Healthcare, Citizen Hospital, Shri Sathya Sai Sanjeevni Hospital",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "",
+      "ncrf_level": "",
+      "legacy_catalog_title": "",
+      "aliases": [
+        "M.Sc. Clinical Psychology"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    },
+    {
+      "serial_no": 53,
+      "canonical_title": "M.A. English",
+      "display_title": "M.A. English",
+      "faculty": "Skill Faculty of Applied Science and Humanities (SFASH)",
+      "industry_partner": "",
+      "eligibility": "Graduation with minimum 50% marks. Relaxation as per UGC norms.",
+      "intake": "30",
+      "session": "2025-26",
+      "source_url": "https://www.svsu.ac.in/wp-content/uploads/2025/06/Updated%20Information%20Bulletin%20including%20New%20Programmes%20Admissions%202025-26%2001-07-2025.pdf",
+      "duration": "2 Years",
+      "ncrf_level": "6.5",
+      "legacy_catalog_title": "M.A. English",
+      "aliases": [
+        "M.A. English"
+      ],
+      "menu_level": "Postgraduate",
+      "menu_category": "Official Postgraduate Programmes"
+    }
+  ],
+  "levels": {
+    "Undergraduate": {
+      "Official B.Voc Programmes": [
+        {
+          "title": "B.Voc Agriculture",
+          "canonical_title": "Bachelor of Vocation (B. Voc.) Agriculture"
+        },
+        {
+          "title": "B.Voc Management-Financial Services",
+          "canonical_title": "B. Voc. Management (Financial Services) Hons. /Hons. With Research"
+        },
+        {
+          "title": "B.Voc Solar Technology",
+          "canonical_title": "Bachelor of Vocation (B. Voc.) Solar Technology"
+        },
+        {
+          "title": "B.Voc Mechanical Manufacturing",
+          "canonical_title": "Bachelor of Vocation (B.Voc.) Mechanical Manufacturing"
+        },
+        {
+          "title": "B.Voc Mechatronics",
+          "canonical_title": "Bachelor of Vocation (B.Voc.) Mechatronics"
+        },
+        {
+          "title": "B.Voc Robotics and Automation (Hons. / Research)",
+          "canonical_title": "Bachelor of Vocation (B.Voc. / Hons. with Research) Robotics and Automation"
+        },
+        {
+          "title": "B.Voc (Medical Laboratory Technology) Honours with Research",
+          "canonical_title": "B.Voc. (Medical Laboratory Technology) Honours with Research"
+        },
+        {
+          "title": "B.Voc Public Services",
+          "canonical_title": "B.Voc. (Public Services)"
+        }
+      ],
+      "Official Undergraduate Programmes": [
+        {
+          "title": "B.Com (Hons. / Hons. with Research)",
+          "canonical_title": "B. Com Hons. /Hons. with Research"
+        },
+        {
+          "title": "Bachelor of Hotel Management",
+          "canonical_title": "Bachelor of Hotel Management"
+        },
+        {
+          "title": "BBA - BPM and Analytics (Hons. / Hons. with Research)",
+          "canonical_title": "BBA - BPM and Analytics (Hons. / Hons. With Research)"
+        },
+        {
+          "title": "BBA",
+          "canonical_title": "BBA"
+        },
+        {
+          "title": "BCA / BCA (Honours / Honours with Research)",
+          "canonical_title": "Bachelor in Computer Applications BCA/ BCA (Honours) Specialization in AI&ML/Data Science/ BCA (Honours with Research)"
+        },
+        {
+          "title": "B.Sc. (Yoga & Spiritual Science)",
+          "canonical_title": "B.Sc. (Yoga & Spiritual Science)"
+        },
+        {
+          "title": "B.Sc. Mathematics and Computing (Hons. with Research)",
+          "canonical_title": "B.Sc. Mathematics and Computing (Hons. with Research)"
+        },
+        {
+          "title": "B.Sc. Clinical Psychology",
+          "canonical_title": "B.Sc. Clinical Psychology"
+        }
+      ],
+      "Official Engineering / Computing Programmes": [
+        {
+          "title": "B.Tech Computer Engineering",
+          "canonical_title": "Bachelor of Technology (B.Tech.) Computer Engineering"
+        },
+        {
+          "title": "B.Tech Computer Science & Engineering (AI/ML)",
+          "canonical_title": "Bachelor of Technology (B.Tech.) Computer Science & Engineering (AI & ML)"
+        },
+        {
+          "title": "B.Tech Electrical Engineering",
+          "canonical_title": "Bachelor of Technology (B.Tech.) Electrical Engineering"
+        },
+        {
+          "title": "B.Tech Mechanical and Smart Manufacturing",
+          "canonical_title": "Bachelor of Technology (B.Tech.) Mechanical and Smart Manufacturing"
+        }
+      ]
+    },
+    "Postgraduate": {
+      "Official Postgraduate Programmes": [
+        {
+          "title": "M.Voc Agriculture",
+          "canonical_title": "Master of Vocation (M. Voc.) Agriculture"
+        },
+        {
+          "title": "MBA",
+          "canonical_title": "MBA"
+        },
+        {
+          "title": "MBA (Business Analytics)",
+          "canonical_title": "MBA (Business Analytics)"
+        },
+        {
+          "title": "MBA (Working Professional)",
+          "canonical_title": "MBA (Working Professional)"
+        },
+        {
+          "title": "M.Voc Management-HRM",
+          "canonical_title": "M.Voc. Management (HRM)"
+        },
+        {
+          "title": "M.Voc Management Banking & Finance",
+          "canonical_title": "M.Voc Management Banking & Finance"
+        },
+        {
+          "title": "MCA",
+          "canonical_title": "Master of Computer Application (MCA)"
+        },
+        {
+          "title": "M.Tech Robotics and Automation",
+          "canonical_title": "Master of Technology (M.Tech.) Robotics and Automation"
+        },
+        {
+          "title": "M.Sc. MLT (Microbiology)",
+          "canonical_title": "M.Sc. MLT (Microbiology)"
+        },
+        {
+          "title": "M.Sc. Geo-informatics",
+          "canonical_title": "M.Sc. Geo-informatics"
+        },
+        {
+          "title": "M.Sc. Clinical Psychology",
+          "canonical_title": "M.Sc. Clinical Psychology"
+        },
+        {
+          "title": "M.A. English",
+          "canonical_title": "M.A. English"
+        }
+      ],
+      "Official PG Diploma Programmes": [
+        {
+          "title": "PG Diploma in Semiconductor Device Packaging (PGDSDP)",
+          "canonical_title": "PG Diploma in Semiconductor Device Packaging(PGDSDP)"
+        },
+        {
+          "title": "PG Diploma Criminal Forensics",
+          "canonical_title": "PG Diploma Criminal Forensics"
+        },
+        {
+          "title": "PG Diploma Public Policy",
+          "canonical_title": "PG Diploma Public Policy"
+        }
+      ]
+    },
+    "Diploma": {
+      "Official Diploma / D.Voc / UG Diploma Programmes": [
+        {
+          "title": "D.Voc Horticulture",
+          "canonical_title": "Diploma in Vocation (D.Voc.) Horticulture"
+        },
+        {
+          "title": "D.Voc Office Management",
+          "canonical_title": "Diploma of Vocation (D.Voc) Office Management"
+        },
+        {
+          "title": "Undergraduate Diploma in Airlines Management",
+          "canonical_title": "Undergraduate Diploma in Airlines Management"
+        },
+        {
+          "title": "Diploma in Computer Science & Engineering",
+          "canonical_title": "Diploma in Computer Science & Engineering"
+        },
+        {
+          "title": "Diploma in Mechanical Engineering",
+          "canonical_title": "Diploma Mechanical Engineering"
+        },
+        {
+          "title": "D.Voc Draughtsmanship (Civil)",
+          "canonical_title": "Diploma of Vocation (D. Voc.) Draughtsmanship (Civil)"
+        },
+        {
+          "title": "D.Voc Mechanical Manufacturing",
+          "canonical_title": "Diploma of Vocation (D. Voc.) Mechanical Manufacturing"
+        },
+        {
+          "title": "Diploma in Industrial Electronics",
+          "canonical_title": "Diploma in Industrial Electronics"
+        },
+        {
+          "title": "Diploma Computer Generative AI / Cyber Security",
+          "canonical_title": "Diploma Computer Generative AI / Cyber Security"
+        },
+        {
+          "title": "Undergraduate Diploma in Interior Design",
+          "canonical_title": "Undergraduate Diploma in Interior Design"
+        },
+        {
+          "title": "Undergraduate Diploma in Japanese Language",
+          "canonical_title": "Undergraduate Diploma in Japanese Language"
+        },
+        {
+          "title": "Undergraduate Diploma in German Language",
+          "canonical_title": "Undergraduate Diploma in German Language"
+        }
+      ]
+    },
+    "UG Certificate": {
+      "Official UG Certificate Programmes": [
+        {
+          "title": "Undergraduate Certificate in Food Production & Traditional Sweets",
+          "canonical_title": "Undergraduate Certificate in Food Production & Traditional Sweets"
+        },
+        {
+          "title": "Undergraduate Certificate in Music (Folk Art - Banchari / Instrumental / Vocal)",
+          "canonical_title": "Undergraduate Certificate in Music (Folk Art - Banchari/Instrumental/Vocal)"
+        },
+        {
+          "title": "Undergraduate Certificate in Animation, Multimedia and Graphics",
+          "canonical_title": "Undergraduate Certificate in Animation, Multimedia and Graphics"
+        }
+      ]
+    }
+  }
+}

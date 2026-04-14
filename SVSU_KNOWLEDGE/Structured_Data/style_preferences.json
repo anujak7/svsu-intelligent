@@ -1,0 +1,55 @@
+{
+  "user_789": {
+    "traits": [
+      "likes brief answers"
+    ],
+    "interests": [
+      "B.Tech, Fees"
+    ],
+    "last_seen": "2026-03-16T02:01:09.154880"
+  },
+  "student_1": {
+    "traits": [],
+    "interests": [
+      "Hostel"
+    ],
+    "last_seen": "2026-03-16T02:01:11.479345"
+  },
+  "student_2": {
+    "traits": [],
+    "interests": [
+      "Accommodation"
+    ],
+    "last_seen": "2026-03-16T02:01:11.813148"
+  },
+  "127.0.0.1": {
+    "traits": [
+      "detailed",
+      "short",
+      "bulleted"
+    ],
+    "interests": [
+      "general information",
+      "academic journey",
+      "university comparison",
+      "courses",
+      "B.Tech",
+      "B.Tech in Artificial Intelligence and Data Science",
+      "B.Tech in Cyber Security",
+      "programs",
+      "B.Tech Computer Science & Engineering (AI/ML)",
+      "Faculty of CS",
+      "Faculty",
+      "CS/IT department, programs",
+      "uniqueness of SVSU",
+      "rank",
+      "Fees",
+      "B.Tech, Fees",
+      "skill-based education, vocational training, industry-integrated courses",
+      "Skill-Based Education"
+    ],
+    "language": "English",
+    "format": "detailed",
+    "last_seen": "2026-04-09T15:37:00.307690"
+  }
+}

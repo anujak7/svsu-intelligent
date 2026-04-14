@@ -1,0 +1,90 @@
+# SVSU MASTER ACADEMIC CATALOG (PREMIUM v3.0)
+# This file is the absolute source of truth for SVSU Intelligent.
+
+PROGRAM: MBA (General)
+Duration: 2 Years (4 Semesters)
+Seats: 30
+Eligibility: Graduation in any discipline with 50% marks (45% for SC/ST of Haryana)
+Industry Partners: Mazars, Dzire, Adamant HR
+Strategic Insights: This program is designed for aspiring business leaders, focusing on 360-degree management development. Our dual education model ensures students gain hands-on expertise in negotiation, strategy, and organizational behavior.
+Career Outcomes: Business Manager, Operations Consultant, HR Strategist, Entrepreneur.
+
+---
+
+PROGRAM: MBA (Business Analytics)
+Duration: 2 Years (4 Semesters)
+Seats: 30
+Eligibility: Graduation with 50% marks; proficiency in quantitative methods preferred.
+Industry Partners: Mazars, Dzire
+Strategic Insights: Bridging the gap between data and decision-making. Students master Big Data tools, Predictive Modeling, and Data Science applications in modern business ecosystems.
+Career Outcomes: Data Analyst, Business Intelligence Lead, Market Researcher, Project Manager (Analytics).
+
+---
+
+PROGRAM: MBA (Working Professional)
+Duration: 2 Years (4 Semesters)
+Seats: 20
+Eligibility: Graduation with minimum 3 years of professional experience.
+Industry Partner: SVSU Internal
+Strategic Insights: Exclusive program for executives seeking a strategic career leap. Focuses on advanced leadership, financial engineering, and change management.
+Career Outcomes: C-suite roles, Strategic Director, Senior Project Head.
+
+---
+
+PROGRAM: B.Tech in Computer Engineering (AICTE Approved)
+Duration: 4 Years (8 Semesters)
+Seats: 60
+Eligibility: As per AICTE/HSTES Norms (10+2 with Physics, Mathematics, and one other subject).
+Industry Partners: DarkBlue DevOps, Vastav Intellect, Globus Eight, and YBI Foundation.
+Strategic Insights: A future-oriented program focusing on Software Engineering, IT Infrastructure, and scalable architecture. Integrates the latest DevOps and DevSecOps frameworks through industry-led labs.
+Career Outcomes: Software Architect, Cloud Engineer, DevOps Specialist, Full-Stack Developer.
+
+---
+
+PROGRAM: Bachelor of Computer Applications (BCA)
+Duration: 3 Years (Standard) / 4 Years (Honours/Regular)
+Seats: 120 (Split across batches)
+Eligibility: 10+2 or equivalent examination with 50% marks in aggregate.
+Industry Partners: Globus Eight Inc, Vastav Intellect, Darkblue DevOps.
+Strategic Insights: Ideal for students seeking core IT foundations. The program emphasizes programming logic, database management, and modern web-tech in a skill-focused environment.
+Career Outcomes: System Analyst, Web Developer, IT Consultant.
+
+---
+
+PROGRAM: Diploma in Mechanical Engineering (AICTE Approved)
+Duration: 3 Years (6 Semesters)
+Seats: 60
+Eligibility: As per AICTE / HSTES Norms.
+Industry Partner: JBM Group
+Strategic Insights: A core skill-building program focused on precision manufacturing and tool/die design. Our collaboration with JBM Group ensures direct industry exposure.
+---
+
+PROGRAM: ADMINISTRATION & STUDENT WELFARE (OFFICIAL CONTACTS)
+- Dean Student Welfare (DSW): Prof. (Dr.) Kulwant Singh. Handle: Travel Allowances, Scholarships, NSS, Cultural Units, Student Grievances.
+- Registrar Office: Prof. (Dr.) Jyoti Rana. Handle: Academic policies, Official Certificates, Registrations.
+- Admission Office: Helpline (1800-1800-147), Landline (0124-2746800). Handle: Application status, Fee structure, Eligibility.
+- Finance & Accounts: Mr. Devender Singh (CAO). Handle: Fee payments, Refunds, Salary/Stipend.
+- Public Relations Officer (PRO): Dr. Rajesh Chauhan. Handle: Media, University Press, External collaborations (NOT Student Allowances).
+
+---
+
+[STRICT OPERATIONAL DIRECTIVE: If a student asks for 'Travel Allowance' or 'Financial Aid', ALWAYS refer them to the Dean Student Welfare (DSW) at the Dudhola Campus.]
+
+---
+
+PROGRAM: B.Voc. (Mechatronics)
+Duration: 3 Years (6 Semesters)
+Seats: 30
+Eligibility: 10+2 (PCM) or 10+2 with L4 certificate or I.T.I (2 years).
+Industry Partner: Hero Motocorp
+Strategic Insights: Combining Mechanical and Electronics to power the new world of automation. Students work directly in the Hero Motocorp ecosystem under an Earn-While-Learn model.
+
+---
+
+PROGRAM: B.Com (Honours/ Honours with Research)
+Duration: 3 Years / 4 Years (NEP Aligned Multi-Entry/Exit)
+Seats: 60
+Eligibility: 10+2 or equivalent.
+Industry Partner: HDFC Bank, Jammu & Kashmir Bank
+Strategic Insights: Advanced accounting and finance training. Integrates real-world banking operations into the academic framework.
+Career Outcomes: Financial Planner, Chartered Accountant Pathway, Bank Manager.
