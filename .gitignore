@@ -38,3 +38,13 @@ generate_*.py
 # --- OS Files ---
 .DS_Store
 Thumbs.db
+
+# --- Large Binary/DB Files (too big for GitHub, live on VM) ---
+*.db
+*.sqlite
+*.glb
+3D_MODEL/
+assets/models/
+BOT_BACKEND/node_modules/
+BOT_BACKEND/scratch/
+SVSU_KNOWLEDGE/Database/
