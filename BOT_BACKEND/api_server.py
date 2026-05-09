@@ -1807,42 +1807,51 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
         # Send confirmation email
         subject = f"Admission Interest Registered: {data.course} | SVSU"
         html_content = f"""
-        <div style="color: #1e293b; font-family: 'Inter', sans-serif;">
-            <p style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 10px;">Hello {data.name},</p>
-            <p style="font-size: 16px; line-height: 1.6;">Thank you for using <b>SVSU Intelligent</b>! We have successfully received your interest in the <b>{data.course}</b> program.</p>
-            
-            <p style="font-size: 15px; color: #475569; margin: 20px 0;">Our mission is to bridge the gap between education and industry. By choosing SVSU, you are stepping into a world of <b>Earn-While-You-Learn</b> and <b>Dual Education</b> excellence.</p>
+        <div style="color: #1e293b; font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;">
+
+            <!-- Greeting -->
+            <p style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Hello {data.name}! 👋</p>
+            <p style="font-size: 15px; line-height: 1.7; color: #334155;">Thank you for using <b style="color: #c0392b;">SVSU Intelligent</b>! Your interest in the <b>{data.course}</b> program has been successfully received.</p>
+
+            <!-- SVSU Highlight Box -->
+            <div style="background: linear-gradient(135deg, #c0392b 0%, #a93226 100%); border-radius: 16px; padding: 25px 30px; margin: 25px 0; color: white;">
+                <p style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.85;">Welcome to</p>
+                <p style="margin: 0 0 5px; font-size: 22px; font-weight: 800;">India's 1st Government Skill University</p>
+                <p style="margin: 0; font-size: 14px; opacity: 0.9; line-height: 1.6;">SVSU bridges the gap between education &amp; industry with its unique <b>Earn-While-You-Learn</b> and <b>Dual Education</b> model. Learn skills, earn certificates, and get placed in top companies!</p>
+            </div>
 
             <!-- Admission Process Image -->
             <div style="margin: 30px 0; text-align: center;">
-                <img src="https://svsu.ac.in/assets/images/admission-process.png" alt="Admission Process" style="width: 100%; max-width: 550px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/admission-process.png.png" alt="Admission Process" style="width: 100%; max-width: 550px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" onerror="this.style.display='none'">
                 <p style="font-size: 12px; color: #94a3b8; margin-top: 8px;">Step-by-step procedure to join our learning community.</p>
             </div>
 
-            <!-- Call to Action Button -->
-            <div style="text-align: center; margin: 45px 0 30px;">
-                <a href="https://admission.svsu.ac.in/" style="background-color: #c0392b; color: #ffffff; padding: 18px 45px; text-decoration: none; border-radius: 14px; font-weight: 800; font-size: 18px; display: inline-block; box-shadow: 0 10px 25px rgba(192,57,43,0.3); transition: all 0.3s ease;">APPLY FOR ADMISSION NOW</a>
-                <p style="font-size: 13px; color: #64748b; margin-top: 15px;">Click the button above to start your application on the official portal.</p>
+            <!-- Main CTA Button -->
+            <div style="text-align: center; margin: 40px 0 30px;">
+                <a href="https://admission.svsu.ac.in/" style="background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: #ffffff; padding: 20px 50px; text-decoration: none; border-radius: 16px; font-weight: 800; font-size: 18px; display: inline-block; box-shadow: 0 12px 30px rgba(192,57,43,0.35); letter-spacing: 0.5px;">
+                    APPLY FOR ADMISSION NOW
+                </a>
+                <p style="font-size: 12px; color: #94a3b8; margin-top: 12px;">Official Admission Portal: admission.svsu.ac.in</p>
             </div>
 
-            <!-- University Resources Quick Links -->
+            <!-- Colorful Resource Buttons -->
             <div style="margin: 40px 0; padding: 30px; background-color: #f8fafc; border-radius: 24px; border: 1px solid #e2e8f0;">
                 <p style="text-align: center; font-weight: 800; color: #0f172a; margin-bottom: 25px; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Quick Access Resources</p>
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td width="50%" style="padding: 0 8px 15px 0;">
-                            <a href="https://coe.svsu.ac.in/" style="display: block; background-color: #ffffff; border: 1.5px solid #e2e8f0; color: #1e293b; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">Examination (COE)</a>
+                            <a href="https://coe.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(59,130,246,0.3);">📋 Examination (COE)</a>
                         </td>
                         <td width="50%" style="padding: 0 0 15px 8px;">
-                            <a href="https://www.svsulibrary.in/" style="display: block; background-color: #ffffff; border: 1.5px solid #e2e8f0; color: #1e293b; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">Central Library</a>
+                            <a href="https://www.svsulibrary.in/" style="display: block; background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.3);">📚 Central Library</a>
                         </td>
                     </tr>
                     <tr>
                         <td width="50%" style="padding: 0 8px 0 0;">
-                            <a href="https://rnd.svsu.ac.in/" style="display: block; background-color: #ffffff; border: 1.5px solid #e2e8f0; color: #1e293b; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">Research (R&D)</a>
+                            <a href="https://rnd.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(139,92,246,0.3);">🔬 Research (R&D)</a>
                         </td>
                         <td width="50%" style="padding: 0 0 0 8px;">
-                            <a href="https://digitalojtdiary.svsu.ac.in/" style="display: block; background-color: #ffffff; border: 1.5px solid #e2e8f0; color: #1e293b; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">OJT Portal</a>
+                            <a href="https://digitalojtdiary.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #ea580c, #f97316); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(249,115,22,0.3);">💼 OJT Portal</a>
                         </td>
                     </tr>
                 </table>
@@ -1851,13 +1860,22 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
             <!-- Value Proposition Image -->
             <div style="margin: 40px 0; background-color: #f1f5f9; padding: 25px; border-radius: 20px;">
                 <p style="text-align: center; font-weight: 800; color: #0f172a; margin-bottom: 20px; font-size: 18px;">Why SVSU is the Right Choice for You</p>
-                <img src="https://svsu.ac.in/assets/images/top-10-reasons.png" alt="Top 10 Reasons" style="width: 100%; border-radius: 10px;">
+                <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/top-10-reasons.png.png" alt="Top 10 Reasons" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">
                 
                 <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
                     <p style="text-align: center; font-weight: 800; color: #0f172a; margin-bottom: 20px; font-size: 18px;">Our Industry Partners & Recruiters</p>
-                    <img src="https://svsu.ac.in/assets/images/companies-hiring.png" alt="Companies Hiring" style="width: 100%; border-radius: 10px;">
+                    <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/companies-hiring.png.png" alt="Companies Hiring" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">
                     <p style="text-align: center; font-size: 13px; color: #64748b; margin-top: 15px;">Join the elite list of professionals hired by top global brands.</p>
                 </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 20px 25px; margin: 30px 0;">
+                <p style="margin: 0 0 12px; font-weight: 800; color: #166534; font-size: 15px;">📞 Need Help? Contact Us Directly</p>
+                <p style="margin: 6px 0; font-size: 13px; color: #1e293b;"><b>Admission Helpline:</b> <a href="tel:9306095464" style="color: #c0392b; text-decoration: none; font-weight: 600;">9306095464</a>, <a href="tel:9253364547" style="color: #c0392b; text-decoration: none; font-weight: 600;">9253364547</a>, <a href="tel:9253224547" style="color: #c0392b; text-decoration: none; font-weight: 600;">9253224547</a>, <a href="tel:9253394547" style="color: #c0392b; text-decoration: none; font-weight: 600;">9253394547</a></p>
+                <p style="margin: 6px 0; font-size: 13px; color: #1e293b;"><b>Toll Free:</b> <a href="tel:18001800147" style="color: #c0392b; text-decoration: none; font-weight: 600;">1800-1800-147</a></p>
+                <p style="margin: 6px 0; font-size: 13px; color: #1e293b;"><b>Email:</b> <a href="mailto:admissions@svsu.ac.in" style="color: #c0392b; text-decoration: none; font-weight: 600;">admissions@svsu.ac.in</a></p>
+                <p style="margin: 6px 0; font-size: 13px; color: #1e293b;"><b>Campus:</b> Village Dudhola, Palwal, Haryana - 121102</p>
             </div>
 
             <div style="background-color: #fff7ed; border-left: 4px solid #f97316; padding: 20px; margin: 30px 0; border-radius: 0 12px 12px 0;">
@@ -1865,8 +1883,8 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
                 <p style="margin: 5px 0 0; font-size: 14px; color: #c2410c;">Our team will call you within 24 hours to help you choose the best specialization and guide you through the document verification process.</p>
             </div>
 
-            <p style="margin-top: 40px; font-weight: 700; color: #1e293b;">Warm Regards,</p>
-            <p style="margin-top: 5px; color: #64748b;"><b>Admission Desk</b><br>Shri Vishwakarma Skill University</p>
+            <p style="margin-top: 40px; font-weight: 700; color: #1e293b; font-size: 15px;">Warm Regards,</p>
+            <p style="margin-top: 5px; color: #64748b; font-size: 14px;"><b>Admission Desk</b><br>Shri Vishwakarma Skill University<br><i>India's 1st Government Skill University</i></p>
         </div>
         """
         # Send in background
