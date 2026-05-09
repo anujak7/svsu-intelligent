@@ -481,12 +481,9 @@
             </div>
 
             <nav class="nav-menu">
-                <a href="#" class="nav-item active" onclick="switchSection('dashboard', this)"><i
-                        class="fas fa-chart-line"></i> Deep Analytics</a>
-                <a href="#" class="nav-item" onclick="switchSection('leads', this)"><i
-                        class="fas fa-users-viewfinder"></i> User Leads</a>
-                <a href="#" class="nav-item" onclick="switchSection('apps', this)"><i class="fas fa-file-invoice"></i>
-                    Applications</a>
+                <a href="#" class="nav-item active" onclick="switchSection('dashboard', this)"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#" class="nav-item" onclick="switchSection('leads', this)"><i class="fas fa-users-viewfinder"></i> Lead Hub</a>
+                <a href="#" class="nav-item" onclick="switchSection('apps', this)"><i class="fas fa-file-invoice"></i> Admission Interest Forms</a>
             </nav>
 
             <button class="btn-action" style="margin-top:auto; background:#fef2f2; color:var(--danger);"
@@ -511,21 +508,25 @@
 
             <div id="section-dashboard">
                 <!-- Temporal Traffic -->
-                <div class="temporal-grid">
+                <div class="temporal-grid" style="grid-template-columns: repeat(4, 1fr);">
                     <div class="temp-card">
-                        <div class="label"><i class="fas fa-bolt"></i> Today's Traffic</div>
+                        <div class="label">Today's Engagement</div>
                         <div class="val" id="stat-today">0</div>
-                        <i class="fas fa-calendar-day bg-icon"></i>
                     </div>
                     <div class="temp-card">
-                        <div class="label"><i class="fas fa-history"></i> Yesterday</div>
-                        <div class="val" id="stat-yesterday">0</div>
-                        <i class="fas fa-calendar-check bg-icon"></i>
+                        <div class="label">Total Leads</div>
+                        <div class="val" id="stat-leads-count">0</div>
                     </div>
                     <div class="temp-card">
-                        <div class="label"><i class="fas fa-chart-bar"></i> Monthly Total</div>
-                        <div class="val" id="stat-monthly">0</div>
-                        <i class="fas fa-calendar-alt bg-icon"></i>
+                        <div class="label">Total Admission Interest Applications</div>
+                        <div class="val" id="stat-apps-count">0</div>
+                    </div>
+                    <div class="temp-card">
+                        <div class="label">Total Bot Traffic <span style="font-size: 10px; color: var(--primary); margin-left: 15px; cursor: pointer;">DETAILS</span></div>
+                        <div class="val" id="stat-total-traffic">0</div>
+                        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 5px;">
+                            INT: <span id="stat-int-sub">0</span> GEN: <span id="stat-gen-sub">0</span> ADM: <span id="stat-adm-sub">0</span>
+                        </div>
                     </div>
                 </div>
 
@@ -604,19 +605,22 @@
             <div id="section-apps" style="display:none;">
                 <div class="data-table-panel">
                     <div class="table-controls">
-                        <h3>Admission Interest Registry</h3>
-                        <button class="btn-action" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export
-                            PDF</button>
+                        <h3>Admission Interest Forms</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-action" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                            <button class="btn-action" style="background: var(--secondary); color: white;" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                        </div>
                     </div>
                     <div style="overflow-x: auto;">
                         <table id="appsList">
                             <thead>
                                 <tr>
-                                    <th>Candidate</th>
-                                    <th>Course Interest</th>
-                                    <th>Qualification</th>
+                                    <th>Applicant</th>
+                                    <th>Course Requested</th>
+                                    <th>Contact</th>
                                     <th>City</th>
-                                    <th>Date</th>
+                                    <th>Specific Query</th>
+                                    <th>Timestamp</th>
                                 </tr>
                             </thead>
                             <tbody id="appsBody">
@@ -726,12 +730,14 @@
             const bd = db.stats.bot_distribution || { intelligent: 0, general: 0, admission: 0 };
 
             document.getElementById('stat-today').innerText = tr.today || 0;
-            document.getElementById('stat-yesterday').innerText = tr.yesterday || 0;
-            document.getElementById('stat-monthly').innerText = tr.this_month || 0;
-
-            document.getElementById('bot-int-val').innerText = bd.intelligent || 0;
-            document.getElementById('bot-gen-val').innerText = bd.general || 0;
-            document.getElementById('bot-adm-val').innerText = bd.admission || 0;
+            document.getElementById('stat-leads-count').innerText = db.leads.length;
+            document.getElementById('stat-apps-count').innerText = db.apps.length;
+            
+            const totalTraffic = (bd.intelligent || 0) + (bd.general || 0) + (bd.admission || 0);
+            document.getElementById('stat-total-traffic').innerText = totalTraffic;
+            document.getElementById('stat-int-sub').innerText = bd.intelligent || 0;
+            document.getElementById('stat-gen-sub').innerText = bd.general || 0;
+            document.getElementById('stat-adm-sub').innerText = bd.admission || 0;
 
             // Leads Table
             const lBody = document.getElementById('leadsBody');
@@ -742,7 +748,7 @@
                         <td style="font-size:12px; color:var(--text-muted);">${escapeHtml(l.updated_at || l.timestamp || '--')}</td>
                         <td><strong>${escapeHtml(l.name || 'Anonymous')}</strong></td>
                         <td><span class="badge ${getBadgeClass(l.bot_type || 'intelligent')}">${escapeHtml(l.bot_type || 'intelligent')}</span></td>
-                        <td>${escapeHtml(l.email || '--')}<br><small>${escapeHtml(l.mobile || '--')}</small></td>
+                        <td>${escapeHtml(l.mobile || '--')}<br><small>${escapeHtml(l.email || '--')}</small></td>
                         <td>${escapeHtml(l.purpose || '--')}${l.latest_course ? `<br><small style="color:var(--text-muted);">${escapeHtml(l.latest_course)}</small>` : ''}</td>
                     </tr>
                 `;
@@ -754,11 +760,12 @@
             db.apps.forEach(a => {
                 aBody.innerHTML += `
                     <tr>
-                        <td><strong>${escapeHtml(a.name || 'Anonymous')}</strong><br><small>${escapeHtml(a.email || '--')}</small></td>
-                        <td><span class="badge badge-adm">${escapeHtml(a.course || '--')}</span></td>
-                        <td>${escapeHtml(a.qualification || '--')}</td>
-                        <td>${escapeHtml(a.city || '--')}</td>
-                        <td style="font-size:12px;">${escapeHtml(a.timestamp || '--')}</td>
+                        <td><strong>${escapeHtml(a.name || 'Anonymous')}</strong></td>
+                        <td style="color:var(--primary); font-weight:600;">${escapeHtml(a.course || '--')}</td>
+                        <td>${escapeHtml(a.mobile || '--')}<br><span style="color:var(--text-muted); font-size:12px;">${escapeHtml(a.email || '--')}</span></td>
+                        <td>${escapeHtml(a.city || '--')}<br><span style="color:var(--text-muted); font-size:12px;">${escapeHtml(a.qualification || '--')}</span></td>
+                        <td style="max-width: 200px; font-size: 13px; color: #475569;">${escapeHtml(a.user_query || '--')}</td>
+                        <td style="font-size:12px; color:var(--text-muted);">${escapeHtml(a.timestamp || '--')}</td>
                     </tr>
                 `;
             });

@@ -8,27 +8,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script type="module" src="/assets/model-viewer.min.js"></script>
+    <script type="module" src="https://chatbot.svsu.ac.in/assets/model-viewer.min.js"></script>
 
     <style>
         :root { --svsu-red: #c0392b; --svsu-dark: #0f172a; --svsu-gray: #64748b; --svsu-bg: #f8fafc; }
         html { background: transparent !important; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: transparent !important; display: flex; justify-content: flex-end; align-items: flex-end; padding: 20px; overflow: hidden; height: 100vh; pointer-events: none; }
+        body { background: transparent !important; display: flex; justify-content: flex-end; align-items: flex-end; padding: 14px; overflow: hidden; height: 100vh; pointer-events: none; }
+        body.widget-active { justify-content: flex-end; align-items: flex-end; padding: 10px; pointer-events: auto; }
 
         /* ── Launcher Section ── */
-        .chat-launcher-container { position: fixed; right: 20px; bottom: 20px; width: 120px; height: 120px; z-index: 99999; background: transparent !important; pointer-events: auto; }
+        .chat-launcher-container { position: fixed; right: 20px; bottom: 20px; width: 95px; height: 95px; z-index: 99999; background: transparent !important; pointer-events: auto; }
         .launcher-fab { width: 100%; height: 100%; cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
         .launcher-fab video { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); }
-        .launcher-fab:hover { transform: scale(1.1); }
+        .launcher-fab:hover { transform: none; }
         .launcher-fab.active { transform: scale(0); opacity: 0; pointer-events: none; }
 
-        /* ── Speech Bubble (exact cartoon reference style) ── */
+        /* ── Speech Bubble (cloud-shape image reference) ── */
         .speech-bubble-wrap {
             position: absolute;
-            /* Positioned above and to the left of the launcher avatar */
-            right: 105%;
-            bottom: 55px;
+            right: 70%;
+            bottom: 56px;
             transform-origin: bottom right;
             pointer-events: auto;
             cursor: pointer;
@@ -37,51 +37,19 @@
 
         .speech-bubble {
             position: relative;
-            /* Yellow glossy gradient - matches reference image */
-            background: linear-gradient(160deg, #ffe566 0%, #f5c000 45%, #e8a800 100%);
-            border: 3px solid #c98a00;
-            border-radius: 50px;
-            padding: 18px 30px;
-            min-width: 200px;
-            max-width: 260px;
+            width: 110px;
+            aspect-ratio: 299 / 248;
+            background: url('https://chatbot.svsu.ac.in/assets/textcloud_clean.png?v=2') center / contain no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 12px 28px 12px;
             text-align: center;
-            box-shadow:
-                0 6px 20px rgba(200, 130, 0, 0.35),
-                inset 0 -4px 10px rgba(180, 100, 0, 0.25);
-            /* Closed state: scaled to 0 from origin */
-            transform: scale(0);
+            transform: scale(0.2);
             opacity: 0;
             transform-origin: bottom right;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
-        }
-
-        /* Glossy shine on top — matching the image highlight */
-        .speech-bubble::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 16px;
-            right: 16px;
-            height: 36%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 40px 40px 60% 60%;
-            pointer-events: none;
-        }
-
-        /* Diamond/rotated-square tail — points toward the girl's head (bottom-right) */
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            right: 28px;
-            bottom: -22px;
-            width: 28px;
-            height: 28px;
-            background: #f5c000;
-            border-right: 3px solid #c98a00;
-            border-bottom: 3px solid #c98a00;
-            border-radius: 0 0 8px 0;
-            transform: rotate(45deg);
-            box-shadow: 3px 3px 0 #c98a00;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.16));
         }
 
         .speech-bubble.open {
@@ -89,118 +57,490 @@
             opacity: 1;
         }
 
+        .speech-tail {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 44px;
+            height: 2px;
+            border-radius: 999px;
+            background: #777777;
+            transform-origin: left center;
+            transform: rotate(var(--tail-angle, 0deg)) scaleX(0);
+            opacity: 0;
+            transition: transform 0.34s ease, opacity 0.22s ease;
+            display: none;
+        }
+
+        .speech-tail::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #777777;
+            transform: translateY(-50%);
+        }
+
+        .speech-bubble-wrap.open .speech-tail {
+            transform: rotate(var(--tail-angle, 0deg)) scaleX(1);
+            opacity: 1;
+        }
+
         .bubble-text {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            color: #3d2200;
-            line-height: 1.4;
+            color: #333333;
+            line-height: 1.3;
             position: relative;
             z-index: 1;
             opacity: 1;
             transition: opacity 0.22s ease;
+            transform: rotate(-5deg);
+            text-shadow: 0 1px 0 rgba(255,255,255,0.45);
         }
         .bubble-text.fading { opacity: 0; }
 
-        /* ── Widget Close Button (Premium Floating Over Corner) ── */
-        .widget-close-btn { position: fixed; width: 44px; height: 44px; background: #e74c3c; border: 2px solid white; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 100005; font-size: 1.2rem; color: white; transition: all 0.3s; pointer-events: auto; }
-        .widget-close-btn:hover { background: #c0392b; transform: scale(1.1) rotate(90deg); }
+        .widget-close-btn { 
+            position: fixed;
+            top: 8px;
+            left: 8px;
+            width: 34px; 
+            height: 34px; 
+            background: #e74c3c; 
+            border: 2px solid white; 
+            border-radius: 50%; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            z-index: 2147483647; 
+            font-size: 0.8rem; 
+            color: white; 
+            pointer-events: auto; 
+            transform: translateZ(0);
+        }
+        .widget-close-btn:hover { background: #c0392b; transform: scale(1.08) rotate(90deg); }
 
         /* ── Chat Widget ── */
-        .chat-widget { width: 380px; height: 600px; background: white; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; position: relative; pointer-events: auto; animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(0,0,0,0.05); }
+        .chat-widget { width: 100vw; height: 100vh; background: white; border-radius: 18px; box-shadow: 0 16px 38px rgba(0,0,0,0.18); display: none; flex-direction: column; overflow: hidden; position: relative; pointer-events: auto; animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(0,0,0,0.05); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(50px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .chat-header { padding: 12px 20px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #edf2f7; }
-        .header-left { display: flex; align-items: center; gap: 12px; }
-        .header-left img { height: 42px; }
-        .header-left span { font-weight: 800; font-size: 1rem; color: var(--svsu-dark); }
-        .header-right { display: flex; gap: 10px; align-items: center; }
+        .chat-header { padding: 9px 12px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #edf2f7; }
+        .header-left { display: flex; align-items: center; gap: 7px; min-width: 0; }
+        .header-left img { height: 30px; }
+        .header-left span { font-weight: 800; font-size: 0.82rem; color: var(--svsu-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+        .header-right { display: flex; gap: 6px; align-items: center; }
         
-        .talk-toggle { background: var(--svsu-red); color: white; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .talk-toggle { background: var(--svsu-red); color: white; border: none; padding: 5px 10px; border-radius: 14px; font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .talk-toggle:hover { opacity: 0.9; transform: scale(1.05); }
 
-        .menu-btn { width: 36px; height: 36px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--svsu-dark); border: none; }
+        .menu-btn { width: 28px; height: 28px; border-radius: 7px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--svsu-dark); border: none; font-size: 0.74rem; }
         
         /* Dropdown */
-        .dropdown-menu { position: absolute; top: 60px; right: 20px; background: white; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); width: 220px; display: none; flex-direction: column; z-index: 300; border: 1px solid #eee; }
+        .dropdown-menu { position: absolute; top: 46px; right: 8px; background: white; border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); width: 168px; display: none; flex-direction: column; z-index: 300; border: 1px solid #eee; }
         .dropdown-menu.active { display: flex; animation: fadeIn 0.2s ease; }
-        .menu-item { padding: 12px 20px; font-size: 0.9rem; color: #475569; cursor: pointer; }
+        .menu-item { padding: 8px 10px; font-size: 0.72rem; color: #475569; cursor: pointer; }
         .menu-item:hover { background: #f8fafc; color: var(--svsu-red); }
         .menu-item.active { font-weight: 800; color: var(--svsu-red); background: #fef2f2; }
 
         /* Chat Area */
-        .chat-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; background: #ffffff; scroll-behavior: smooth; }
-        .msg-row { display: flex; gap: 12px; width: 100%; align-items: flex-start; }
+        /* Chat Area - Authentic WhatsApp Doodle Background */
+        .chat-area { 
+            flex: 1; 
+            padding: 16px 12px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 14px; 
+            background-color: #efeae2; /* Authentic WhatsApp Light Beige */
+            /* High-density doodle pattern */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%23000' stroke-width='0.8' stroke-opacity='0.05'%3E%3Cpath d='M20 20h12v18H20zM26 42v4M50 20c0 10 12 10 12 0M80 20l8 15-15-8M110 30a5 5 0 1 1 0-10 5 5 0 0 1 0 10zM140 20v20h10M140 30h10M20 70c0 10 10 10 10 0M50 70h15M50 80h15M80 70l10 10M90 70l-10 10M120 70a10 10 0 1 1 0 20 10 10 0 0 1 0-20zM120 80h1M150 70l5 5 5-5M150 80h10M20 120a10 10 0 0 1 20 0M50 120h20M50 130h20M80 120v20M90 120v20M120 120l15 15M120 135l15-15M150 120h10v20h-10zM155 130h1M20 160h15M50 160c10 0 10 10 0 10M80 160v10M90 160v10M120 160h20M150 160l10 10M160 160l-10 10'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-attachment: local;
+            scroll-behavior: smooth; 
+        }
+
+        .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-end; margin-bottom: 4px; }
         .bot-row { justify-content: flex-start; }
         .user-row { justify-content: flex-end; }
-        .avatar-circle { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: white; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; }
-        .avatar-circle img { width: 80%; height: 80%; object-fit: contain; }
-        .user-avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--svsu-red); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; }
         
-        .bubble { padding: 12px 18px; border-radius: 18px; font-size: 0.9rem; line-height: 1.6; max-width: 85%; position: relative; word-wrap: break-word; }
-        .bot-bubble { background: #f1f5f9; color: var(--svsu-dark); border-top-left-radius: 4px; border: 1px solid #e2e8f0; }
-        .user-bubble { background: var(--svsu-red); color: white; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2); }
+        .avatar-circle { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: white; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .avatar-circle img { width: 85%; height: 85%; object-fit: contain; }
+        .user-avatar-circle { display: none; }
+        
+        .bubble { 
+            padding: 10px 14px; 
+            border-radius: 14px; 
+            font-size: 0.78rem; 
+            line-height: 1.55; 
+            max-width: 82%; 
+            position: relative; 
+            word-wrap: break-word; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
 
-        /* Input area */
-        .input-container { padding: 15px 20px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: flex-end; }
-        .input-wrapper { flex: 1; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 20px; display: flex; padding: 2px 10px; transition: 0.2s; }
-        .input-wrapper:focus-within { border-color: var(--svsu-red); background: white; }
-        .input-wrapper textarea { flex: 1; border: none; outline: none; padding: 10px 5px; font-size: 0.9rem; resize: none; background: transparent; max-height: 120px; }
-        .send-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--svsu-red); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; margin-bottom: 2px; }
-        .send-btn:hover { transform: scale(1.1); background: #a93226; }
+        /* Message Tails (WhatsApp Authenticity) */
+        .bot-bubble { 
+            background: #ffffff; 
+            color: var(--svsu-dark); 
+            border-bottom-left-radius: 4px; 
+            margin-left: 4px;
+        }
+        .bot-bubble::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            bottom: 0;
+            width: 15px;
+            height: 15px;
+            background: #ffffff;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
 
-        /* Voice Mode */
-        .voice-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; }
+        .user-bubble { 
+            background: var(--svsu-red); 
+            color: #ffffff; 
+            border-bottom-right-radius: 4px; 
+            margin-right: 4px;
+            text-align: left;
+        }
+        .user-bubble::after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            bottom: 0;
+            width: 15px;
+            height: 15px;
+            background: var(--svsu-red);
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+        }
+
+        /* Input area - Refined */
+        .input-container { padding: 12px; background: #f0f2f5; border-top: 1px solid #d1d7db; display: flex; gap: 10px; align-items: flex-end; }
+        .input-wrapper { flex: 1; background: white; border: none; border-radius: 24px; display: flex; padding: 4px 16px; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .input-wrapper:focus-within { background: white; }
+        .input-wrapper textarea { flex: 1; border: none; outline: none; padding: 8px 0; font-size: 0.78rem; resize: none; background: transparent; max-height: 120px; color: #111b21; }
+        .send-btn { 
+            width: auto;
+            min-width: 60px; 
+            height: 38px; 
+            padding: 0 16px;
+            border-radius: 19px; 
+            background: var(--svsu-red); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            flex-shrink: 0; 
+            box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 100;
+            position: relative;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .send-btn:hover { 
+            transform: scale(1.05) translateY(-1px); 
+            background: #a93226; 
+            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.4);
+        }
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ── Talk / Voice Mode Overlay ── */
+        .voice-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(160deg, #0f172a 0%, #1e2d50 60%, #c0392b22 100%);
+            z-index: 1000; display: none; flex-direction: column;
+            align-items: center; justify-content: flex-start;
+            overflow-y: auto;
+        }
         .voice-overlay.active { display: flex; }
-        .close-voice { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9; border: none; cursor: pointer; font-size: 1.2rem; }
-        #vSubtitle { font-size: 1.1rem; color: var(--svsu-dark); font-weight: 700; text-align: center; margin-top: 20px; }
+
+        /* top bar */
+        .voice-topbar {
+            width: 100%; display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 12px 6px;
+            flex-shrink: 0;
+        }
+        .voice-topbar-title {
+            color: rgba(255,255,255,0.85); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
+        }
+        .close-voice {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: none; cursor: pointer;
+            font-size: 0.8rem; color: white; display:flex; align-items:center; justify-content:center;
+        }
+        .close-voice:hover { background: rgba(255,255,255,0.2); }
+
+        /* avatar area */
+        .voice-avatar-wrap {
+            flex: 1; width: 100%; position: relative; min-height: 0;
+        }
+        #voiceAvatar {
+            width: 100%; height: 100%;
+            --poster-color: transparent;
+        }
+
+        /* subtitle */
+        #vSubtitle {
+            font-size: 0.72rem; color: rgba(255,255,255,0.75); font-weight: 600;
+            text-align: center; padding: 4px 16px; flex-shrink: 0;
+            min-height: 20px; letter-spacing: 0.02em;
+        }
+
+        /* mic + input bottom bar */
+        .voice-bottom {
+            width: 100%; padding: 10px 12px 14px;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            flex-shrink: 0;
+        }
+        .mic-btn {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--svsu-red);
+            border: 3px solid rgba(255,255,255,0.25);
+            color: white; font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s; box-shadow: 0 4px 20px rgba(192,57,43,0.5);
+        }
+        .mic-btn.listening {
+            background: #e74c3c;
+            animation: mic-pulse 1.2s infinite;
+            box-shadow: 0 0 0 0 rgba(231,76,60,0.6);
+        }
+        @keyframes mic-pulse {
+            0%   { box-shadow: 0 0 0 0   rgba(231,76,60,0.6); }
+            70%  { box-shadow: 0 0 0 14px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0   rgba(231,76,60,0); }
+        }
+        .voice-input-row {
+            width: 100%; display: flex; gap: 8px; align-items: center;
+        }
+        .voice-text-input {
+            flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px; padding: 8px 14px; color: white; font-size: 0.74rem;
+            outline: none;
+        }
+        .voice-text-input::placeholder { color: rgba(255,255,255,0.4); }
+        .voice-send-btn {
+            width: 34px; height: 34px; border-radius: 50%; background: var(--svsu-red);
+            border: none; color: white; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; font-size: 0.8rem;
+            flex-shrink: 0;
+        }
 
         /* Chips */
-        .options-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        .option-chip { padding: 8px 16px; border-radius: 20px; background: white; border: 1.5px solid var(--svsu-red); color: var(--svsu-red); font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .options-container { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .option-chip { width: 100%; padding: 7px 8px; border-radius: 10px; background: white; border: 1px solid var(--svsu-red); color: var(--svsu-red); font-weight: 700; font-size: 0.68rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .option-chip:hover { background: var(--svsu-red); color: white; }
+        .option-chip.back-chip { border-color: var(--svsu-gray); color: var(--svsu-gray); background: #f1f5f9; margin-top: 5px; }
+        .option-chip.back-chip:hover { background: var(--svsu-gray); color: white; }
 
-        /* Form */
-        .premium-form { margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: white; padding: 15px; border-radius: 16px; border: 1px solid #e2e8f0; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group.full { grid-column: span 2; }
-        .form-group label { font-size: 0.7rem; font-weight: 800; color: var(--svsu-gray); text-transform: uppercase; }
-        .form-group input, .form-group select { padding: 10px; border: 1.5px solid #edf2f7; border-radius: 8px; font-size: 0.85rem; outline: none; }
-        .form-group input:focus { border-color: var(--svsu-red); }
-        .submit-btn { grid-column: span 2; background: var(--svsu-dark); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 5px; }
+        /* Admission Form UI Overhaul */
+        .admission-overlay {
+            background: rgba(15, 23, 42, 0.48);
+            backdrop-filter: blur(6px);
+            padding: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .admission-container {
+            background: #ffffff;
+            width: min(100%, 332px);
+            max-height: 94%;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e6ecf3;
+            box-shadow: 0 20px 42px rgba(2, 8, 23, 0.34);
+            animation: modalSlideUp 0.24s ease;
+        }
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .admission-header {
+            background: #ffffff;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .admission-header h3 {
+            margin: 0;
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admission-header i.fa-edit { color: var(--svsu-red); font-size: 0.9rem; }
+        
+        .admission-body {
+            padding: 12px;
+            background: #ffffff;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .admission-intro {
+            font-size: 0.66rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .svsu-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .svsu-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .svsu-form-group label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .svsu-form-group input, 
+        .svsu-form-group select, 
+        .svsu-form-group textarea {
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            background: #f9fbfd;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .svsu-form-group input:focus, 
+        .svsu-form-group select:focus, 
+        .svsu-form-group textarea:focus {
+            border-color: var(--svsu-red);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.08);
+        }
+        .svsu-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .svsu-submit-btn {
+            background: var(--svsu-red);
+            color: white;
+            border: none;
+            padding: 9px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.74rem;
+            cursor: pointer;
+            margin-top: 4px;
+            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .svsu-submit-btn:hover {
+            background: #a93226;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(192, 57, 43, 0.25);
+        }
+        .svsu-submit-btn:active { transform: translateY(0); }
+        .admission-error {
+            display: none;
+            margin-top: 2px;
+            font-size: 0.66rem;
+            color: #c0392b;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 420px) {
+            .svsu-form-row {
+                grid-template-columns: 1fr;
+            }
+            .admission-container {
+                width: min(100%, 312px);
+            }
+        }
 
         /* Animations */
         @keyframes typing { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         .typing-dots span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--svsu-red); margin: 0 2px; animation: typing 1s infinite; }
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @media (max-width: 520px) { /* Mobile Fix Applied */
+            body { padding: 0; }
+            body.widget-active { padding: 0; }
+            .chat-launcher-container { right: 10px; bottom: 10px; width: 75px; height: 75px; }
+            .speech-bubble-wrap { right: 65%; bottom: 30px; }
+            .speech-bubble { width: 80px; padding: 10px 8px 18px 8px; }
+
+
+            .bubble-text { font-size: 0.68rem; }
+            .chat-widget { 
+                width: 100vw; 
+                height: 100vh; 
+                border-radius: 0; 
+                border: none;
+                max-width: none;
+                max-height: none;
+            }
+            .widget-close-btn { top: 10px; right: 10px; width: 34px; height: 34px; background: rgba(231, 76, 60, 0.85); border: none; left: unset; }
+
+        }
     </style>
 </head>
 
 <body>
-    <div class="chat-launcher-container">
+    <div class="chat-launcher-container" id="chatLauncherContainer">
         <!-- Speech bubble: tail points to girl's mouth (right-bottom corner) -->
         <div class="speech-bubble-wrap" id="speechBubbleWrap" onclick="toggleChat()">
             <div class="speech-bubble" id="speechBubble">
                 <p class="bubble-text" id="bubbleText">Hi, I'm Pihu!</p>
             </div>
+            <div class="speech-tail" id="speechTail"></div>
         </div>
         <div class="launcher-fab" id="launcherFab">
-            <video autoplay muted loop playsinline><source src="/assets/svsugirl.webm" type="video/webm"></video>
+            <video autoplay muted loop playsinline><source src="https://chatbot.svsu.ac.in/assets/svsugirl.webm" type="video/webm"></video>
         </div>
     </div>
-
-    <button class="widget-close-btn" id="widgetCloseBtn"><i class="fas fa-times"></i></button>
 
     <div class="chat-widget" id="chatWidget">
         <header class="chat-header">
             <div class="header-left">
-                <img src="/assets/logo-svsu.png" alt="SVSU">
+                <img src="../assets/logo-svsu.png?v=3" alt="SVSU">
                 <span>SVSU Intelligent</span>
             </div>
             <div class="header-right">
-                <button class="talk-toggle" id="talkBtn">Talk</button>
+                <button class="talk-toggle" id="admissionInterestBtn" style="background: #27ae60;">Admission Interest</button>
                 <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+                <button class="menu-btn" id="widgetCloseBtn" style="background: #e74c3c; color: white;" aria-label="Close chat"><i class="fas fa-times"></i></button>
             </div>
             <div class="dropdown-menu" id="dropdownMenu">
                 <div class="menu-item active" onclick="switchMode('intelligent')">SVSU Intelligent</div>
@@ -212,8 +552,8 @@
 
         <main class="chat-area" id="chatArea">
             <div class="msg-row bot-row">
-                <div class="avatar-circle"><img src="/assets/logo-svsu.png"></div>
-                <div class="bubble bot-bubble">Namaste! I am **Pihu**, your Intelligent SVSU Assistant. How can I guide you today?</div>
+                <div class="avatar-circle"><img src="https://chatbot.svsu.ac.in/assets/logo-svsu.png"></div>
+                <div class="bubble bot-bubble">Welcome to SVSU! Please enter your Full Name, Mobile, and Email to get started.</div>
             </div>
         </main>
 
@@ -221,48 +561,221 @@
             <div class="input-wrapper">
                 <textarea id="chatInput" placeholder="Type your message..." rows="1"></textarea>
             </div>
-            <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+            <button class="send-btn" id="sendBtn" type="button" style="cursor: pointer; pointer-events: all !important;">Go</button>
         </div>
 
-        <div class="voice-overlay" id="voiceOverlay">
-            <button class="close-voice" id="closeVoice"><i class="fas fa-times"></i></button>
-            <model-viewer id="voiceAvatar" src="/assets/models/BreathingIdle_compressed.glb" autoplay interaction-prompt="none" style="width: 100%; height: 60%;"></model-viewer>
-            <div id="vSubtitle">I'm listening...</div>
+        <div class="voice-overlay admission-overlay" id="admissionOverlay" style="display: none;">
+            <div class="admission-container">
+                <div class="admission-header">
+                    <button class="close-voice" id="backAdmission" style="background: none; color: #64748b; font-size: 0.75rem; font-weight: 700; width: auto; border-radius: 4px; padding: 5px 10px;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h3><i class="fas fa-edit"></i> Admission Interest</h3>
+                    <button class="close-voice" id="closeAdmission"><i class="fas fa-times"></i></button>
+                </div>
+            <div class="admission-body">
+                <p class="admission-intro">Share your details and we will connect with you for admission guidance.</p>
+                
+                <div class="svsu-form">
+                    <div class="svsu-form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="admFormName" placeholder="Enter full name" required>
+                    </div>
+
+
+                    <div class="svsu-form-row">
+                        <div class="svsu-form-group">
+                            <label>Mobile *</label>
+                            <input type="text" id="admFormMobile" placeholder="10-digit number" required>
+                        </div>
+                        <div class="svsu-form-group">
+                            <label>Email *</label>
+                            <input type="email" id="admFormEmail" placeholder="name@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="svsu-form-row">
+                        <div class="svsu-form-group">
+                            <label>State *</label>
+                            <input type="text" id="admFormState" placeholder="State name" required>
+                        </div>
+                        <div class="svsu-form-group">
+                            <label>City *</label>
+                            <input type="text" id="admFormCity" placeholder="City name" required>
+                        </div>
+                    </div>
+
+                    <div class="svsu-form-group">
+                        <label>Program of Interest *</label>
+                        <input type="text" id="admFormCourse" placeholder="e.g. B.Tech CSE (AI/ML)" required>
+                    </div>
+
+                    <div class="svsu-form-row">
+                        <div class="svsu-form-group">
+                            <label>Qualification</label>
+                            <select id="admFormQualification">
+                                <option value="">Select Option</option>
+                                <option value="10th">10th</option>
+                                <option value="12th">12th</option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Graduation">Graduation</option>
+                                <option value="PG">Post Graduation</option>
+                            </select>
+                        </div>
+                        <div class="svsu-form-group">
+                            <label>Passing Year</label>
+                            <input type="text" id="admFormYear" placeholder="e.g. 2025">
+                        </div>
+                    </div>
+
+                    <div class="svsu-form-group">
+                        <label>Percentage / CGPA</label>
+                        <input type="text" id="admFormPercentage" placeholder="e.g. 82% or 8.1 CGPA">
+                    </div>
+
+                    <div class="svsu-form-group">
+                        <label>Specific Query (Optional)</label>
+                        <textarea id="admFormQuery" placeholder="Any specific question?" rows="2"></textarea>
+                    </div>
+
+                    <button class="svsu-submit-btn" id="admFormSubmit">
+                        Submit Interest
+                    </button>
+                    <div class="admission-error" id="admFormError"></div>
+                </div>
+                <div id="admFormSuccess" style="display: none; text-align: center; color: #27ae60; font-size: 0.85rem; padding: 20px; font-weight: bold;">
+                    Details submitted successfully. We will contact you soon!
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const chatWidget = document.getElementById('chatWidget');
         const launcherFab = document.getElementById('launcherFab');
+        const chatLauncherContainer = document.getElementById('chatLauncherContainer');
         const widgetCloseBtn = document.getElementById('widgetCloseBtn');
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
         const chatArea = document.getElementById('chatArea');
+        let isChatOpen = false;
+        
+        // Widget Mode Check
+        const urlParams = new URLSearchParams(window.location.search);
+        const isWidgetMode = urlParams.get('widget') === '1';
+        if (isWidgetMode) {
+            chatLauncherContainer.style.display = 'none';
+            chatWidget.style.display = 'flex';
+            widgetCloseBtn.style.display = 'flex';
+            isChatOpen = true;
+            document.body.classList.add('widget-active');
+            requestAnimationFrame(positionCloseButton);
+            setTimeout(positionCloseButton, 180);
+            setTimeout(initLeadFlow, 1000);
+        }
+
+        function getTrafficClientId() {
+            const storageKey = 'svsu_traffic_client_id_v1';
+            try {
+                let clientId = sessionStorage.getItem(storageKey) || localStorage.getItem(storageKey) || '';
+                if (!clientId) {
+                    clientId = `traffic_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+                    sessionStorage.setItem(storageKey, clientId);
+                    localStorage.setItem(storageKey, clientId);
+                } else if (!sessionStorage.getItem(storageKey)) {
+                    sessionStorage.setItem(storageKey, clientId);
+                }
+                return clientId;
+            } catch (err) {
+                return `traffic_fallback_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+            }
+        }
+
+        function logTrafficVisitOnce() {
+            const sessionKey = 'svsu_traffic_logged_session_v2';
+            try {
+                if (sessionStorage.getItem(sessionKey) === '1') return;
+                sessionStorage.setItem(sessionKey, '1');
+            } catch (err) {
+                // Continue without sessionStorage; backend dedup will still protect counts.
+            }
+
+            fetch('/api/log-traffic', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    bot_type: 'intelligent',
+                    client_id: getTrafficClientId(),
+                    page_url: window.location.pathname + window.location.search
+                })
+            }).catch(e => console.log("Traffic log skip"));
+        }
+        // Traffic is logged ONLY after lead registration (Name+Mobile+Email completed)
+        // Page-load visits are NOT counted — only real bot interactions are tracked.
+        
+        // Robust button binding
+        if (sendBtn) {
+            const triggerSend = (e) => {
+                if (e) e.preventDefault();
+                handleSend();
+            };
+            sendBtn.addEventListener('click', triggerSend);
+        }
         const menuBtn = document.getElementById('menuBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
-        const talkBtn = document.getElementById('talkBtn');
-        const voiceOverlay = document.getElementById('voiceOverlay');
-        const closeVoice = document.getElementById('closeVoice');
-        const voiceAvatar = document.getElementById('voiceAvatar');
+        const admissionInterestBtn = document.getElementById('admissionInterestBtn');
+        const admissionOverlay = document.getElementById('admissionOverlay');
+        const closeAdmission = document.getElementById('closeAdmission');
+        const backAdmission = document.getElementById('backAdmission');
 
-        let isChatOpen = false;
         let currentBotMode = 'intelligent';
         let chatHistory = [];
         let leadStep = 'name';
+        let leadPromptShown = false;
+        let modeOptionsShown = false;
         let lead = { name: '', mobile: '', email: '', purpose: '', lead_id: '' };
+        let selectedProgram = '';
+        let admissionReminderShown = false;
+        let admissionCatalog = [];
+        let admissionCatalogLoaded = false;
+        let admissionSubMenuActive = false;
+        let admissionCatalogMeta = {
+            session: '',
+            sourceUrl: '',
+            totalPrograms: 0,
+            programCountViews: {},
+            pdfIngestionSummary: {},
+        };
+        const admissionLevelOrder = ['Diploma', 'UG Certificate', 'Undergraduate', 'Postgraduate', 'Doctorate (Ph.D.)'];
+        const invalidNameTerms = new Set([
+            'hi', 'hii', 'hiii', 'hello', 'hey', 'yo', 'namaste', 'namaskar', 'ok', 'okay', 'test', 'testing', 'user'
+        ]);
+        const leadFieldNoisePattern = /\b(full name|name|mobile number|mobile no|mobile|phone number|phone no|phone|contact number|contact no|contact|number|email address|email id|email|mail id|mail)\b/gi;
+        const nameIntroPattern = /\b(my name is|i am|iam|this is|myself|this side|it'?s|its)\b/gi;
+        const admissionIntentPattern = /\b(program|programs|course|courses|admission|admissions|fee|fees|eligibility|placement|counselling|apply|application|b\.?tech|bba|bca|mba|mca|phd|diploma|ug|pg)\b/i;
 
-        // ── Speech Bubble: Open (show) → 2s pause → text fade → next text → close (hide) → 1s pause → repeat ──
+        // ── Speech Bubble: cloud + mouth-tail open/close every 2 seconds ──
         const bubbleTexts = [
-            "Hi, I'm Pihu! 👋",
+            "Hi, I'm SVSU Guide! ",
             "Need help with admissions?",
             "Ask me anything about SVSU!",
-            "Courses, fees, hostel — ask me!",
-            "I'm your SVSU guide 🎓"
+            "Courses, fees, hostel — ask me!"
         ];
         let bubbleIndex = 0;
         const speechBubble = document.getElementById('speechBubble');
         const bubbleTextEl = document.getElementById('bubbleText');
         const speechBubbleWrap = document.getElementById('speechBubbleWrap');
+        const speechTail = document.getElementById('speechTail');
+        const BUBBLE_OPEN_MS = 2000;
+        const BUBBLE_CLOSED_MS = 2000;
+        const admissionContactInfo = {
+            phones: ['9306095464', '9253364547', '9253224547', '9253394547'],
+            tollFree: '18001800147',
+            email: 'admissions@svsu.ac.in'
+        };
+        // Keep admission menu code intact for later reuse.
+        // Change this to true whenever fresh admission data/menu should go live again.
+        const ADMISSION_MENU_ENABLED = true;
 
         function runBubbleCycle() {
             if (isChatOpen) {
@@ -270,33 +783,87 @@
                 setTimeout(runBubbleCycle, 1000);
                 return;
             }
-            // Step 1: Open bubble (pop in)
             speechBubbleWrap.style.display = 'block';
             bubbleTextEl.classList.remove('fading');
             bubbleTextEl.innerText = bubbleTexts[bubbleIndex];
+            requestAnimationFrame(positionSpeechTailToMouth);
+            setTimeout(positionSpeechTailToMouth, 80);
             speechBubble.classList.add('open');
+            speechBubbleWrap.classList.add('open');
 
-            // Step 2: After 2s — fade text out, change text, fade in
             setTimeout(() => {
                 if (isChatOpen) return;
                 bubbleTextEl.classList.add('fading');
                 setTimeout(() => {
+                    speechBubble.classList.remove('open');
+                    speechBubbleWrap.classList.remove('open');
                     bubbleIndex = (bubbleIndex + 1) % bubbleTexts.length;
                     bubbleTextEl.innerText = bubbleTexts[bubbleIndex];
                     bubbleTextEl.classList.remove('fading');
-
-                    // Step 3: After another 1.5s — close bubble (pop out)
                     setTimeout(() => {
-                        speechBubble.classList.remove('open');
-                        // Step 4: After close animation — wait 1s then repeat
-                        setTimeout(runBubbleCycle, 1000);
-                    }, 1500);
+                        speechBubbleWrap.style.display = 'none';
+                        setTimeout(runBubbleCycle, BUBBLE_CLOSED_MS);
+                    }, 360);
                 }, 250);
-            }, 2000);
+            }, BUBBLE_OPEN_MS);
         }
 
         // Start the cycle after a short initial delay
         setTimeout(runBubbleCycle, 800);
+        setTimeout(positionSpeechTailToMouth, 900);
+
+        function positionCloseButton() {
+            // Disabled: Close button is now statically placed inside the header.
+        }
+
+        function positionSpeechTailToMouth() {
+            if (!speechTail || !speechBubble || !speechBubbleWrap || !launcherFab) return;
+            const wrapRect = speechBubbleWrap.getBoundingClientRect();
+            const bubbleRect = speechBubble.getBoundingClientRect();
+            const launcherRect = launcherFab.getBoundingClientRect();
+            if (!wrapRect.width || !bubbleRect.width || !launcherRect.width) return;
+
+            // Approximate mouth anchor on the animated character.
+            const mouthX = launcherRect.left + (launcherRect.width * 0.53);
+            const mouthY = launcherRect.top + (launcherRect.height * 0.27);
+
+            // Tail starts from lower-right part of the cloud.
+            const startX = bubbleRect.right - 18;
+            const startY = bubbleRect.top + (bubbleRect.height * 0.78);
+
+            const dx = mouthX - startX;
+            const dy = mouthY - startY;
+            const length = Math.max(20, Math.hypot(dx, dy));
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+            speechTail.style.left = `${Math.round(startX - wrapRect.left)}px`;
+            speechTail.style.top = `${Math.round(startY - wrapRect.top)}px`;
+            speechTail.style.width = `${Math.round(length)}px`;
+            speechTail.style.setProperty('--tail-angle', `${angle}deg`);
+        }
+
+        function buildAdmissionPausedMessage() {
+            return [
+                'Please contact the SVSU Admission Team:',
+                `- **Phone:** ${admissionContactInfo.phones.join(', ')}`,
+                `- **Toll Free:** ${admissionContactInfo.tollFree}`,
+                `- **Email:** ${admissionContactInfo.email}`,
+                '',
+                'For all other verified SVSU information, please use **Others Query**.'
+            ].join('\n');
+        }
+
+        function shareAdmissionPausedMessage() {
+            addMsg('bot', buildAdmissionPausedMessage());
+        }
+
+        function closeWidgetPanelOnly() {
+            if (isWidgetMode && window.parent && window.parent !== window) {
+                window.parent.postMessage('chatClosed', '*');
+                return;
+            }
+            toggleChat();
+        }
 
         // ── Navigation ──
         function toggleChat() {
@@ -304,57 +871,705 @@
             if (isChatOpen) {
                 // Hide bubble immediately
                 speechBubble.classList.remove('open');
+                speechBubbleWrap.classList.remove('open');
                 speechBubbleWrap.style.display = 'none';
 
                 chatWidget.style.display = 'flex';
                 launcherFab.classList.add('active');
-                setTimeout(() => {
-                    const rect = chatWidget.getBoundingClientRect();
-                    widgetCloseBtn.style.top = (rect.top - 20) + 'px';
-                    widgetCloseBtn.style.right = (window.innerWidth - rect.right - 15) + 'px';
-                    widgetCloseBtn.style.display = 'flex';
+                widgetCloseBtn.style.display = 'flex';
+                requestAnimationFrame(() => {
+                    positionCloseButton();
                     chatInput.focus();
-                }, 50);
+                });
+                setTimeout(positionCloseButton, 420);
                 if (leadStep === 'name' && lead.name === '') initLeadFlow();
+                
+                // Notify parent window to expand iframe
+                if (window.parent) {
+                    window.parent.postMessage('chatOpened', '*');
+                }
             } else {
                 chatWidget.style.display = 'none';
                 launcherFab.classList.remove('active');
                 widgetCloseBtn.style.display = 'none';
                 // Restart bubble cycle
                 setTimeout(runBubbleCycle, 600);
+                
+                // Notify parent window to shrink iframe
+                if (window.parent) {
+                    window.parent.postMessage('chatClosed', '*');
+                }
             }
         }
 
         launcherFab.onclick = toggleChat;
-        widgetCloseBtn.onclick = toggleChat;
-        menuBtn.onclick = (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('active'); };
-        document.onclick = () => dropdownMenu.classList.remove('active');
-
-        talkBtn.onclick = () => { voiceOverlay.classList.add('active'); };
-        closeVoice.onclick = () => { voiceOverlay.classList.remove('active'); };
-
-        // 3D Avatar Framing
-        voiceAvatar.addEventListener('load', () => {
-            const d = voiceAvatar.getDimensions();
-            const tY = d.y * 0.76;
-            const rad = d.y * 0.55;
-            voiceAvatar.cameraTarget = `0m ${tY}m 0m`;
-            voiceAvatar.cameraOrbit = `0deg 85deg ${rad}m`;
+        widgetCloseBtn.onclick = closeWidgetPanelOnly;
+        menuBtn.onclick = (e) => { 
+            e.stopPropagation(); 
+            if (admissionSubMenuActive) {
+                // If in sub-menu, don't open main menu, notify user
+                alert("Please use the 'Back' option in the chat to return to the Main Admission Menu first.");
+                return;
+            }
+            dropdownMenu.classList.toggle('active'); 
+        };
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
         });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isChatOpen) closeWidgetPanelOnly();
+        });
+        window.addEventListener('resize', positionCloseButton);
+        window.addEventListener('scroll', positionCloseButton, { passive: true });
+        chatWidget.addEventListener('animationend', positionCloseButton);
+        window.addEventListener('resize', positionSpeechTailToMouth);
+        window.addEventListener('scroll', positionSpeechTailToMouth, { passive: true });
+        if (chatLauncherContainer) chatLauncherContainer.addEventListener('transitionend', positionSpeechTailToMouth);
 
-        // ── Lead Flow ──
-        function addMsg(role, text) {
+        // ── Admission Interest Form Logic ─────────────────────────────────────────────────
+        admissionInterestBtn.onclick = () => {
+            const courseInput = document.getElementById('admFormCourse');
+            if (courseInput && selectedProgram && !courseInput.value.trim()) {
+                courseInput.value = selectedProgram;
+            }
+            admissionOverlay.style.display = 'flex';
+            setTimeout(() => {
+                const firstField = document.getElementById('admFormName');
+                if (firstField) firstField.focus();
+            }, 40);
+        };
+
+        backAdmission.onclick = () => {
+            admissionOverlay.style.display = 'none';
+        };
+
+        closeAdmission.onclick = () => {
+            admissionOverlay.style.display = 'none';
+        };
+
+        document.getElementById('admFormSubmit').onclick = async () => {
+            const name = document.getElementById('admFormName').value.trim();
+            const mobileRaw = document.getElementById('admFormMobile').value.trim();
+            const emailRaw = document.getElementById('admFormEmail').value.trim();
+            const state = document.getElementById('admFormState').value.trim();
+            const city = document.getElementById('admFormCity').value.trim();
+            const course = document.getElementById('admFormCourse').value.trim();
+            const qualification = document.getElementById('admFormQualification').value;
+            const year = document.getElementById('admFormYear').value.trim();
+            const percentage = document.getElementById('admFormPercentage').value.trim();
+            const query = document.getElementById('admFormQuery').value.trim();
+            const errorBox = document.getElementById('admFormError');
+            const mobile = mobileRaw.replace(/\D/g, '').slice(-10);
+            const email = emailRaw.toLowerCase();
+            
+            if (errorBox) {
+                errorBox.style.display = 'none';
+                errorBox.innerText = '';
+            }
+            if (!name || !mobile || !email || !state || !city || !course) {
+                if (errorBox) {
+                    errorBox.innerText = 'Please fill Name, Mobile, Email, State, City, and Program.';
+                    errorBox.style.display = 'block';
+                }
+                return;
+            }
+            if (!/^[6-9]\d{9}$/.test(mobile)) {
+                if (errorBox) {
+                    errorBox.innerText = 'Please enter a valid 10-digit mobile number.';
+                    errorBox.style.display = 'block';
+                }
+                return;
+            }
+            if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,24}$/.test(email)) {
+                if (errorBox) {
+                    errorBox.innerText = 'Please enter a valid email address.';
+                    errorBox.style.display = 'block';
+                }
+                return;
+            }
+            
+            const btn = document.getElementById('admFormSubmit');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/application', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        mobile: mobile,
+                        email: email,
+                        state: state,
+                        city: city,
+                        course: course,
+                        qualification: qualification,
+                        passing_year: year,
+                        percentage: percentage,
+                        user_query: query,
+                        purpose: 'admission_interest',
+                        source_bot: 'intelligent'
+                    })
+                });
+                
+                if (!response.ok) throw new Error("Server error");
+
+                document.getElementById('admFormSuccess').style.display = 'block';
+                
+                // Reset form
+                ['admFormName', 'admFormMobile', 'admFormEmail', 'admFormState', 'admFormCity', 'admFormCourse', 'admFormYear', 'admFormPercentage', 'admFormQuery'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                document.getElementById('admFormQualification').selectedIndex = 0;
+                if (errorBox) {
+                    errorBox.style.display = 'none';
+                    errorBox.innerText = '';
+                }
+                
+                setTimeout(() => {
+                    admissionOverlay.style.display = 'none';
+                    document.getElementById('admFormSuccess').style.display = 'none';
+                    btn.innerHTML = originalBtnHtml;
+                    btn.disabled = false;
+                }, 3000);
+            } catch (e) {
+                if (errorBox) {
+                    errorBox.innerText = 'Submission failed. Please try again.';
+                    errorBox.style.display = 'block';
+                }
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+            }
+        };
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderBotMessage(text) {
+            const safeText = String(text ?? '');
+            if (window.marked && typeof window.marked.parse === 'function') {
+                return window.marked.parse(safeText);
+            }
+            return escapeHtml(safeText).replace(/\n/g, '<br>');
+        }
+
+        function normalizeName(text) {
+            const cleaned = String(text || '')
+                .replace(nameIntroPattern, ' ')
+                .replace(leadFieldNoisePattern, ' ')
+                .replace(/[^a-zA-Z\s.'-]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            const tokens = cleaned.split(' ').filter(Boolean);
+            while (tokens.length && invalidNameTerms.has(tokens[0].toLowerCase())) tokens.shift();
+            while (tokens.length && invalidNameTerms.has(tokens[tokens.length - 1].toLowerCase())) tokens.pop();
+            return tokens.join(' ');
+        }
+
+        function isValidName(name) {
+            const cleaned = String(name || '').trim();
+            if (!cleaned) return false;
+            const lower = cleaned.toLowerCase();
+            const lettersOnly = cleaned.replace(/[^a-zA-Z]/g, '');
+            if (invalidNameTerms.has(lower)) return false;
+            if (lettersOnly.length < 3) return false;
+            if (!/^[a-zA-Z][a-zA-Z\s.'-]*$/.test(cleaned)) return false;
+            return true;
+        }
+
+        function findMobileMatch(text) {
+            const mobileMatch = String(text || '').match(/(?:\+?91[\s-]*)?([6-9](?:[\s-]?\d){9})\b/);
+            return mobileMatch
+                ? { raw: mobileMatch[0], value: mobileMatch[0].replace(/\D/g, '').slice(-10) }
+                : null;
+        }
+
+        function extractMobile(text) {
+            return findMobileMatch(text)?.value || '';
+        }
+
+        function findEmailMatch(text) {
+            const emailMatch = String(text || '').match(/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,24}\b/i);
+            return emailMatch ? { raw: emailMatch[0], value: emailMatch[0].toLowerCase() } : null;
+        }
+
+        function extractEmail(text) {
+            return findEmailMatch(text)?.value || '';
+        }
+
+        function extractLeadName(text, emailMatch = null, mobileMatch = null) {
+            let source = String(text || '');
+            if (emailMatch?.raw) source = source.replace(emailMatch.raw, ' ');
+            if (mobileMatch?.raw) source = source.replace(mobileMatch.raw, ' ');
+            return normalizeName(source);
+        }
+
+        function getPendingLeadStep() {
+            if (!lead.name) return 'name';
+            if (!lead.mobile) return 'mobile';
+            if (!lead.email) return 'email';
+            return '';
+        }
+
+        function modeLabel(mode) {
+            if (mode === 'admission') return 'Admission Query';
+            if (mode === 'general') return 'Others Query';
+            return 'SVSU Intelligent';
+        }
+
+        function isAdmissionIntentMessage(text) {
+            const q = String(text || '').trim();
+            if (!q) return false;
+            return admissionIntentPattern.test(q);
+        }
+
+        function normalizeLookupText(value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/&/g, ' and ')
+                .replace(/[^a-z0-9]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function normalizeAdmissionLevel(raw) {
+            const q = normalizeLookupText(raw);
+            if (!q) return '';
+            if (q.includes('doctorate') || q.includes('ph.d') || q.includes('phd') || q.includes('research')) return 'Doctorate (Ph.D.)';
+            if (q.includes('certificate')) return 'UG Certificate';
+            if (q.includes('postgraduate') || q.includes('postgr') || q === 'pg' || q.startsWith('pg ')) return 'Postgraduate';
+            if (q.includes('undergraduate') || q.includes('undergr') || q === 'ug' || q.startsWith('ug ')) return 'Undergraduate';
+            if (q.includes('diploma') || q.includes('d voc') || q.includes('dvoc')) return 'Diploma';
+            return '';
+        }
+
+        async function ensureAdmissionCatalog(force = false) {
+            if (admissionCatalogLoaded && !force) return true;
+            try {
+                const res = await fetch('/api/admission/catalog');
+                const data = await res.json();
+                if (!res.ok || data.status !== 'success') throw new Error(data.message || 'Admission catalog load failed');
+
+                admissionCatalog = Array.isArray(data.programs) ? data.programs : [];
+                admissionCatalogLoaded = true;
+                admissionCatalogMeta = {
+                    session: data.session || '',
+                    sourceUrl: data.source_url || '',
+                    totalPrograms: Number(data.total_programs || admissionCatalog.length || 0),
+                    programCountViews: data.program_count_views || {},
+                    pdfIngestionSummary: data.pdf_ingestion_summary || {},
+                };
+                return admissionCatalog.length > 0;
+            } catch (err) {
+                console.error('Admission catalog error:', err);
+                admissionCatalogLoaded = false;
+                admissionCatalog = [];
+                return false;
+            }
+        }
+
+        function getProgramsByLevel(level) {
+            const normalized = normalizeAdmissionLevel(level);
+            return admissionCatalog.filter((p) => normalizeAdmissionLevel(p.menu_level) === normalized);
+        }
+
+        function findProgramById(programId) {
+            return admissionCatalog.find((p) => String(p.program_id) === String(programId)) || null;
+        }
+
+        function findProgramMatches(query) {
+            const qNorm = normalizeLookupText(query);
+            if (!qNorm || qNorm.length < 3) return [];
+            const tokens = qNorm.split(' ').filter(Boolean);
+
+            const scored = [];
+            for (const p of admissionCatalog) {
+                const searchable = normalizeLookupText([
+                    p.display_title,
+                    p.canonical_title,
+                    p.legacy_catalog_title,
+                    p.faculty,
+                    p.menu_level,
+                    p.menu_category,
+                    ...(Array.isArray(p.aliases) ? p.aliases : [])
+                ].join(' '));
+
+                if (!searchable) continue;
+                let score = 0;
+                if (qNorm === normalizeLookupText(p.display_title)) score += 120;
+                if (searchable.includes(qNorm)) score += 60;
+                if (tokens.length && tokens.every((t) => searchable.includes(t))) score += 40;
+                for (const t of tokens) {
+                    if (t.length < 3) continue; // Skip very short tokens like 'is', 'vc'
+                    if (searchable.includes(t)) score += 2;
+                }
+                if (score > 10) scored.push({ score, program: p }); // Only push if score is meaningful
+            }
+
+            scored.sort((a, b) => b.score - a.score);
+            return scored.slice(0, 12).map((x) => x.program);
+        }
+
+        function ncrfDisplay(program) {
+            const val = String(program?.ncrf_level || '').trim();
+            if (val) return val;
+            const lvl = normalizeAdmissionLevel(program?.menu_level || '');
+            if (lvl === 'Undergraduate') return 'Undergraduate (NCrF-aligned)';
+            if (lvl === 'Postgraduate') return 'Postgraduate (NCrF-aligned)';
+            if (lvl === 'Diploma') return 'Diploma (NCrF-aligned)';
+            if (lvl === 'UG Certificate') return 'UG Certificate (NCrF-aligned)';
+            return 'As per NCrF-aligned SVSU framework';
+        }
+
+        function programBrief(program) {
+            let explicitBrief = String(program?.program_brief || '').trim();
+            if (explicitBrief) {
+                // Remove everything from the first occurrence of metadata keywords to avoid duplication
+                const keywords = ["Eligibility:", "NCrF Level:", "Duration:", "Seat:", "Industry Partner:", "About the Program:", "Faculty:", "Intake:"];
+                let earliest = explicitBrief.length;
+                keywords.forEach(kw => {
+                    const idx = explicitBrief.indexOf(kw);
+                    if (idx !== -1 && idx < earliest) earliest = idx;
+                });
+                explicitBrief = explicitBrief.substring(0, earliest).trim();
+                if (explicitBrief) return explicitBrief;
+            }
+            const levelText = program.menu_level ? `${program.menu_level.toLowerCase()} programme` : 'skill-focused programme';
+            return `${program.display_title} is an SVSU ${levelText} with industry-linked, practical learning.`;
+        }
+
+        function verifiedSources(program) {
+            const values = [
+                program?.program_brief_source,
+                program?.ncrf_level_source,
+                program?.industry_partner_source,
+                ...(Array.isArray(program?.verified_sources) ? program.verified_sources : [])
+            ]
+                .map((value) => String(value || '').trim())
+                .filter(Boolean);
+
+            const output = [];
+            const seen = new Set();
+            for (const value of values) {
+                const key = value.toLowerCase();
+                if (seen.has(key)) continue;
+                seen.add(key);
+                output.push(value);
+            }
+            return output;
+        }
+
+        function buildProgramDetails(program) {
+            const sources = verifiedSources(program);
+            const lines = [
+                `### ${program.display_title}`,
+                program.menu_level ? `- **Level:** ${program.menu_level}` : '',
+                program.menu_category ? `- **Category:** ${program.menu_category}` : '',
+                `- **Program Brief:** ${programBrief(program)}`,
+                program.faculty ? `- **Faculty:** ${program.faculty}` : '',
+                program.eligibility ? `- **Eligibility:** ${program.eligibility}` : '',
+                program.intake ? `- **Intake:** ${program.intake}` : '',
+                program.duration ? `- **Duration:** ${program.duration}` : '',
+                `- **NCrF Level:** ${ncrfDisplay(program)}`,
+                program.industry_partner ? `- **Industry Partner(s):** ${program.industry_partner}` : '',
+                '\n💡 **Explore more about this program:** You can also ask about **Fees, Admission Process, Placement, Scholarship, Eligibility, or Career Scope**.'
+            ].filter(Boolean);
+            return lines.join('\n');
+        }
+
+        function addBotOptionsMessage(promptMarkdown, options, dataKey, onSelect) {
+            const safeOptions = Array.isArray(options) ? options : [];
             const row = document.createElement('div');
-            row.className = `msg-row ${role}-row`;
-            const icon = role === 'bot' ? `<div class="avatar-circle"><img src="/assets/logo-svsu.png"></div>` : `<div class="user-avatar-circle">U</div>`;
-            row.innerHTML = icon + `<div class="bubble ${role}-bubble">${marked.parse(text)}</div>`;
+            row.className = 'msg-row bot-row';
+            const optionButtons = safeOptions.map((opt, idx) => {
+                const label = escapeHtml(opt.label || `Option ${idx + 1}`);
+                const value = escapeHtml(String(opt.value ?? ''));
+                const isBack = value === 'BACK_TO_LEVELS' || value === 'BACK_TO_PROGRAMS';
+                return `<button type="button" class="option-chip ${isBack ? 'back-chip' : ''}" data-${dataKey}="${value}">${isBack ? '<i class="fas fa-arrow-left"></i>' : ''} ${label}</button>`;
+            }).join('');
+
+            row.innerHTML = `
+                <div class="avatar-circle"><img src="https://chatbot.svsu.ac.in/assets/logo-svsu.png"></div>
+                <div class="bubble bot-bubble">
+                    ${renderBotMessage(promptMarkdown)}
+                    <div class="options-container">${optionButtons}</div>
+                </div>
+            `;
+            row.querySelectorAll(`.option-chip[data-${dataKey}]`).forEach((btn) => {
+                btn.addEventListener('click', () => onSelect(btn.dataset[dataKey]));
+            });
             chatArea.appendChild(row);
             chatArea.scrollTop = chatArea.scrollHeight;
             return row;
         }
 
+        async function showAdmissionLevelMenu() {
+            admissionSubMenuActive = false; // Reset sub-menu state when at main levels
+            menuBtn.style.opacity = '1';
+            menuBtn.style.cursor = 'pointer';
+
+            const ok = await ensureAdmissionCatalog();
+            if (!ok) {
+                addMsg('bot', 'Admission program catalog is temporarily unavailable. You can type the program name directly.');
+                return false;
+            }
+
+            const levelOptions = [];
+            for (const level of admissionLevelOrder) {
+                const count = getProgramsByLevel(level).length;
+                if (count > 0) levelOptions.push({ label: `${level} (${count})`, value: level });
+            }
+
+            if (!levelOptions.length) {
+                addMsg('bot', 'Admission levels are not available right now. Please type the program name directly.');
+                return false;
+            }
+
+            addBotOptionsMessage(
+                'Please select programme level:',
+                levelOptions,
+                'level',
+                (level) => showProgramMenuByLevel(level)
+            );
+            return true;
+        }
+
+        function showProgramMenuByLevel(level) {
+            admissionSubMenuActive = true;
+            // Visually dim the menu button to indicate it's inactive
+            menuBtn.style.opacity = '0.5';
+            menuBtn.style.cursor = 'not-allowed';
+
+            const programs = getProgramsByLevel(level);
+            if (!programs.length) {
+                addMsg('bot', `No programs found for **${level}** right now.`);
+                return;
+            }
+
+            const options = programs.map((p) => ({
+                label: p.display_title,
+                value: p.program_id
+            }));
+
+            // Add Back button to return to Levels
+            options.push({ label: 'Back to Admission Levels', value: 'BACK_TO_LEVELS' });
+
+            addBotOptionsMessage(
+                `**${level}** programs (${programs.length}) - tap any program for full details:`,
+                options,
+                'program',
+                (val) => {
+                    if (val === 'BACK_TO_LEVELS') {
+                        showAdmissionLevelMenu();
+                    } else {
+                        selectAdmissionProgram(val);
+                    }
+                }
+            );
+        }
+
+        function selectAdmissionProgram(programId, showUserBubble = true) {
+            const program = findProgramById(programId);
+            if (!program) {
+                addMsg('bot', 'Program details not found. Please pick another option.');
+                return;
+            }
+
+            selectedProgram = program.display_title || '';
+            if (showUserBubble) {
+                addMsg('user', selectedProgram);
+                addMsg('bot', `I have fetched the details for **${selectedProgram}**. For the best experience, you can also explore our full range of courses from the **Admission Levels** menu!`);
+            } else {
+                // User likely typed the program directly
+                addMsg('bot', `I have found the details for **${selectedProgram}**. Tip: Aap saare courses ko top-right corner ke menu (three lines) mein **'Admission Levels'** select karke bhi dekh sakte hain!`);
+            }
+            addMsg('bot', buildProgramDetails(program));
+
+            // Send Admission Interest reminder once
+            showAdmissionReminder(800);
+        }
+
+        function showProgramMatches(matches, queryText) {
+            if (!matches.length) return;
+            const options = matches.slice(0, 10).map((p) => ({
+                label: p.display_title,
+                value: p.program_id
+            }));
+            addBotOptionsMessage(
+                `I found multiple matches for **${queryText}**. Please choose the exact program:`,
+                options,
+                'program',
+                (programId) => selectAdmissionProgram(programId)
+            );
+        }
+
+        async function tryHandleAdmissionStructuredQuery(queryText) {
+            if (currentBotMode !== 'admission') return null;
+            if (!ADMISSION_MENU_ENABLED) {
+                shareAdmissionPausedMessage();
+                return { summary: 'Shared admission contact details while admission menu is paused.' };
+            }
+
+            const ok = await ensureAdmissionCatalog();
+            if (!ok) return null;
+
+            const q = normalizeLookupText(queryText);
+            if (!q) return null;
+
+            const isGenericProgramRef = q.includes('this program') || q.includes('this course') || q.includes('is program') || q.includes('is course');
+            const hasTopicKeyword = ['fee', 'admission', 'process', 'placement', 'scholarship', 'eligibility', 'career', 'faculty', 'intake', 'duration', 'ncrf'].some(k => q.includes(k));
+
+            // Off-topic suppression: If the query contains clearly non-admission keywords,
+            // don't try to find program matches. Let the backend handle the redirection.
+            const offTopicKeywords = ['vc', 'vice chancellor', 'teacher', 'professor', 'sports', 'canteen', 'hostel', 'bus', 'transport', 'library', 'club', 'chancellor', 'registrar', 'principal', 'exam', 'result', 'admit card'];
+            if (offTopicKeywords.some(k => q.includes(k)) && !hasTopicKeyword) {
+                return null;
+            }
+
+            if ((q.includes('program') || q.includes('course')) && (q.includes('menu') || q.includes('list') || q.includes('show'))) {
+                await showAdmissionLevelMenu();
+                return { summary: 'Displayed admission level menu.' };
+            }
+
+            const level = normalizeAdmissionLevel(q);
+            if (level) {
+                showProgramMenuByLevel(level);
+                return { summary: `Listed ${level} programs from official catalog.` };
+            }
+
+            // If a program is already selected and the user asks a topic-based question referring to "this program",
+            // let the backend handle it using the selectedProgram context.
+            if (selectedProgram && hasTopicKeyword && (isGenericProgramRef || q.length < 40)) {
+                return null;
+            }
+
+            const matches = findProgramMatches(queryText);
+
+            // If the query is likely just a topic query (e.g. "what are the fees"),
+            // don't show "multiple matches" based on generic words like "program".
+            if (hasTopicKeyword && matches.length > 3 && !isGenericProgramRef) {
+                return null;
+            }
+
+            const asksFaculty = ['faculty', 'faculties', 'teacher', 'teachers', 'department', 'dept'].some((k) => q.includes(k));
+            if (asksFaculty && matches.length === 1) {
+                const p = matches[0];
+                addMsg('bot', `**Faculty for ${p.display_title}:** ${p.faculty || 'Not listed in official catalogue.'}`);
+                return { summary: `Displayed faculty for ${p.display_title}.` };
+            }
+            if (asksFaculty && matches.length > 1) {
+                showProgramMatches(matches, queryText);
+                return { summary: `Asked user to choose exact program for faculty query "${queryText}".` };
+            }
+
+            if (matches.length === 1) {
+                selectAdmissionProgram(matches[0].program_id, false);
+                return { summary: `Displayed details for ${matches[0].display_title}.` };
+            }
+            if (matches.length > 1) {
+                // Only show matches if the query is long enough or looks like a program name
+                if (q.length > 10 || !hasTopicKeyword) {
+                    showProgramMatches(matches, queryText);
+                    return { summary: `Asked user to choose exact program match for "${queryText}".` };
+                }
+            }
+
+            return null;
+        }
+
+        // ── Lead Flow ──
+        function addMsg(role, text) {
+            const row = document.createElement('div');
+            row.className = `msg-row ${role}-row`;
+            const icon = role === 'bot' ? `<div class="avatar-circle"><img src="https://chatbot.svsu.ac.in/assets/logo-svsu.png"></div>` : '';
+            const renderedText = role === 'bot'
+                ? renderBotMessage(text)
+                : escapeHtml(text).replace(/\n/g, '<br>');
+            row.innerHTML = icon + `<div class="bubble ${role}-bubble">${renderedText}</div>`;
+            chatArea.appendChild(row);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return row;
+        }
+
+        function showAdmissionReminder(delay = 1000) {
+            if (admissionReminderShown) return;
+            admissionReminderShown = true;
+            setTimeout(() => {
+                addMsg('bot', 'Interested in this program? Please fill out the **"Admission Interest"** form above, and our counseling team will contact you!');
+            }, delay);
+        }
+
+        function addModeOptions() {
+            modeOptionsShown = true;
+            const row = document.createElement('div');
+            row.className = 'msg-row bot-row';
+            row.innerHTML = `
+                <div class="avatar-circle"><img src="https://chatbot.svsu.ac.in/assets/logo-svsu.png"></div>
+                <div class="bubble bot-bubble">
+                    Please choose one option:
+                    <div class="options-container">
+                        <button type="button" class="option-chip" data-mode="admission">Admission Query</button>
+                        <button type="button" class="option-chip" data-mode="general">Others Query</button>
+                    </div>
+                </div>
+            `;
+            row.querySelectorAll('.option-chip').forEach((btn) => {
+                btn.addEventListener('click', () => { void selectLeadMode(btn.dataset.mode); });
+            });
+            chatArea.appendChild(row);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
         function initLeadFlow() {
-            addMsg('bot', 'Welcome back! Please share your **Name**, **Mobile**, and **Email** to get personalized guidance.');
+            if (leadPromptShown) return;
+            leadPromptShown = true;
+            addMsg('bot', 'Welcome to SVSU! Please enter your **Full Name**, **Mobile**, and **Email**.');
+        }
+
+        async function finalizeLeadCapture() {
+            leadStep = 'mode';
+            addMsg('bot', `Thank you **${lead.name}**!`);
+            fetch('/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lead)
+            }).catch(() => {});
+
+            // ✅ Count BOT visit ONLY after user fills Name + Mobile + Email
+            logTrafficVisitOnce();
+
+            addModeOptions();
+        }
+
+        async function selectLeadMode(mode) {
+            currentBotMode = mode;
+            leadStep = 'chat';
+            modeOptionsShown = false;
+            selectedProgram = '';
+            switchMode(mode, false, false);
+
+            if (mode === 'admission') {
+                addMsg('bot', `Great! **${modeLabel(mode)}** selected.`);
+                if (ADMISSION_MENU_ENABLED) {
+                    await showAdmissionLevelMenu();
+                } else {
+                    // await showAdmissionLevelMenu();
+                    shareAdmissionPausedMessage();
+                }
+            } else {
+                addMsg('bot', `Great! **${modeLabel(mode)}** selected. Please ask your **SVSU-related** question now for verified information.`);
+            }
+            chatInput.focus();
         }
 
         async function handleSend(forcedVal = null) {
@@ -363,57 +1578,172 @@
             if (!forcedVal) { addMsg('user', val); chatInput.value = ''; }
 
             if (leadStep !== 'chat') {
+                if (isAdmissionIntentMessage(val)) {
+                    addMsg('bot', 'Sure. Switching you to **Admission Query**.');
+                    await selectLeadMode('admission');
+                    return;
+                }
                 await processLead(val);
                 return;
             }
 
+            const admissionHandled = await tryHandleAdmissionStructuredQuery(val);
+            if (admissionHandled) {
+                chatHistory.push(
+                    { sender: 'user', text: val },
+                    { sender: 'bot', text: admissionHandled.summary }
+                );
+                return;
+            }
+
             const thinking = addMsg('bot', '<div class="typing-dots"><span></span><span></span><span></span></div>');
-            thinking.id = 'thinkingBlock';
+            const thinkingId = `thinkingBlock-${Date.now()}`;
+            thinking.id = thinkingId;
             
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ question: val, mode: currentBotMode, history: chatHistory })
+                    body: JSON.stringify({
+                        question: val,
+                        mode: currentBotMode,
+                        history: chatHistory,
+                        selected_program: selectedProgram || null
+                    })
                 });
                 const d = await res.json();
-                document.getElementById('thinkingBlock').remove();
+                const thinkingNode = document.getElementById(thinkingId);
+                if (thinkingNode) thinkingNode.remove();
                 addMsg('bot', d.answer);
                 chatHistory.push({sender: 'user', text: val}, {sender: 'bot', text: d.answer});
+
+                // Send separate Admission Interest bubble once if in Admission mode
+                if (currentBotMode === 'admission') {
+                    showAdmissionReminder(1000);
+                }
             } catch (e) {
-                document.getElementById('thinkingBlock').innerHTML = 'Connection lost. Retrying...';
+                const thinkingNode = document.getElementById(thinkingId);
+                if (thinkingNode) thinkingNode.innerHTML = 'Connection lost. Retrying...';
+                else addMsg('bot', 'Connection lost. Retrying...');
             }
         }
 
         async function processLead(val) {
-            // Simplified multi-match logic
-            const email = val.match(/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,24}\b/i)?.[0];
-            const mobile = val.match(/(?:\+?91[\s-]*)?([6-9](?:[\s-]?\d){9})\b/)?.[0];
-            
-            if (email) lead.email = email;
-            if (mobile) lead.mobile = mobile.replace(/\D/g, '').slice(-10);
-            if (!lead.name) lead.name = val.replace(email || '', '').replace(mobile || '', '').replace(/[^a-zA-Z\s]/g, '').trim();
+            const text = String(val || '').trim();
+            if (!text) return;
+            const mobileMatch = findMobileMatch(text);
+            const emailMatch = findEmailMatch(text);
 
-            if (lead.name && lead.mobile && lead.email) {
-                leadStep = 'chat';
-                addMsg('bot', `Thank you **${lead.name}**! How can I assist you today?`);
-                // Persist lead
-                fetch('/api/lead', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(lead) });
-            } else {
-                if (!lead.name) addMsg('bot', 'Got it. And your **Name**?');
-                else if (!lead.mobile) addMsg('bot', 'Please provide a **10-digit mobile number**.');
-                else if (!lead.email) addMsg('bot', 'And finally, your **Email Address**?');
+            if (leadStep === 'name') {
+                const name = extractLeadName(text, emailMatch, mobileMatch);
+                if (!isValidName(name)) {
+                    addMsg('bot', 'Please enter a valid **Full Name** (example: Aman Verma).');
+                    return;
+                }
+                lead.name = name;
+                if (!lead.mobile && mobileMatch) lead.mobile = mobileMatch.value;
+                if (!lead.email && emailMatch) lead.email = emailMatch.value;
+
+                const pendingStep = getPendingLeadStep();
+                if (!pendingStep) {
+                    await finalizeLeadCapture();
+                    return;
+                }
+
+                leadStep = pendingStep;
+                if (pendingStep === 'mobile') {
+                    addMsg('bot', `Thanks **${lead.name}**. Please provide your **10-digit mobile number**.`);
+                    return;
+                }
+                addMsg('bot', 'Great. Now share your **Email Address**.');
+                return;
+            }
+
+            if (leadStep === 'mobile') {
+                if (!lead.mobile && mobileMatch) lead.mobile = mobileMatch.value;
+                if (!lead.email && emailMatch) lead.email = emailMatch.value;
+
+                if (!lead.mobile) {
+                    addMsg('bot', 'Please provide a valid **10-digit mobile number**.');
+                    return;
+                }
+
+                const pendingStep = getPendingLeadStep();
+                if (!pendingStep) {
+                    await finalizeLeadCapture();
+                    return;
+                }
+
+                leadStep = pendingStep;
+                if (pendingStep === 'name') {
+                    addMsg('bot', 'Please enter a valid **Full Name** (example: Aman Verma).');
+                    return;
+                }
+                addMsg('bot', 'Great. Now share your **Email Address**.');
+                return;
+            }
+
+            if (leadStep === 'email') {
+                if (!lead.email && emailMatch) lead.email = emailMatch.value;
+                if (!lead.mobile && mobileMatch) lead.mobile = mobileMatch.value;
+
+                if (!lead.email) {
+                    addMsg('bot', 'Please provide a valid **Email Address**.');
+                    return;
+                }
+
+                const pendingStep = getPendingLeadStep();
+                if (pendingStep === 'name') {
+                    leadStep = 'name';
+                    addMsg('bot', 'Please enter a valid **Full Name** (example: Aman Verma).');
+                    return;
+                }
+                if (pendingStep === 'mobile') {
+                    leadStep = 'mobile';
+                    addMsg('bot', 'Please provide a valid **10-digit mobile number**.');
+                    return;
+                }
+                await finalizeLeadCapture();
+                return;
+            }
+
+            if (leadStep === 'mode') {
+                const low = text.toLowerCase();
+                if (low.includes('admission')) {
+                    await selectLeadMode('admission');
+                    return;
+                }
+                if (low.includes('other') || low.includes('general')) {
+                    await selectLeadMode('general');
+                    return;
+                }
+                addMsg('bot', 'Please choose one option from the 2 buttons above.');
+                if (!modeOptionsShown) addModeOptions();
             }
         }
 
-        sendBtn.onclick = () => handleSend();
-        chatInput.onkeydown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } };
+        chatInput.addEventListener('keydown', (e) => { 
+            if (e.key === 'Enter' && !e.shiftKey) { 
+                e.preventDefault(); 
+                handleSend(); 
+            } 
+        });
 
-        window.switchMode = (mode) => {
+        window.switchMode = (mode, announce = true, showAdmissionMenu = true) => {
             currentBotMode = mode;
             document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-            document.querySelector(`.menu-item[onclick*="${mode}"]`).classList.add('active');
-            addMsg('bot', `Switched to **${mode.charAt(0).toUpperCase() + mode.slice(1)} Mode**.`);
+            const activeItem = document.querySelector(`.menu-item[onclick*="${mode}"]`);
+            if (activeItem) activeItem.classList.add('active');
+            if (announce) addMsg('bot', `Switched to **${modeLabel(mode)}**.`);
+            if (mode !== 'admission') selectedProgram = '';
+            if (showAdmissionMenu && mode === 'admission' && leadStep === 'chat') {
+                if (ADMISSION_MENU_ENABLED) {
+                    void showAdmissionLevelMenu();
+                } else {
+                    // void showAdmissionLevelMenu();
+                    shareAdmissionPausedMessage();
+                }
+            }
         };
 
         window.resetSession = () => { sessionStorage.clear(); location.reload(); };

@@ -1,0 +1,103 @@
+{
+  "ocr_engine": "rapidocr_onnxruntime",
+  "pdfs": [
+    {
+      "file": "A3.pdf",
+      "pages": 1,
+      "native_text_pages": 0,
+      "ocr_pages": 1,
+      "empty_pages": 0
+    },
+    {
+      "file": "Academic Ordinance Updated on 06.05.2024.pdf",
+      "pages": 126,
+      "native_text_pages": 126,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "brochure_2024.pdf",
+      "pages": 16,
+      "native_text_pages": 16,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Consultancy-Policy.pdf",
+      "pages": 20,
+      "native_text_pages": 17,
+      "ocr_pages": 2,
+      "empty_pages": 1
+    },
+    {
+      "file": "Document Prospectus-12.pdf",
+      "pages": 173,
+      "native_text_pages": 165,
+      "ocr_pages": 8,
+      "empty_pages": 0
+    },
+    {
+      "file": "examination ordinance SVSU sign.pdf",
+      "pages": 66,
+      "native_text_pages": 0,
+      "ocr_pages": 65,
+      "empty_pages": 1
+    },
+    {
+      "file": "Notification for various Committees under DSW-2.pdf",
+      "pages": 3,
+      "native_text_pages": 3,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "official_admission_bulletin_2025_26.pdf",
+      "pages": 10,
+      "native_text_pages": 10,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Ph.D-regulations.pdf",
+      "pages": 13,
+      "native_text_pages": 13,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "phd-ordinance.pdf",
+      "pages": 57,
+      "native_text_pages": 57,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Recritment-rules-for-non-teaching staff.pdf",
+      "pages": 50,
+      "native_text_pages": 49,
+      "ocr_pages": 1,
+      "empty_pages": 0
+    },
+    {
+      "file": "research new.pdf",
+      "pages": 23,
+      "native_text_pages": 23,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "short_term.pdf",
+      "pages": 52,
+      "native_text_pages": 45,
+      "ocr_pages": 4,
+      "empty_pages": 3
+    },
+    {
+      "file": "updated_bulletin.pdf",
+      "pages": 10,
+      "native_text_pages": 10,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    }
+  ]
+}

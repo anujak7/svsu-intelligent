@@ -1,26 +1,17 @@
-=== SVSU ABOUT & CORE IDENTITY ===
-NIRF Rank: 3rd (India Rankings 2025: Skill University)
-Vice Chancellor: Prof. Dinesh Kumar (Email: vc@svsu.ac.in, vcoffice@svsu.ac.in)
-Registrar: Prof. (Dr.) Jyoti Rana
+[SVSU VICE CHANCELLOR'S MESSAGE & VISION]
 
-About SVSU:
-Shri Vishwakarma Skill University (SVSU), established in Palwal, Haryana, is India’s first Government Skill University, dedicated to providing high-quality skill education. Founded by the Government of Haryana, SVSU is a pioneering institution focused on bridging the gap between industry requirements and academia by delivering industry-aligned, hands-on skill programs.
+### Vice Chancellor's Message
+- **Vice Chancellor:** Prof. Dinesh Kumar.
+- **Vision:** India’s first Government Skill University dedicated to high-quality skill-based education.
+- **Motto:** “योगः कर्मसु कौशलम्” (Yoga is Excellence at Work).
+- **Alignment:** Aligned with national programs like Skill India, Digital India, Make in India, Semicon India, and PLI schemes.
+- **Educational Model:** 
+  - Aligned with National Education Policy (NEP) 2020.
+  - **KG to PG Model:** Ensures a seamless continuum of learning from foundational to higher education (SVSU Senior Secondary School to PhD).
+  - **Focus Areas:** Robotics & Automation, IoT, Semiconductor Technology, Electric Vehicles, Sustainable Engineering, AI, Data Analytics, Cloud Computing, Precision Farming.
+  - **Industry Integration:** Industry Integrated Dual Education Model (IIDEM) with experiential learning and On-the-Job Training (OJT).
 
-Address: Village Dudhola, Distt. Palwal (Haryana) 121102.
-Transit Office: Plot No. 147, Sector 44, Gurugram (Haryana) 122003.
-
-Key Pillars:
-1. NSQF Aligned Programmes
-2. Value Based Multidisciplinary Education
-3. MOOCs (Massive Open Online Courses)
-4. Industry Integrated Application Based Programmes
-5. Work Integrated and Earn-While-Learn Model (Stipends during OJT)
-
-Leadership:
-- Prof. (Dr.) Vikram Singh: Dean Academic Affairs
-- Prof. (Dr.) R.S. Rathore: Dean SFASH
-- Prof. (Dr.) Suresh Kumar: Controller of Examination
-- Prof. (Dr.) Ashish Shrivastava: Dean SFET
-- Prof. (Dr.) Usha Batra: Director R&D
-- Prof. (Dr.) Kulwant Singh: Dean Students Welfare
-- Prof. Dharam Vir Pathak: Dean Skill Faculty of Agriculture
+### University Pillars
+- **Bridging Employability:** Mission to produce professionals, visionaries, and entrepreneurs.
+- **Inclusivity:** Multidisciplinary, flexible education with multiple entry-exit options.
+- **Self-Reliance:** Preparing students as ethical leaders and innovators for a self-reliant India.

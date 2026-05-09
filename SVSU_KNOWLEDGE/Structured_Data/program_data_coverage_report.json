@@ -1,0 +1,203 @@
+{
+  "generated_at": "2026-04-28T17:22:15",
+  "catalog_path": "C:\\Users\\USER\\Desktop\\BOT-SVSU\\SVSU_KNOWLEDGE\\Structured_Data\\official_admission_program_catalog_2025_26.json",
+  "official_catalog_session": "2025-26",
+  "field_coverage_before": {
+    "industry_partner": {
+      "present": 50,
+      "missing": 0
+    },
+    "duration": {
+      "present": 50,
+      "missing": 0
+    },
+    "ncrf_level": {
+      "present": 50,
+      "missing": 0
+    },
+    "program_brief": {
+      "present": 50,
+      "missing": 0
+    }
+  },
+  "field_coverage_after": {
+    "industry_partner": {
+      "present": 50,
+      "missing": 0
+    },
+    "duration": {
+      "present": 50,
+      "missing": 0
+    },
+    "ncrf_level": {
+      "present": 50,
+      "missing": 0
+    },
+    "program_brief": {
+      "present": 50,
+      "missing": 0
+    }
+  },
+  "updated_programs": [
+    {
+      "program": "B.Tech Mechanical and Smart Manufacturing",
+      "updated_fields": [
+        "program_brief"
+      ],
+      "matched_sources": [
+        "pdf_knowledge.txt"
+      ],
+      "matched_terms": [
+        "B.Tech Mechanical and Smart Manufacturing"
+      ]
+    }
+  ],
+  "programs_still_missing_fields": [],
+  "program_count_views": {
+    "official_catalog_loaded_for_bot": 50,
+    "official_admission_bulletin_2025_26_programs": 50,
+    "updated_bulletin_2025_26_programs": 50,
+    "document_prospectus_12_detailed_program_profiles": 50,
+    "short_term_program_calendar_entries": 20,
+    "count_note": "Current SVSU PDFs mix long-term admission programmes, short-term programmes, and research/regulation documents. The bot should answer with the source/session label instead of forcing one universal total."
+  },
+  "faculty_breakdown": {
+    "Skill Faculty of Agriculture": 3,
+    "Skill Faculty of Applied Science and Humanities (SFASH)": 15,
+    "Skill Faculty of Engineering & Technology (SFET)": 19,
+    "Skill Faculty of Management Research and Studies (SFMSR)": 13
+  },
+  "pdf_inventory": [
+    {
+      "file": "A3.pdf",
+      "bytes": 7955496,
+      "in_knowledge_db": true,
+      "pages": 1,
+      "native_text_pages": 0,
+      "ocr_pages": 1,
+      "empty_pages": 0
+    },
+    {
+      "file": "Academic Ordinance Updated on 06.05.2024.pdf",
+      "bytes": 1345580,
+      "in_knowledge_db": true,
+      "pages": 126,
+      "native_text_pages": 126,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "brochure_2024.pdf",
+      "bytes": 2763310,
+      "in_knowledge_db": true,
+      "pages": 16,
+      "native_text_pages": 16,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Consultancy-Policy.pdf",
+      "bytes": 346240,
+      "in_knowledge_db": true,
+      "pages": 20,
+      "native_text_pages": 17,
+      "ocr_pages": 2,
+      "empty_pages": 1
+    },
+    {
+      "file": "Document Prospectus-12.pdf",
+      "bytes": 8890008,
+      "in_knowledge_db": true,
+      "pages": 173,
+      "native_text_pages": 165,
+      "ocr_pages": 8,
+      "empty_pages": 0
+    },
+    {
+      "file": "examination ordinance SVSU sign.pdf",
+      "bytes": 3320363,
+      "in_knowledge_db": true,
+      "pages": 66,
+      "native_text_pages": 0,
+      "ocr_pages": 65,
+      "empty_pages": 1
+    },
+    {
+      "file": "Notification for various Committees under DSW-2.pdf",
+      "bytes": 1563251,
+      "in_knowledge_db": true,
+      "pages": 3,
+      "native_text_pages": 3,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "official_admission_bulletin_2025_26.pdf",
+      "bytes": 171536,
+      "in_knowledge_db": true,
+      "pages": 10,
+      "native_text_pages": 10,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Ph.D-regulations.pdf",
+      "bytes": 104965,
+      "in_knowledge_db": true,
+      "pages": 13,
+      "native_text_pages": 13,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "phd-ordinance.pdf",
+      "bytes": 474661,
+      "in_knowledge_db": true,
+      "pages": 57,
+      "native_text_pages": 57,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "Recritment-rules-for-non-teaching staff.pdf",
+      "bytes": 1421514,
+      "in_knowledge_db": true,
+      "pages": 50,
+      "native_text_pages": 49,
+      "ocr_pages": 1,
+      "empty_pages": 0
+    },
+    {
+      "file": "research new.pdf",
+      "bytes": 1053669,
+      "in_knowledge_db": true,
+      "pages": 23,
+      "native_text_pages": 23,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "file": "short_term.pdf",
+      "bytes": 3863795,
+      "in_knowledge_db": true,
+      "pages": 52,
+      "native_text_pages": 45,
+      "ocr_pages": 4,
+      "empty_pages": 3
+    },
+    {
+      "file": "updated_bulletin.pdf",
+      "bytes": 171536,
+      "in_knowledge_db": true,
+      "pages": 10,
+      "native_text_pages": 10,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    }
+  ],
+  "pdf_inventory_summary": {
+    "pdfs_in_folder": 14,
+    "pdfs_already_in_knowledge_db": 14,
+    "pdfs_missing_from_knowledge_db": []
+  }
+}

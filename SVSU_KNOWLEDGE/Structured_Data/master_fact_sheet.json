@@ -1,47 +1,836 @@
 {
-  "university_name": "Shri Vishwakarma Skill University (SVSU)",
-  "location": "Dudhola, Palwal, Haryana",
-  "type": "India's First Government Skill University",
-  "contacts": {},
-  "top_programs": [
-    "B.Voc Agriculture",
-    "M.Voc Agriculture",
-    "D.Voc Horticulture",
-    "B.Com (Hons. / Hons. with Research)",
-    "B.Voc Management-Financial Services",
-    "MBA",
-    "MBA (Business Analytics)",
-    "Bachelor of Hotel Management",
-    "D.Voc Office Management",
-    "BBA - BPM and Analytics (Hons. / Hons. with Research)",
-    "BBA",
-    "Undergraduate Diploma in Airlines Management",
-    "Undergraduate Certificate in Food Production & Traditional Sweets",
-    "MBA (Working Professional)",
-    "M.Voc Management-HRM"
+  "university_identity": {
+    "name": "Shri Vishwakarma Skill University (SVSU)",
+    "motto": "Integrating Skill with Higher Education",
+    "type": "India's First State Government Skill University",
+    "founder": "Government of Haryana",
+    "vision": "To be a leader in skill-based education and training.",
+    "location": "Main Campus: Dudhola (Palwal); Transit Campus: Plot 147, Sector 44, Gurugram"
+  },
+  "leadership": [
+    {
+      "title": "Vice Chancellor",
+      "name": "Professor (Dr.) Dinesh Kumar",
+      "email": "vcoffice@svsu.ac.in"
+    },
+    {
+      "title": "Registrar",
+      "name": "Prof. (Dr.) Jyoti Rana",
+      "email": "registrar@svsu.ac.in"
+    },
+    {
+      "title": "Dean (Academic Affairs)",
+      "name": "Prof. (Dr.) Vikram Singh",
+      "email": "dean.academics@svsu.ac.in"
+    },
+    {
+      "title": "Dean (Students Welfare)",
+      "name": "Prof. (Dr.) Kulwant Singh",
+      "email": "dean.dsw@svsu.ac.in"
+    },
+    {
+      "title": "Dean SFMSR",
+      "name": "Prof. (Dr.) Jyoti Rana"
+    },
+    {
+      "title": "Dean SFET",
+      "name": "Dr. Ashish Shrivastava"
+    }
   ],
-  "admission_status": "Open for 2025-26",
-  "updated_at": "2026-04-12T01:22:38.807736",
-  "quick_facts": [
-    "# Shri Vishwakarma Skill University (SVSU) - Core Facts",
-    "",
-    "- **Current Vice Chancellor (VC):** Professor (Dr.) Dinesh Kumar.",
-    "- **Registrar:** Prof. (Dr.) Jyoti Rana.",
-    "- **Location:** Main Campus in Dudhola, Palwal, Haryana. Transit Campus in Gurugram.",
-    "- **University Type:** India's first Government Skill University, established by the Government of Haryana.",
-    "- **Focus:** Skill-based education, vocational training, and industry-integrated courses.",
-    "- **Creator & Owner of SVSU Intelligent:** Anuj Khan. If asked who created you or who is the owner, answer: \"Anuj Khan (Entrepreneur & AI Innovator) is the creator and owner of SVSU Intelligent. He is a tech professional based in Haryana, India, and the founder of EtriqAI and Defendit, specializing in innovative AI solutions.\"",
-    "- **Total Programs:** Shri Vishwakarma Skill University (SVSU) offers **62+ specialized skill-based programs** across multiple faculties (Engineering, Management, Agriculture, Applied Sciences).",
-    "- **MBA Programs (SFMSR):** All MBA programs (General, Business Analytics, Working Professional) are **2 Years (4 Semesters)** duration. Eligibility is Graduation with 50% marks.",
-    "- **B.Voc / B.Tech Programs:** B.Voc programs are typically **3 Years (6 Semesters)**. B.Tech programs are **4 Years (8 Semesters)**. Most follow the **Dual Education Model** (Academic + On-Job Training).",
-    "- **Admission Helpline:** 1800-1800-147 (Toll-Free, 9:00 AM \u2013 7:30 PM). ",
-    "- **Landline Helpline:** 0124-2746800.",
-    "- **Admission Email:** admissions@svsu.ac.in.",
-    "- **General Support:** info@svsu.ac.in.",
-    "- **Official Website:** https://www.svsu.ac.in.",
-    "- **Main Office Address:** 2nd and 3rd Floor, Plot No. 147, Sector-44, Gurugram, Haryana.",
-    "- **Main Campus Address:** Village Dudhola, District Palwal, Haryana.",
-    "- **Dean Student Welfare (DSW):** Prof. (Dr.) Kulwant Singh. Contact him for Student Welfare, Scholarships, Travel Allowances, and Extracurricular activities."
+  "helplines": {
+    "admission_toll_free": "1800-1800-147",
+    "landline": "0124-2746800",
+    "admission_email": "admissions@svsu.ac.in",
+    "general_info": "info@svsu.ac.in",
+    "exam_support": "coe@svsu.ac.in"
+  },
+  "faculties": [
+    "Skill Faculty of Management Research and Studies (SFMSR)",
+    "Skill Faculty of Engineering and Technology (SFET)",
+    "Skill Faculty of Agriculture",
+    "Skill Faculty of Applied Science and Humanities (SFASH)",
+    "Skill Faculty of Hospitality and Tourism"
   ],
-  "total_programs": 50
+  "admission_portal": "https://www.svsu.ac.in",
+  "creators_note": "Anuj Khan is the creator and owner of SVSU Intelligent AI.",
+  "updated_at": "2026-05-09T22:37:49.927641",
+  "key_highlights": [
+    "**Current Vice Chancellor (VC):** Professor (Dr.) Dinesh Kumar (Assumed charge on May 26, 2025).",
+    "**Founding Vice Chancellor:** Mr. Raj Nehru.",
+    "**Registrar:** Prof. (Dr.) Jyoti Rana.",
+    "**Location:** Main Campus in Dudhola, Palwal, Haryana. Transit Campus in Gurugram.",
+    "**University Type:** India's first Government Skill University, established by the Government of Haryana.",
+    "**Focus:** Skill-based education, vocational training, and industry-integrated courses.",
+    "**Creator & Owner of SVSU Intelligent:** Anuj Khan. If asked who created you or who is the owner, answer: \"Anuj Khan (Entrepreneur & AI Innovator) is the creator and owner of SVSU Intelligent. He is a tech professional based in Haryana, India, and the founder of EtriqAI and Defendit, specializing in innovative AI solutions.\"",
+    "**Total Programs:** Shri Vishwakarma Skill University (SVSU) offers **62+ specialized skill-based programs** across multiple faculties (Engineering, Management, Agriculture, Applied Sciences).",
+    "**MBA Programs (SFMSR):** All MBA programs (General, Business Analytics, Working Professional) are **2 Years (4 Semesters)** duration. Eligibility is Graduation with 50% marks.",
+    "**B.Voc / B.Tech Programs:** B.Voc programs are typically **3 Years (6 Semesters)**. B.Tech programs are **4 Years (8 Semesters)**. Most follow the **Dual Education Model** (Academic + On-Job Training).",
+    "**Admission Helpline:** 1800-1800-147 (Toll-Free, 9:00 AM \u2013 7:30 PM).",
+    "**Landline Helpline:** 0124-2746800.",
+    "**Admission Email:** admissions@svsu.ac.in.",
+    "**General Support:** info@svsu.ac.in.",
+    "**Official Website:** https://www.svsu.ac.in.",
+    "**Main Office Address:** 2nd and 3rd Floor, Plot No. 147, Sector-44, Gurugram, Haryana.",
+    "**Main Campus Address:** Village Dudhola, District Palwal, Haryana.",
+    "**Dean Student Welfare (DSW):** Prof. (Dr.) Kulwant Singh. Contact him for Student Welfare, Scholarships, Travel Allowances, and Extracurricular activities.",
+    "**Registrar:** Prof. (Dr.) Jyoti Rana. Responsible for academic administration and official certifications.",
+    "**Account/Finance Office:** For fee payments, stipends, and financial claims.",
+    "**Public Relations Officer (PRO):** Dr. Rajesh Chauhan. Responsible for media, press, and university's public image (External Relations).",
+    "**Counselor Identity:** You are SVSU Intelligent v2.2, an advanced agentic counselor. You provide high-precision, detailed, and professional advice. You do not give generic summaries; you provide specific, data-backed insights from the official prospectus."
+  ],
+  "total_programs": 102,
+  "program_list_comprehensive": [
+    {
+      "name": "B.Voc Agriculture",
+      "eligibility": "10+2 or Equivalent",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "M.Voc Agriculture",
+      "eligibility": "B.Voc Agriculture or Graduation in any discipline with 50% marks",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "D.Voc Horticulture",
+      "eligibility": "10th Pass or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "B.Com (Hons. / Hons. with Research)",
+      "eligibility": "10+2 in Commerce or 10+2 in other stream with Mathematics/Economics with minimum 50% marks or any other Equivalent Examination",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Voc Management-Financial Services",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "MBA",
+      "eligibility": "Graduation With 50% Marks",
+      "intake": "30",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "MBA (Business Analytics)",
+      "eligibility": "Graduation With 50% Marks",
+      "intake": "30",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Bachelor of Hotel Management",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "D.Voc Office Management",
+      "eligibility": "10th or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "BBA - BPM and Analytics (Hons. / Hons. with Research)",
+      "eligibility": "10+2 or 10th plus (2Years or 3 years) Diploma or 10th plus ITI (2 Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "BBA",
+      "eligibility": "10+2 or Equivalent",
+      "intake": "120",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Undergraduate Diploma in Airlines Management",
+      "eligibility": "10+2 or Equivalent or 10+2 with L4 Certificate in relevant field",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "Undergraduate Certificate in Food Production & Traditional Sweets",
+      "eligibility": "10+2 or 10th with two years of experience or Equivalent",
+      "intake": "20",
+      "level": "UG Certificate"
+    },
+    {
+      "name": "MBA (Working Professional)",
+      "eligibility": "Graduation with 3yr. Experience",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "M.Voc Management-HRM",
+      "eligibility": "B.Voc./ Graduation with 50% Marks",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "M.Voc Management Banking & Finance",
+      "eligibility": "Graduation with 50% Marks",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "B.Tech Computer Engineering",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Tech Computer Science & Engineering (AI/ML)",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Tech Electrical Engineering",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Tech Mechanical and Smart Manufacturing",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "BCA / BCA (Honours / Honours with Research)",
+      "eligibility": "Passed 10+2 examination or equivalent examination from any recognized board with 50% marks in aggregate (45% in case of candidates belonging to SC/ST category of Haryana only).",
+      "intake": "120",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "MCA",
+      "eligibility": "Passed any graduation degree (e.g.: B.E. / B.Tech./ B.Sc / B.Com. / B.A./ B. Voc./ BCA etc.,) preferably with Mathematics at 10+2 level or at Graduation Level.",
+      "intake": "60",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "B.Voc Solar Technology",
+      "eligibility": "10+2 (PCM) or 10+2 with L4 Certificate in relevant field or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Voc Mechanical Manufacturing",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate in Automotive/Capital Goods &Manufacturing sector or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Voc Mechatronics",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate in Automotive/Capital Goods &Manufacturing sector or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Voc Robotics and Automation (Hons. / Research)",
+      "eligibility": "10+2 (PCM) or 10+2 with Mathematics and L4 Certificate in relevant field or 10 plus I.T.I. (Two Years) with one language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Diploma in Computer Science & Engineering",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Diploma"
+    },
+    {
+      "name": "Diploma in Mechanical Engineering",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Diploma"
+    },
+    {
+      "name": "D.Voc Draughtsmanship (Civil)",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "D.Voc Mechanical Manufacturing",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "Diploma in Industrial Electronics",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "Diploma Computer Generative AI / Cyber Security",
+      "eligibility": "10th (Science and Mathematics) or Equivalent",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "M.Tech Robotics and Automation",
+      "eligibility": "B.Tech / B.E. in ECE/CSE/IT/Mechanical/ M.Sc. (Electronics / IT) / MCA or Other related disciplines from any recognized university/institutions with a minimum of 55% marks or Equivalent grade(45% marks or Equivalent grade for Scheduled Caste/ Schedule Tribes). GATE qualified / Industry Experience candidates will be given preference.",
+      "intake": "18",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "PG Diploma in Semiconductor Device Packaging (PGDSDP)",
+      "eligibility": "- B.E /B.Tech completed students of the following branches: Electronics/Electronics & Communication / Electrical/ Electrical and Electronics/Instrumentation/ Biomedical /Computer Science/Information Technology/ or M.Sc. in Electronics/Physics (with relevant specialization). - B.E /B.Tech ongoing students of the above branches are eligible to enrol however preference will be given to applicants with experience. - Minimum 50% aggregate - Basic knowledge of semiconductor devices and circuits preferred",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Undergraduate Diploma in Interior Design",
+      "eligibility": "12th plus PCM to 12th (Any stream)",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "Undergraduate Diploma in Japanese Language",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "20",
+      "level": "Diploma"
+    },
+    {
+      "name": "Undergraduate Certificate in Music (Folk Art - Banchari / Instrumental / Vocal)",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "20",
+      "level": "UG Certificate"
+    },
+    {
+      "name": "Undergraduate Certificate in Animation, Multimedia and Graphics",
+      "eligibility": "10+2 or 10 plus ( 2 Years or 3 Years) Diploma or 10th Plus ITI (Two Years) with one Language Subject (Hindi/English)",
+      "intake": "20",
+      "level": "UG Certificate"
+    },
+    {
+      "name": "B.Sc. (Yoga & Spiritual Science)",
+      "eligibility": "10+2 or 10 plus ( 2 Years or 3 Years) Diploma or 10th Plus ITI (Two Years) with one Language Subject (Hindi/English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "M.Sc. MLT (Microbiology)",
+      "eligibility": "B.Voc. MLT/B.Sc. MLT/BMLS/BMLT",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "B.Voc (Medical Laboratory Technology) Honours with Research",
+      "eligibility": "10+2 (PCB) or 10+2 and L4 Certificate in relevant field or 10th plus (2 Years or 3 Years) Diploma in relevant field for Lateral Entry in 2nd Year.",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Undergraduate Diploma in German Language",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "30",
+      "level": "Diploma"
+    },
+    {
+      "name": "B.Voc Public Services",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Sc. Mathematics and Computing (Hons. with Research)",
+      "eligibility": "10+2 or equivalent with Mathematics as a compulsory subject with a minimum 50% marks. Relaxation as per UGC norms.",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Sc. Clinical Psychology",
+      "eligibility": "10+2 or 10th Plus (2 Years or 3 Years) Diploma Or 10th Plus I.T.I. (2 Years) with one Language subject (Hindi or English)/NCrF Level 4.0",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "PG Diploma Criminal Forensics",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "M.Sc. Geo-informatics",
+      "eligibility": "Bachelor's degree in the fields of Geography / Environmental Science / Forestry / Chemistry / Physics / Geology / Geophysics / Mathematics / Oceanography/ Agriculture/ Atmospheric Sciences/ Climatology/ Information Science/ Computer Science/ Disaster Management/ Engineering / Town Planning / Architecture / Botany/ Zoology/ allied disciplines with at least 50% marks or OR Masters in Geography with at least 50% marks or equivalent grade in aggregate",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "PG Diploma Public Policy",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "M.Sc. Clinical Psychology",
+      "eligibility": "Any Graduate",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "M.A. English",
+      "eligibility": "Graduation with minimum 50% marks. Relaxation as per UGC norms.",
+      "intake": "30",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Ph.D. in Mechanical Engineering",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Computer Science & Engineering",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Electronics Engineering",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Management",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Commerce",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Psychology",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in English",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Public Administration",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Mathematics",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Physics",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Chemistry",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Ph.D. in Skill Education",
+      "eligibility": "Master's degree in relevant discipline with at least 55% marks (or equivalent grade). Qualification in SVSU Ph.D. Entrance Test or UGC-NET/JRF.",
+      "intake": "5",
+      "level": "Doctorate (Ph.D.)"
+    },
+    {
+      "name": "Diploma in Civil Engineering",
+      "eligibility": "Passed 10th standard exam or Class X",
+      "intake": "60",
+      "level": "Diploma"
+    },
+    {
+      "name": "Diploma in Electrical Engineering",
+      "eligibility": "Passed 10th standard exam or Class X",
+      "intake": "60",
+      "level": "Diploma"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Mechanical Manufacturing(Manf. Engg.)",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Robotics and Automation",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Refrigeration and Air Conditioning",
+      "eligibility": "10+2 (PCM) or 10+2 and L4 Certificate",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Interior Design",
+      "eligibility": "10+2 in any stream",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Printing & Packaging Technology",
+      "eligibility": "10+2 in any stream",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "BCA / BCA (AI & ML / Data Science)",
+      "eligibility": "Passed 10+2 examination",
+      "intake": "60+60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Cyber Security",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Electrical Engineering with minor/Hons. in Electric Vehicles/ Cyber Security/ Robotics",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Electronics Engineering (VLSI Design and Technology)",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Mechanical Engineering",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Mechanical Engineering (Working Professional)",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Technology (B.Tech.) Electrical Engineering (Working Professional)",
+      "eligibility": "As per AICTE / HSTES Norms",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Master of Computer Applications (MCA)",
+      "eligibility": "Passed any graduation degree",
+      "intake": "60",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Master of Technology (M.Tech.) Computer Science and Engineering",
+      "eligibility": "B.E./B.Tech or equivalent degree",
+      "intake": "18",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Management (Financial Services)",
+      "eligibility": "Passed 10+2",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "BBA (Airlines and Airport Management)",
+      "eligibility": "10+2 OR Equivalent",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "BBA Hons./Hons. With Research",
+      "eligibility": "Passed 10+2 or equivalent",
+      "intake": "60+60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Master of Vocation (M.Voc.) Management (Banking & Finance)",
+      "eligibility": "A bachelor's degree or B.Voc.",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Master of Business Administration (MBA)",
+      "eligibility": "Passed Bachelor's Degree of minimum 3 years duration",
+      "intake": "30",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Master of Business Administration (Business Analytics)",
+      "eligibility": "Passed Bachelor's Degree of minimum 3 years duration",
+      "intake": "30",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Master of Business Administration (Working Professional)",
+      "eligibility": "Passed a Bachelor's Degree",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "PG Diploma in Airport Operations and Management",
+      "eligibility": "Any graduation",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "L.L.M",
+      "eligibility": "L.L.B or an equivalent degree",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "Diploma in Pharmacy (D.Pharm.)",
+      "eligibility": "Passed 10+2 (Science stream) with Physics, Chemistry and Biology/Mathematics",
+      "intake": "60",
+      "level": "Diploma"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Japanese Language",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "20",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) German Language",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) French Language",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "20",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Vocation (B.Voc.) Public Services",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Performing Arts (Music)",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "20",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Fine Arts",
+      "eligibility": "Passed 10+2 examination",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor of Medical Laboratory Sciences (B.MLS)",
+      "eligibility": "Passed 10+2 with English, Physics, Chemistry, and Mathematics/Biology",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor in Pharmacy (B.Pharm.)",
+      "eligibility": "Passed 10+2 with English, Physics, Chemistry, and Mathematics/Biology",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Bachelor in Physiotherapy (BPT)",
+      "eligibility": "10+2 with Physics, Chemistry, Biology (PCB)",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Sc. Nursing",
+      "eligibility": "Passed 10+2 examination",
+      "intake": "60",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Sc. Graphics & Animation",
+      "eligibility": "10+2 or 10th Plus 2 Years",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "B.Sc. Mathematics & Computing (Hons.)",
+      "eligibility": "10+2 (Senior Secondary) with Mathematics",
+      "intake": "30",
+      "level": "Undergraduate"
+    },
+    {
+      "name": "Master of Medical Laboratory Sciences (M.MLS)",
+      "eligibility": "Bachelor of Medical Laboratory Science (B.MLS)",
+      "intake": "20",
+      "level": "Postgraduate"
+    },
+    {
+      "name": "B.Sc. (Agriculture)",
+      "eligibility": "10+2 with PCM/ PCB or having Agriculture",
+      "intake": "50",
+      "level": "Undergraduate"
+    }
+  ],
+  "program_count_views": {
+    "official_catalog_loaded_for_bot": 50,
+    "official_admission_bulletin_2025_26_programs": 50,
+    "updated_bulletin_2025_26_programs": 50,
+    "document_prospectus_12_detailed_program_profiles": 50,
+    "short_term_program_calendar_entries": 20,
+    "count_note": "Current SVSU PDFs mix long-term admission programmes, short-term programmes, and research/regulation documents. The bot should answer with the source/session label instead of forcing one universal total."
+  },
+  "program_data_quality": {
+    "field_coverage_after": {
+      "industry_partner": {
+        "present": 50,
+        "missing": 0
+      },
+      "duration": {
+        "present": 50,
+        "missing": 0
+      },
+      "ncrf_level": {
+        "present": 50,
+        "missing": 0
+      },
+      "program_brief": {
+        "present": 50,
+        "missing": 0
+      }
+    },
+    "faculty_breakdown": {
+      "Skill Faculty of Agriculture": 3,
+      "Skill Faculty of Applied Science and Humanities (SFASH)": 15,
+      "Skill Faculty of Engineering & Technology (SFET)": 19,
+      "Skill Faculty of Management Research and Studies (SFMSR)": 13
+    }
+  },
+  "pdf_ingestion_summary": {
+    "pdfs_in_folder": 14,
+    "pdfs_already_in_knowledge_db": 14,
+    "pdfs_missing_from_knowledge_db": []
+  },
+  "pdf_source_inventory": [
+    {
+      "file": "A3.pdf",
+      "in_knowledge_db": true,
+      "pages": 1
+    },
+    {
+      "file": "Academic Ordinance Updated on 06.05.2024.pdf",
+      "in_knowledge_db": true,
+      "pages": 126
+    },
+    {
+      "file": "brochure_2024.pdf",
+      "in_knowledge_db": true,
+      "pages": 16
+    },
+    {
+      "file": "Consultancy-Policy.pdf",
+      "in_knowledge_db": true,
+      "pages": 20
+    },
+    {
+      "file": "Document Prospectus-12.pdf",
+      "in_knowledge_db": true,
+      "pages": 173
+    },
+    {
+      "file": "examination ordinance SVSU sign.pdf",
+      "in_knowledge_db": true,
+      "pages": 66
+    },
+    {
+      "file": "Notification for various Committees under DSW-2.pdf",
+      "in_knowledge_db": true,
+      "pages": 3
+    },
+    {
+      "file": "official_admission_bulletin_2025_26.pdf",
+      "in_knowledge_db": true,
+      "pages": 10
+    },
+    {
+      "file": "Ph.D-regulations.pdf",
+      "in_knowledge_db": true,
+      "pages": 13
+    },
+    {
+      "file": "phd-ordinance.pdf",
+      "in_knowledge_db": true,
+      "pages": 57
+    },
+    {
+      "file": "Recritment-rules-for-non-teaching staff.pdf",
+      "in_knowledge_db": true,
+      "pages": 50
+    },
+    {
+      "file": "research new.pdf",
+      "in_knowledge_db": true,
+      "pages": 23
+    },
+    {
+      "file": "short_term.pdf",
+      "in_knowledge_db": true,
+      "pages": 52
+    },
+    {
+      "file": "updated_bulletin.pdf",
+      "in_knowledge_db": true,
+      "pages": 10
+    }
+  ],
+  "university_emails": [
+    "vcoffice@svsu.ac.in",
+    "naresh.sandhu@svsu.ac.in",
+    "kulwant.singh@svsu.ac.in",
+    "usha.batra@svsu.ac.in",
+    "dr.procurement@svsu.ac.in",
+    "dheeraj.kamboj@svsu.ac.in",
+    "accounts@svsu.ac.in",
+    "director.iraa@svsu.ac.in",
+    "parveen.kumar78@svsu.ac.in",
+    "cao@svsu.ac.in",
+    "vinodkumar@svsu.ac.in",
+    "culturalcommitteedsw@svsu.ac.in",
+    "sombir.sheoran@svsu.ac.in",
+    "dean.academics@svsu.ac.in",
+    "registrar@svsu.ac.in",
+    "dean.dsw@svsu.ac.in"
+  ],
+  "international_admissions": {
+    "portal": "https://studyinindia.gov.in",
+    "requirements": [
+      "AIU Equivalence Certificate",
+      "Student Visa",
+      "Medical fitness",
+      "10 photos"
+    ],
+    "reservation": "5% Supernumerary seats",
+    "equivalence_mandatory": true
+  }
 }

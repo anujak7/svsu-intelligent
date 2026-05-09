@@ -10,6 +10,24 @@ DOMAIN_LIST = [
     "Library", "Contact", "Updates"
 ]
 
+SVSU_SCOPE_KEYWORDS = [
+    "svsu", "shri vishwakarma", "vishwakarma skill university",
+    "admission", "apply", "application", "eligibility", "intake", "seat",
+    "course", "program", "programme", "faculty", "department", "campus",
+    "hostel", "scholarship", "placement", "exam", "result", "dmc",
+    "registrar", "vice chancellor", "vc", "hstes", "aicte",
+    "b.tech", "btech", "m.tech", "mtech", "bca", "mca", "bba", "mba",
+    "b.voc", "bvoc", "m.voc", "mvoc", "d.voc", "dvoc", "diploma",
+    "ug", "pg", "palwal", "dudhola"
+]
+
+
+def is_svsu_scope_query(question: str) -> bool:
+    text = (question or "").lower()
+    if "program_selected:" in text:
+        return True
+    return any(token in text for token in SVSU_SCOPE_KEYWORDS)
+
 async def master_process_query(question: str, history: list = None, mode: str = "intelligent", user_id: str = "anonymous") -> dict:
     """Master Agent classifies intent and delegates to specialized agents.
     Strictly enforces admission-only queries if mode is 'admission'.
@@ -20,6 +38,13 @@ async def master_process_query(question: str, history: list = None, mode: str = 
     if q_clean in greetings or len(q_clean) < 2:
         return {
             "answer": "Hello! Welcome to **Shri Vishwakarma Skill University (SVSU)**. I am your specialized AI counselor. How can I assist you with your academic journey today?",
+            "domain": "Home"
+        }
+
+    # Hard scope guard: this assistant answers SVSU-only queries.
+    if not is_svsu_scope_query(question):
+        return {
+            "answer": "I am designed to assist only with **SVSU (Shri Vishwakarma Skill University)** related queries. Please ask about SVSU admissions, programs, fees, eligibility, campus services, exams, or placement support.",
             "domain": "Home"
         }
 

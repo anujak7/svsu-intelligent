@@ -8,9 +8,9 @@ IF EXIST "..\.venv\Scripts\activate" (
 ) ELSE (
     echo WARNING: Virtual Environment (.venv) not found. Scanning for python dependencies...
 )
-echo Server is launching on: http://localhost:8000
-echo Admin Panel: http://localhost:8000/admin_panel/admin_login.html
-echo Chatbot UI: http://localhost:8000/admin_panel/chatbot.html
+echo Main Chatbot: http://localhost:8000/chatbot
+echo Admin Dashboard: http://localhost:8000/admin
+echo Login Page: http://localhost:8000/login
 echo.
 IF EXIST "..\.venv\Scripts\python.exe" (
     echo Launching with Virtual Environment Python...

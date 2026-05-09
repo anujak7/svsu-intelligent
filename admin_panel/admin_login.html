@@ -178,7 +178,7 @@
             setTimeout(() => {
                 if (SECRETS.emails.includes(email) && pass === SECRETS.pass) {
                     sessionStorage.setItem('admin_auth', 'true');
-                    window.location.href = 'admin_dashboard.html';
+                    window.location.href = 'admin.html';
                 } else {
                     err.style.display = 'block';
                     btn.innerHTML = 'Verify & Enter <i class="fas fa-arrow-right"></i>';

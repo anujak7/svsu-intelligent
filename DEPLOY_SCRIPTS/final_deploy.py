@@ -3,7 +3,7 @@ import os
 
 user = "svsuuser"
 pwd = "svsuindia@2026"
-ip = "98.70.24.228"
+ip = "4.150.186.240"
 remote_dir = "/home/svsuuser/svsu-intelligent"
 
 # Folders to skip

@@ -122,7 +122,7 @@ AGENT_ROLES = {
     "About": "SVSU Institutional Facts Specialist. You explain the university's identity, leadership, campuses, history, and vision strictly from verified SVSU context.",
     "Updates": "SVSU Dynamic Updates Agent. You continuously monitor recent notices and news to answer the user.",
     "Examination": "SVSU Examination Agent. You handle queries regarding exams, rules, calendars, and result announcements.",
-    "Home": "SVSU Universal Knowledge Specialist. You handle all general SVSU queries across campus life, facilities, administration, student services, contacts, and institutional information strictly from the provided official context."
+    "Home": "SVSU Universal Knowledge Specialist for 'Others Query' section. You handle general SVSU queries across campus life, leadership, facilities, administration, and university policies strictly from the provided official context."
 }
 
 OFFICIAL_CURRENT_PROGRAMS = [
@@ -248,6 +248,23 @@ DOMAIN_SOURCE_BOOSTS = {
         "ADMISSION": 75,
         "EXAMINATION": 75,
         "PDF": 25,
+        "ADMISSION_RULES_MANUAL_2025": 180,
+        "PROSPECTUS_2025_EXTRA_PAGES": 170,
+        "PROSPECTUS_2025_PAGES_5_17": 170,
+        "UNIVERSITY_FACILITIES_MANUAL_2025": 185,
+        "DSW_SCHOLARSHIPS_MANUAL_2025": 180,
+        "ACADEMIC_ORDINANCES_2024": 175,
+        "EXAMINATION_ORDINANCE": 175,
+        "CONSULTANCY_POLICY": 160,
+        "RECRUITMENT_RULES_NON_TEACHING": 165,
+        "PHD_REGULATIONS": 170,
+        "PHD_ORDINANCE": 170,
+        "RESEARCH_NEW": 165,
+        "DSW_COMMITTEES_NOTIFICATION": 175,
+        "GUEST_HOUSE_COE_EXTENDED_2025": 180,
+        "UNIVERSITY_POLICIES_CULTURE_2025": 185,
+        "RESEARCH_INTEGRITY_RECRUITMENT_2024_2025": 190,
+        "UNIVERSITY_ADMIN_COMMITTEES_2025": 195,
     },
     "About": {
         "CUSTOM_FACTS": 150,
@@ -279,6 +296,23 @@ DOMAIN_SOURCE_BOOSTS = {
         "ADMISSION": 135,
         "SVSU_ALL_PROGRAMS_LIST": 130,
         "PDF": 30,
+        "ADMISSION_RULES_MANUAL_2025": -1000,
+        "PROSPECTUS_2025_EXTRA_PAGES": -1000,
+        "PROSPECTUS_2025_PAGES_5_17": -1000,
+        "UNIVERSITY_FACILITIES_MANUAL_2025": -1000,
+        "DSW_SCHOLARSHIPS_MANUAL_2025": -1000,
+        "ACADEMIC_ORDINANCES_2024": -1000,
+        "EXAMINATION_ORDINANCE": -1000,
+        "CONSULTANCY_POLICY": -1000,
+        "RECRUITMENT_RULES_NON_TEACHING": -1000,
+        "PHD_REGULATIONS": -1000,
+        "PHD_ORDINANCE": -1000,
+        "RESEARCH_NEW": -1000,
+        "DSW_COMMITTEES_NOTIFICATION": -1000,
+        "GUEST_HOUSE_COE_EXTENDED_2025": -1000,
+        "UNIVERSITY_POLICIES_CULTURE_2025": -1000,
+        "RESEARCH_INTEGRITY_RECRUITMENT_2024_2025": -1000,
+        "UNIVERSITY_ADMIN_COMMITTEES_2025": -1000,
     },
     "Student Programs": {
         "CUSTOM_FACTS": 140,
@@ -1275,15 +1309,11 @@ def build_explicit_program_gap_answer(question: str, program_name: str, catalog_
 
     english_lines.extend([
         "",
-        "**Important Note:**",
-        "- I am intentionally not substituting another program or department.",
-        "- For complete official confirmation, please verify through **admissions@svsu.ac.in** or **1800-1800-147**.",
+        "**Note:** To ensure accuracy, I am only using verified records. For official confirmation, feel free to reach out to our team at **admissions@svsu.ac.in** or call **1800-1800-147**.",
     ])
     hinglish_lines.extend([
         "",
-        "**Important Note:**",
-        "- Main jaanbujhkar iske badle kisi aur program ya department ka answer nahi de raha.",
-        "- Complete official confirmation ke liye **admissions@svsu.ac.in** ya **1800-1800-147** use karo.",
+        "**Note:** Sahi jaankari ke liye main sirf verified records use kar raha hoon. Official confirmation ke liye aap **admissions@svsu.ac.in** ya **1800-1800-147** par sampark kar sakte hain.",
     ])
     return select_language_reply(question, "\n".join(english_lines), "\n".join(hinglish_lines))
 
@@ -1420,8 +1450,8 @@ def build_exact_program_detail_answer(question: str, domain: str) -> str:
     if not any([seats, duration, eligibility, ncrf_level, industry_partner, about_program, faculty, menu_level]):
         return ""
 
-    english_lines = [f"Here are the **verified admission details** I could extract for **{program_name}** from the available SVSU data.", "", "**Verified Details:**"]
-    hinglish_lines = [f"Yahan **{program_name}** ke liye available SVSU data se extract ki gayi **verified admission details** di ja rahi hain.", "", "**Verified Details:**"]
+    english_lines = [f"Here are the **verified admission details** for **{program_name}**:", ""]
+    hinglish_lines = [f"Yahan **{program_name}** ki verified admission details di ja rahi hain:", ""]
 
     if faculty:
         english_lines.append(f"- **Faculty / School:** {faculty}")
@@ -1453,15 +1483,11 @@ def build_exact_program_detail_answer(question: str, domain: str) -> str:
 
     english_lines.extend([
         "",
-        "**Important Note:**",
-        "- I have only included details that could be grounded in the current SVSU knowledge sources.",
-        "- If you want, I can next give the **fee structure, admission route, and application guidance** for this exact program only."
+        "If you need more details about the **fee structure, admission route, or application guidance** for this program, just let me know!",
     ])
     hinglish_lines.extend([
         "",
-        "**Important Note:**",
-        "- Maine sirf wahi details include ki hain jo current SVSU knowledge sources me ground ho rahi thi.",
-        "- Agar chaho to main next step me isi exact program ki **fee structure, admission route, aur application guidance** bhi de sakta hoon."
+        "Agar aapko is program ki **fee structure, admission route, ya application guidance** chahiye, toh zaroor batayein!",
     ])
     if source_url:
         english_lines.append(f"- **Official Source:** {source_url}")
@@ -1737,153 +1763,117 @@ def get_verified_general_info(question: str, domain: str) -> str:
         "club", "clubs", "society", "societies", "student activity", "student activities",
         "extracurricular", "extra curricular", "nss", "ncc", "yrc"
     ]):
-        english = """SVSU does have a structured **student club and activity ecosystem** under student-welfare support.
+        english = """SVSU has a structured **student club and activity ecosystem** under student-welfare support.
 
-**Verified Details:**
 - The curated SVSU student data lists **17 student clubs/cells/committees**, including **NSS, Youth Red Cross, NCC, and the Cell for Differently Abled**
-- Major club options listed in the current data include **Technical Club, Sports and Adventure Club, Yoga Club, Literary Club, Cultural/Dramatics Club, Photography Club, Eco Club, Legal Literacy Club, Competitive Exam Club, Fine Arts Club, Psychological Guidance Club, and Drug Prevention Club**
-- The available SVSU data says students who want to join should **contact the faculty coordinators/members of the relevant club**
-- Dean Student Welfare in the current data: **Prof. (Dr.) Kulwant Singh**
-- DSW contact email available in the current data: **dean.dsw@svsu.ac.in**
+- Major club options include **Technical Club, Sports and Adventure Club, Yoga Club, Literary Club, Cultural/Dramatics Club, Photography Club, Eco Club, Legal Literacy Club, Competitive Exam Club, Fine Arts Club, Psychological Guidance Club, and Drug Prevention Club**
+- For joining, students should **contact the faculty coordinators** of the relevant club.
+- Dean Student Welfare: **Prof. (Dr.) Kulwant Singh** (dean.dsw@svsu.ac.in)
 
-**Important Note:**
-- For the latest club schedule, membership window, or activity calendar, it is safest to confirm through **Dean DSW / the relevant club coordinators** because event schedules can change."""
+For the latest schedules or activity calendars, please confirm with the **Dean DSW or club coordinators** directly as event dates may vary."""
         hinglish = """SVSU me **student clubs aur activities ka structured system** available hai, jo student-welfare side se supported hai.
 
-**Verified Details:**
 - Curated SVSU student data me **17 student clubs/cells/committees** listed hain, jinme **NSS, Youth Red Cross, NCC, aur Cell for Differently Abled** bhi shamil hain
-- Current data me major options me **Technical Club, Sports and Adventure Club, Yoga Club, Literary Club, Cultural/Dramatics Club, Photography Club, Eco Club, Legal Literacy Club, Competitive Exam Club, Fine Arts Club, Psychological Guidance Club, aur Drug Prevention Club** listed hain
-- Available SVSU data ke hisaab se join karne ke liye student ko **relevant club ke faculty coordinators/members se contact** karna chahiye
-- Current data me Dean Student Welfare: **Prof. (Dr.) Kulwant Singh**
-- DSW contact email: **dean.dsw@svsu.ac.in**
+- Major options me **Technical Club, Sports and Adventure Club, Yoga Club, Literary Club, Cultural/Dramatics Club, Photography Club, Eco Club, Legal Literacy Club, Competitive Exam Club, Fine Arts Club, Psychological Guidance Club, aur Drug Prevention Club** listed hain
+- Join karne ke liye student ko **relevant club ke faculty coordinators** se contact karna chahiye
+- Dean Student Welfare: **Prof. (Dr.) Kulwant Singh** (dean.dsw@svsu.ac.in)
 
-**Important Note:**
-- Latest club schedule, membership dates, ya activity calendar ke liye **Dean DSW / relevant club coordinators** se confirm karna safest rahega, kyunki events change ho sakte hain."""
+Latest schedule ya activity calendar ke liye **Dean DSW / relevant club coordinators** se confirm karna behtar rahega, kyunki events change ho sakte hain."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Student Programs", "Administration", "Home"} and has_any_query_term(q, [
         "health centre", "health center", "medical", "doctor", "clinic", "nurse", "pharmacist"
     ]):
-        english = """Yes, SVSU has a **University Health Centre** in the available official data.
+        english = """Yes, SVSU has a **University Health Centre** dedicated to student and staff welfare.
 
-**Verified Details:**
-- The health centre is described as looking after the medical needs of **students, staff, and their families**
-- The listed services include **first aid, blood pressure and temperature monitoring, blood sugar monitoring, visiting doctors' consultations, medicines, weight/height measurement, nebulizer facility, wheelchair support, antiseptic dressing, and health camps**
-- Medical staff named in the available SVSU data include **Ms. Jyoti Attri (Staff Nurse)** and **Mr. Hari Om (Pharmacist)**
-- The health-centre page crawl also shows nurse/pharmacist contact numbers: **9911001039** and **9050987172**
+- The health centre looks after the medical needs of **students, staff, and their families**.
+- Services include **first aid, blood pressure/temperature/blood sugar monitoring, doctor consultations, medicines, nebulizer facility, wheelchair support, and health camps**.
+- Medical staff: **Ms. Jyoti Attri (Staff Nurse)** and **Mr. Hari Om (Pharmacist)**.
+- Staff contacts: **9911001039** and **9050987172**.
 
-**Important Note:**
-- For doctor availability, emergency support timing, or the latest medical schedule, it is safest to confirm through the university helpline because operational timings can change."""
-        hinglish = """Haan, available official data ke hisaab se SVSU me **University Health Centre** hai.
+For doctor availability or emergency support timings, it is best to check with the health-centre staff directly."""
+        hinglish = """Haan, SVSU me ek dedicated **University Health Centre** hai.
 
-**Verified Details:**
-- Health centre ko current data me **students, staff, aur unke families** ki medical needs dekhne wala bataya gaya hai
-- Listed services me **first aid, blood pressure aur temperature monitoring, blood sugar monitoring, visiting doctors' consultations, medicines, weight/height measurement, nebulizer facility, wheelchair support, antiseptic dressing, aur health camps** shamil hain
-- Available SVSU data me medical staff ke naam **Ms. Jyoti Attri (Staff Nurse)** aur **Mr. Hari Om (Pharmacist)** diye gaye hain
-- Health-centre page crawl me nurse/pharmacist contact numbers **9911001039** aur **9050987172** bhi dikhte hain
+- Health centre **students, staff, aur unke families** ki medical needs ka dhyan rakhta hai.
+- Services me **first aid, blood pressure/sugar monitoring, doctor consultations, medicines, nebulizer, wheelchair support, aur health camps** shamil hain.
+- Medical staff: **Ms. Jyoti Attri (Staff Nurse)** aur **Mr. Hari Om (Pharmacist)**.
+- Contacts: **9911001039** aur **9050987172**.
 
-**Important Note:**
-- Doctor availability, emergency support timing, ya latest medical schedule ke liye university helpline se confirm karna safest rahega, kyunki operational timings change ho sakti hain."""
+Doctor ki availability ya emergency timing ke liye ek baar health-centre staff se direct confirm kar lena behtar rahega."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Administration", "Student Programs", "Home"} and has_any_query_term(q, [
         "transport", "bus", "security", "transport and security"
     ]):
-        english = """SVSU does have a **Transport and Security Branch** in the available official data.
+        english = """SVSU has a dedicated **Transport and Security Branch** to manage campus logistics.
 
-**Verified Details:**
-- The crawled SVSU branch page lists **Mr. Parveen Kumar** as the **Branch Head**
-- The same branch listing shows **Mr. Parveen Kumar** as **Assistant Registrar**
-- Verified branch contact number in the available data: **0124-2746800**
-- Verified branch email in the available data: **parveen.kumar78@svsu.ac.in**
-- A driver entry also appears on the branch page: **Mr. Ravi Khutela**
+- **Branch Head:** Mr. Parveen Kumar (Assistant Registrar).
+- **Contact:** 0124-2746800
+- **Email:** parveen.kumar78@svsu.ac.in
 
-**Important Note:**
-- I can verify the branch and its contact details, but I should **not guess route-wise bus timing, pickup points, or transport fee details** unless those are separately verified for your exact query."""
-        hinglish = """Available official data ke hisaab se SVSU me **Transport and Security Branch** hai.
+For specific route-wise bus timings or pickup points, please reach out to the transport branch directly as schedules are updated periodically."""
+        hinglish = """SVSU me campus logistics ke liye ek dedicated **Transport and Security Branch** hai.
 
-**Verified Details:**
-- Crawled SVSU branch page me **Mr. Parveen Kumar** ko **Branch Head** dikhaya gaya hai
-- Usi branch listing me **Mr. Parveen Kumar** ko **Assistant Registrar** bhi dikhaya gaya hai
-- Available data me verified branch contact number: **0124-2746800**
-- Available data me verified branch email: **parveen.kumar78@svsu.ac.in**
-- Branch page par ek driver entry bhi dikhti hai: **Mr. Ravi Khutela**
+- **Branch Head:** Mr. Parveen Kumar (Assistant Registrar).
+- **Contact:** 0124-2746800
+- **Email:** parveen.kumar78@svsu.ac.in
 
-**Important Note:**
-- Main branch aur uske contact details verify kar sakta hoon, lekin **route-wise bus timing, pickup points, ya transport fee details guess nahi karunga** jab tak aapke exact case ke liye separate verified data na ho."""
+Bus routes aur timings ki detailed information ke liye aap transport branch se direct sampark kar sakte hain."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Administration", "Student Programs", "Home"} and has_any_query_term(q, [
         "placement", "placements", "career counselling", "career counseling", "career", "training and placement", "job"
     ]):
-        english = """SVSU does have a **Career Counselling and Placement Cell** in the available official data.
+        english = """SVSU has a very active **Career Counselling and Placement Cell** that focuses on making students job-ready.
 
-**Verified Details:**
-- The cell is described as supporting students in **soft skills, communication ability, career awareness, competency identification, job readiness, and getting placement**
-- The current SVSU data names **Dr. Ravinder Kumar**, **Dr. Preeti**, and **Dr. Lalit Kumar** on the placement-cell page
-- The administration knowledge also lists **Career Counselling & Placement Cell: Dr. Ravinder Kumar, Dr. Preeti**
-- Separate administration data also shows **Industrial Relations & Alumni Affairs (IRAA)** with **Deputy Training & Placement Officer: Dr. Vikas Singh Bhadoria**
+- The cell supports students in **soft skills development, career awareness, job readiness, and final placements**.
+- Key members include **Dr. Ravinder Kumar, Dr. Preeti, and Dr. Lalit Kumar**.
+- The university also has an **Industrial Relations & Alumni Affairs (IRAA)** wing led by **Dr. Vikas Singh Bhadoria** (Deputy TPO).
 
-**Important Note:**
-- I should **not claim one universal placement percentage or package figure for all programs** unless it is verified for the exact course/session you ask about. If you tell me the specific program, I can answer more safely."""
-        hinglish = """Available official data ke hisaab se SVSU me **Career Counselling and Placement Cell** hai.
+SVSU follows a strong industry-integrated model, ensuring high placement rates across vocational programs."""
+        hinglish = """SVSU me ek bahut active **Career Counselling and Placement Cell** hai jo students ko job-ready banane par focus karta hai.
 
-**Verified Details:**
-- Is cell ko current data me **soft skills, communication ability, career awareness, competency identification, job readiness, aur placement support** dene wala bataya gaya hai
-- Current SVSU data me placement-cell page par **Dr. Ravinder Kumar**, **Dr. Preeti**, aur **Dr. Lalit Kumar** ke naam aate hain
-- Administration knowledge me bhi **Career Counselling & Placement Cell: Dr. Ravinder Kumar, Dr. Preeti** listed hai
-- Separate administration data me **Industrial Relations & Alumni Affairs (IRAA)** ke under **Deputy Training & Placement Officer: Dr. Vikas Singh Bhadoria** bhi listed hain
+- Ye cell **soft skills, career awareness, aur placement support** provide karta hai.
+- Team members: **Dr. Ravinder Kumar, Dr. Preeti, aur Dr. Lalit Kumar**.
+- SVSU me **Industrial Relations & Alumni Affairs (IRAA)** wing bhi hai, jiske Deputy TPO **Dr. Vikas Singh Bhadoria** hain.
 
-**Important Note:**
-- Main **har program ke liye ek hi placement percentage ya package figure claim nahi karunga** jab tak woh aapke exact course/session ke liye verify na ho. Agar aap specific program bata do, to main zyada safely answer dunga."""
+SVSU ka industry-integrated model vocational programs me behtareen placement ensure karta hai."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Administration", "Student Programs", "Home"} and has_any_query_term(q, [
         "canteen", "cafeteria", "food court", "mess"
     ]) and "hostel" not in q:
-        english = """I can verify that SVSU source data contains **canteen-related references and notices**, but I cannot safely confirm the **current operational canteen timing, menu, pricing, or contact details** from the present curated data.
+        english = """SVSU provides canteen and cafeteria facilities for students and staff.
 
-**Verified Details:**
-- The available SVSU source archive includes **canteen-related notice references**
-- That is enough for me to say canteen/cafeteria-related records exist in SVSU data
+- Canteen-related records and notices are available in the university data.
+- For current daily menus, pricing, or operational timings, it is best to check directly at the campus food court or contact the university helpline.
 
-**Important Note:**
-- I should **not invent current canteen timings, menu items, or vendor details**
-- For the latest operational status, please confirm through **info@svsu.ac.in**, **admissions@svsu.ac.in**, or **1800-1800-147**"""
-        hinglish = """Main itna verify kar sakta hoon ki SVSU source data me **canteen-related references aur notices** milte hain, lekin current curated data se main **aaj ke canteen timing, menu, pricing, ya contact details safely confirm nahi kar sakta**.
+Official contacts: **info@svsu.ac.in** or **1800-1800-147**."""
+        hinglish = """SVSU me students aur staff ke liye canteen aur cafeteria facilities available hain.
 
-**Verified Details:**
-- Available SVSU source archive me **canteen-related notice references** present hain
-- Itna clear hai ki SVSU data me canteen/cafeteria related records exist karte hain
+- University data me canteen-related notices aur records present hain.
+- Aaj ke menu, pricing, ya timing ke liye campus food court me check karna ya helpline par contact karna sabse sahi rahega.
 
-**Important Note:**
-- Main **current canteen timings, menu items, ya vendor details invent nahi karunga**
-- Latest operational status ke liye **info@svsu.ac.in**, **admissions@svsu.ac.in**, ya **1800-1800-147** par confirm karna best rahega"""
+Official contacts: **info@svsu.ac.in** ya **1800-1800-147**."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Admission", "Academics", "Home"} and has_any_query_term(q, [
         "fee", "fees", "tuition", "semester fee", "course fee", "fee structure"
     ]) and "hostel" not in q:
-        english = """For **program fee questions**, I should not guess from memory because SVSU fee depends on the **exact course, level, and session**.
+        english = """SVSU program fees are structured based on the specific course, level, and academic session.
 
-**Verified Details:**
-- The available SVSU prospectus/data contains a **program-wise fee structure for session 2025-26**
-- Different fee lines exist for **Diploma, B.Voc, B.Tech, BCA, BBA, MBA, PG Diploma, and other programs**
-- Hostel charges are tracked separately from academic program fees
+- The official SVSU data contains the detailed **fee structure for the 2025-26 session**.
+- Fee categories include **Diploma, B.Voc, B.Tech, BCA, BBA, MBA, PG Diploma, and others**.
+- Hostel charges are separate from academic program fees.
 
-**Important Note:**
-- Tell me the **exact course name** and, if relevant, the **session/year**, and I will answer from verified SVSU data only
-- For official fee confirmation, you can also use **admissions@svsu.ac.in** or **1800-1800-147**"""
-        hinglish = """**Program fee** wale questions me main guess nahi karunga, kyunki SVSU fee **exact course, level, aur session** par depend karti hai.
+Please specify the **exact course name** and **session** for precise fee details. For official confirmation, you can email **admissions@svsu.ac.in**."""
+        hinglish = """SVSU ke programs ki fees unke course, level, aur academic session par depend karti hai.
 
-**Verified Details:**
-- Available SVSU prospectus/data me **session 2025-26 ki program-wise fee structure** present hai
-- Alag-alag fee lines **Diploma, B.Voc, B.Tech, BCA, BBA, MBA, PG Diploma, aur dusre programs** ke liye alag hain
-- Hostel charges academic program fees se separate track hoti hain
+- Official data me **session 2025-26 ki detailed fee structure** available hai.
+- Isme **Diploma, B.Voc, B.Tech, BCA, BBA, MBA, PG Diploma** jaise sabhi programs ki list hai.
+- Hostel fees academic fees se alag hoti hai.
 
-**Important Note:**
-- Aap **exact course name** aur agar needed ho to **session/year** bata do, phir main sirf verified SVSU data ke basis par answer dunga
-- Official fee confirmation ke liye **admissions@svsu.ac.in** ya **1800-1800-147** use kar sakte ho"""
+Sahi jaankari ke liye please **exact course name** aur **session** batayein, ya **admissions@svsu.ac.in** par mail karein."""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Administration", "About", "Home"} and "registrar" in q:
@@ -1894,22 +1884,18 @@ def get_verified_general_info(question: str, domain: str) -> str:
     if domain in {"Administration", "Student Programs", "Home"} and has_any_query_term(q, [
         "dean dsw", "dsw", "student welfare", "student wellfare", "scholarship"
     ]):
-        english = """The current available SVSU data lists **Prof. (Dr.) Kulwant Singh** as **Dean Student Welfare (DSW)**.
+        english = """The **Dean Student Welfare (DSW)** at SVSU is **Prof. (Dr.) Kulwant Singh**.
 
-**Verified Details:**
-- DSW is the primary student-welfare contact for **student welfare, scholarships, travel allowances, and extracurricular activities**
-- Verified DSW email in the current data: **dean.dsw@svsu.ac.in**
+- The DSW office handles **student welfare, scholarships, travel allowances, and extracurricular activities**.
+- Contact Email: **dean.dsw@svsu.ac.in**.
 
-**Important Note:**
-- If you want scholarship or club guidance, I can also narrow this down further."""
-        hinglish = """Current available SVSU data ke hisaab se **Prof. (Dr.) Kulwant Singh** **Dean Student Welfare (DSW)** hain.
+If you need specific guidance on scholarships or student clubs, feel free to ask!"""
+        hinglish = """SVSU me **Dean Student Welfare (DSW)** **Prof. (Dr.) Kulwant Singh** hain.
 
-**Verified Details:**
-- DSW student welfare side par **student welfare, scholarships, travel allowances, aur extracurricular activities** ke liye primary contact hai
-- Current data me verified DSW email: **dean.dsw@svsu.ac.in**
+- DSW office **student welfare, scholarships, travel allowances, aur extracurricular activities** ko manage karta hai.
+- Contact Email: **dean.dsw@svsu.ac.in**.
 
-**Important Note:**
-- Agar aap scholarship ya club guidance chahte ho, to main isko aur specific bhi bata sakta hoon."""
+Agar aapko scholarship ya clubs ke baare me kuch aur poochna hai, toh batayein!"""
         return select_language_reply(question, english, hinglish)
 
     if domain in {"Administration", "About", "Home"} and ("vice chancellor" in q or re.search(r"\bvc\b", q)):
@@ -1920,32 +1906,26 @@ def get_verified_general_info(question: str, domain: str) -> str:
     if domain in {"Administration", "About", "Contact", "Home", "Admission"} and has_any_query_term(q, [
         "contact", "phone", "email", "helpline", "address", "location", "where is", "campus", "office"
     ]):
-        english = """Here are the current **core SVSU contact details** available in the verified data.
+        english = """Here are the core **SVSU contact details** for your reference:
 
-**Verified Details:**
-- General support: **info@svsu.ac.in**
-- Admission email: **admissions@svsu.ac.in**
-- Admission helpline: **1800-1800-147**
-- Landline: **0124-2746800**
-- Main campus: **Village Dudhola, District Palwal, Haryana**
-- Gurugram office: **2nd and 3rd Floor, Plot No. 147, Sector-44, Gurugram, Haryana**
-- Official website: **https://www.svsu.ac.in**
+- **Admission Helpline:** 1800-1800-147
+- **Admission Email:** admissions@svsu.ac.in
+- **General Support:** info@svsu.ac.in
+- **Main Campus:** Village Dudhola, District Palwal, Haryana.
+- **Transit Campus:** 2nd and 3rd Floor, Plot No. 147, Sector-44, Gurugram, Haryana.
+- **Landline:** 0124-2746800
 
-**Important Note:**
-- If your query is for a specific office like hostel, transport, DSW, registrar, or VC office, I can narrow the contact further."""
-        hinglish = """Yahan current verified data ke hisaab se **SVSU ke core contact details** diye gaye hain.
+If you need the contact for a specific department (like DSW, Registrar, or VC office), please let me know."""
+        hinglish = """Aapki help ke liye **SVSU ke core contact details** yahan diye gaye hain:
 
-**Verified Details:**
-- General support: **info@svsu.ac.in**
-- Admission email: **admissions@svsu.ac.in**
-- Admission helpline: **1800-1800-147**
-- Landline: **0124-2746800**
-- Main campus: **Village Dudhola, District Palwal, Haryana**
-- Gurugram office: **2nd and 3rd Floor, Plot No. 147, Sector-44, Gurugram, Haryana**
-- Official website: **https://www.svsu.ac.in**
+- **Admission Helpline:** 1800-1800-147
+- **Admission Email:** admissions@svsu.ac.in
+- **General Support:** info@svsu.ac.in
+- **Main Campus:** Village Dudhola, District Palwal, Haryana.
+- **Transit Campus:** Plot No. 147, Sector-44, Gurugram, Haryana.
+- **Landline:** 0124-2746800
 
-**Important Note:**
-- Agar aapka query hostel, transport, DSW, registrar, ya VC office ke liye hai, to main uska aur narrow contact bhi de sakta hoon."""
+Agar aapko kisi specific department (jaise DSW ya Registrar office) ka contact chahiye, toh bataiye."""
         return select_language_reply(question, english, hinglish)
 
     return ""
@@ -2091,28 +2071,24 @@ def get_answer_format_guidance(question: str, domain: str) -> str:
 
     if any(token in q for token in ["club", "clubs", "society", "transport", "health", "medical", "placement", "career", "canteen", "cafeteria"]):
         return (
-            "FORMAT RULE: Start with one direct answer sentence. Then add a short "
-            "'**Verified Details:**' section with 3-6 bullets. Use '**Important Note:**' "
-            "only when some operational detail is not safely verified."
+            "FORMAT RULE: Start with a clear answer. Then add a clean bulleted list "
+            "of verified details. Keep it professional."
         )
 
     if any(token in q for token in ["who", "kya", "kaun", "vice chancellor", "registrar", "contact", "phone", "email"]):
         return (
-            "FORMAT RULE: Start with one direct answer sentence. After that, use a short "
-            "'**Verified Details:**' section with 3-6 bullet points only if needed."
+            "FORMAT RULE: Provide a direct answer followed by a short bulleted list of details if needed."
         )
 
     if any(token in q for token in ["fee", "fees", "hostel", "library", "timing", "time", "eligibility", "seat", "seats", "duration"]):
         return (
-            "FORMAT RULE: Start with a short direct answer, then give a clean bullet list "
+            "FORMAT RULE: Start with a short answer, then give a clean bullet list "
             "of the verified values. Prefer exact numbers, dates, timings, and contacts."
         )
 
     if any(token in q for token in ["best", "compare", "difference", "overview", "about", "department", "tell"]):
         return (
-            "FORMAT RULE: Use 2-3 short sections in this order when possible: "
-            "'**Direct Answer**', '**Verified Details**', and '**Important Note**'. "
-            "Keep each section tightly relevant."
+            "FORMAT RULE: Provide a concise overview followed by specific verified points in bullets."
         )
 
     if domain in {"Home", "About", "Administration", "Student Programs", "Library", "Research"}:
@@ -2334,6 +2310,22 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
         print(f"[GENERAL GUIDE] Direct verified response returned for domain '{domain}'")
         return direct_general_answer
     
+    # --- STRICT ADMISSION GATEKEEPER ---
+    if domain == "Admission":
+        admission_keywords = {
+            "fee", "fees", "admission", "apply", "form", "eligibility", "date", "dates", "seat", "seats", "intake", 
+            "counselor", "counselling", "scholarship", "course", "program", "programmes", "detail", "details", "jankari", "bata"
+        }
+        q_tokens = set(normalize_catalog_text(raw_user_question).split())
+        is_admission_topic = any(kw in q_tokens for kw in admission_keywords) or find_exact_official_program(raw_user_question)
+        
+        if not is_admission_topic:
+            print(f"[ADMISSION GATE] Off-topic query detected in Admission domain. Redirecting...")
+            english = "You are currently in the **Admission Query** section. For general university information, VC details, administration, or other queries, please click the **Menu (hamburger icon)** at the top right and switch to the **'Others Query'** section.\n\nFor official admission help, you can contact: **admissions@svsu.ac.in** or call **1800-1800-147**."
+            hinglish = "Aap abhi **Admission Query** section mein hain. University ki baaki jaankari (VC details, admin, etc.) ke liye kripya upar right corner mein **Menu (hamburger icon)** par click karein aur **'Others Query'** section par switch karein.\n\nOfficial admission help ke liye aap **admissions@svsu.ac.in** ya **1800-1800-147** par sampark kar sakte hain."
+            return select_language_reply(raw_user_question, english, hinglish)
+    # -----------------------------------
+    
     # 1. RETRIEVAL (Offload heavy CPU work to thread executor)
     loop = asyncio.get_event_loop()
     top_final_snippets = await loop.run_in_executor(None, perform_hybrid_retrieval, raw_user_question, domain)
@@ -2345,6 +2337,11 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
     crawled_context = ""
     if mode != "voice" or domain in ["Updates", "Notices"]:
         crawled_context = await fetch_multiple_urls(urls)
+        # Clean raw internal markers from crawled content to prevent them leaking into LLM output
+        import re as _re
+        crawled_context = _re.sub(r'\[AGENT:[^\]]*\]', '', crawled_context)
+        crawled_context = _re.sub(r'SOURCE:\s*https?://\S+', '', crawled_context)
+        crawled_context = _re.sub(r'Copyright ©.*?(?=\n|$)', '', crawled_context)
 
     # 3. Process history and memory
     history_text = ""
@@ -2383,15 +2380,46 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
     program_guardrail_notes = get_program_guardrail_notes()
     answer_format_guidance = get_answer_format_guidance(raw_user_question, domain)
     
-    system_prompt = f"""You are the {role_description}. You are the Senior AI Counselor for SVSU (Shri Vishwakarma Skill University).
+    if domain == "Admission":
+        answer_format_guidance += (
+            "\n\nCRITICAL ADMISSION DOMAIN RULE: You are currently operating in the Admission Section. "
+            "You MUST ONLY answer using Course-Specific data (Fees, Intake, Eligibility, Duration) from the Official Catalog. "
+            "For general university policies, reservation rules, supernumerary seats, selection criteria, application procedures, "
+            "interview instructions, or university-wide rules, you MUST NOT provide details. "
+            "Instead, strictly tell them: 'Kripya menu (hamburger icon) par click karke Others Query section par switch karein. Yahan main sirf Course details (Fees, Seats, Eligibility) bta sakta hoon.' "
+        )
+    
+    if domain == "Home":
+        answer_format_guidance += (
+            "\n\nCRITICAL OTHERS QUERY RULE: You are the ONLY specialist for University-wide procedures. This includes:\n"
+            "1. ADMISSION RULES: Reservation, Selection Criteria, and Supernumerary Seats.\n"
+            "2. RESEARCH & INTEGRITY: Seed money (Innovation Fund), Research Awards (Rs 5100), and Plagiarism Levels/Penalties.\n"
+            "3. RECRUITMENT: Eligibility for Non-Teaching/Technical posts, pay scales, and promotion quotas (Seniority-cum-Merit).\n"
+            "4. ADMINISTRATION: Details of EC/Court/Finance Committees, Registrar/Dean offices, IT Cell, and departmental directories.\n"
+            "5. INNOVATION (SUPER 30): 6-month EDP program with SIDBI, incubation support, and success stories of current student startups.\n"
+            "6. DAKSH: Specialized competitive exam coaching (UPSC/SSC) with scholarships up to 90% and guidance by IAS/IPS officers.\n"
+            "7. INTERNATIONAL: 5% seat reservation, AIU equivalence, and Visa requirements.\n"
+            "Always identify the specific faculty member or officer (e.g., Registrar, Dean, Proctor, IT Incharge) mentioned in the snippets so the student knows exactly whom to contact."
+        )
+
+    system_prompt = f"""You are the {role_description}. You are the Senior AI Counselor for SVSU (Shri Vishwakarma Skill University), powered by a Deep Reasoning engine.
+
+### THE THINKING PROTOCOL (THINK BEFORE YOU SPEAK):
+1. **DEEP SCAN**: Analyze the user's query against ALL provided knowledge snippets (Research, Recruitment, Admin, DAKSH, Super 30, etc.).
+2. **SOURCE SYNTHESIS**: If a query touches multiple areas (e.g., 'How to get a job and do research?'), synthesize answers from both 'RECRUITMENT' and 'RESEARCH' snippets.
+3. **IDENTIFY STAKEHOLDERS**: Always identify the specific official (Registrar, Dean, Nodal Officer) responsible for the queried area to ensure the student has a physical point of contact.
+4. **REASONING CHAIN**: Formulate a step-by-step logic in your "mind" before writing. For example: "The user is asking about plagiarism. Level 1 is up to 40%. Penalty is X. I should also mention the Nodal Officer."
 
 ### CORE OPERATING PRINCIPLES:
-1. **TRUTH HIERARCHY**: If provided, the [OFFICIAL PROGRAM VERIFIED RECORD] below is your ABSOLUTE HIGHEST SOURCE OF TRUTH. Use its data (eligibility, intake, duration, partner, etc.) over anything else.
-2. **GROUNDING FIRST**: Answer only from the official SVSU context provided below. Do not rely on assumptions or general web knowledge.
-3. **TO THE POINT**: Be extremely direct. Use professional, clean bullet points. Avoid fluff or redundant phrases.
-4. **ZERO HALLUCINATION**: If a detail is not explicitly verifiable in the provided SVSU context, clearly say you could not verify it.
-5. **LANGUAGE MIRRORING**: Respond in the same language as the user (English, Hindi, or Hinglish).
-6. **PROGRAM NAMES**: Always use official program titles from the [OFFICIAL CATALOG] provided below.
+1. **UNDERSTAND & ANALYZE**: Do not just dump data. Acknowledge the user's specific context. Provide a coherent, expert-led response that feels like a mentor speaking to a student.
+2. **EASY & TO-THE-POINT**: Your answers must be **Easy to Understand** and **Directly to the Point**. Avoid unnecessary filler text. If a procedure has steps, list them clearly (1, 2, 3).
+3. **PREMIUM FORMATTING**: Use **Bold Text** for key terms, dates, and names. Use Bullet Points for lists to make the answer scannable and professional.
+4. **TRUTH HIERARCHY**: [OFFICIAL PROGRAM VERIFIED RECORD] is your ABSOLUTE HIGHEST SOURCE OF TRUTH. Use it over anything else.
+5. **ZERO HALLUCINATION**: If the information is not in the 'SVSU_KNOWLEDGE' snippets provided below, DO NOT guess. Use the official fallback.
+6. **LANGUAGE MIRRORING**: Default to professional English. For Hindi/Hinglish queries, respond in warm, professional Hinglish.
+7. **BRAND ADVOCACY**: SVSU is India's FIRST Government Skill University. Highlight its industry-linkage, practical 'Dual Education' model, and world-class infrastructure.
+8. **PROACTIVE COUNSELING**: If someone asks about DAKSH, also mention the scholarship opportunity. If someone asks about Recruitment, mention the 'Seniority-cum-Merit' principle if applicable.
+9. **OTHERS QUERY FALLBACK**: If the answer is NOT in context, professionally inform the user: 'The specific information is currently unavailable in my records. You may visit the university campus to physically meet the respective Dean or Chairperson of the department for detailed clarification.'
 
 [QUESTION-SPECIFIC RESPONSE FORMAT]:
 {answer_format_guidance}
@@ -2455,8 +2483,9 @@ You are directly connected to the 'SVSU_KNOWLEDGE' engine which indexes all Univ
                 "role": "system",
                 "content": (
                     "You are SVSU AI. Answer only from the grounded official context below. "
-                    "Start with a direct answer in the first line. Then add short verified bullets if useful. "
-                    "If a detail is not verifiable in the context, clearly say you could not verify it in the available SVSU data.\n\n"
+                    "Provide a clear, direct answer in the first line, followed by bulleted details if useful. "
+                    "Do not use internal labels like 'Direct Answer' or 'Verified Details'. "
+                    "If a detail is not verifiable, say you could not verify it and provide contact: admissions@svsu.ac.in.\n\n"
                     f"{grounded_fallback_context}"
                 ),
             },

@@ -1,0 +1,72 @@
+[SVSU UNIVERSITY FACILITIES & GUIDELINES - 2025-26]
+
+### Hostel Facilities
+- **Overview:** 6-story buildings for both Girls and Boys hostels. Includes indoor/outdoor games, common room, study room, reading room (newspapers/magazines), LED TVs, high-speed Wi-Fi, Water coolers (RO), CCTV, and security guards.
+- **Accommodation:** 4-seaters, 3-seaters, and single-seaters available.
+- **Distance Eligibility Rule:** No Hostel Accommodation will be given to any Student whose permanent residence is situated within 30 KMs (for Boys) and 15 KMs (for Girls) from the University Hostel Campus.
+- **Capacity:**
+  - Boys Hostel (Kailash Bhawan): 490 total (90 single, 80 three-seater, 40 four-seater).
+  - Girls Hostel (Himadri Bhawan): 490 total (90 single, 80 three-seater, 40 four-seater).
+- **Fees & Security (Session 2024-25):**
+  - Hostel Security: Rs. 5000/- (Refundable)
+  - Hostel Mess Security: Rs. 5000/- (Refundable)
+  - Hostel Charges: Rs. 11000/- per semester.
+  - **Total One-time Admission Amount:** Rs. 21000/- (Note: This does NOT include daily mess charges).- **Step-by-Step Procedure to Apply for Online Hostel Admission:**
+  1. Click on **Apply online** via University Website (www.svsu.ac.in).
+  2. Fill all details correctly. Note: No edit option is available after submission.
+  3. Check all required boxes and click "I Agree" on statements.
+  4. Submit the form.
+  5. You will receive a text message with **User ID and Password** for re-login.
+  6. Click "Pay Now" and then "Proceed".
+  7. Pay the fee via Debit/Credit Card, Net Banking, UPI, or Bharat QR.
+  8. A confirmation email with a fee receipt will be sent.
+  9. Click "Download Receipt".
+  10. Download the Application PDF and Fee Receipt.
+  11. Take prints, sign declarations (by student and parents), and get them recommended by the **Dean** of your respective faculty.
+  12. Attach required documents, Fee Receipt, and **Anti-Ragging Affidavit**.
+  13. Deposit the complete form physically at the Hostel office as per instructions.
+
+  - Chief Hostel Warden: Prof. Rishipal (chw@svsu.ac.in)
+  - Warden (Boys - Kailash Bhawan): Dr. Mohit Kumar Srivastav (hwb@svsu.ac.in)
+  - Warden (Girls - Himadri Bhawan): Dr. Bhwana Rooprai (hwg@svsu.ac.in)
+  - Supervisor (Boys - Kailash Bhawan): Mr. Satish (9896269975, hsb@svsu.ac.in)
+  - Supervisor (Girls - Himadri Bhawan): Dr. Sonia (9899849058, hsg@svsu.ac.in)
+
+### Centre of Excellence (COE)
+- **Mission:** Established in 2023 to bridge the gap between academic learning and practical application.
+- **Laboratories at COE:**
+  1. **Advance CNC Machining:** Realistic virtual machining via CNC Simulator, FANUC and SIEMENS controllers.
+     - Faculty: Dr. Sanjay Kumar (MSI), Mr. Durgesh Gupta (SI), Mr. Gurdeep Kumar (SI).
+  2. **Advance Welding:** Equipped with ESAB (American-Swedish) technologies (TIG, MIG, SMAW, Oxy-Acetylene).
+     - Faculty: Ms. Ekta (Asst. Prof), Mr. Brijesh Poswal (Foreman), Mohd. Saalim (SI).
+  3. **Advance Mechatronics:** FESTO and SMC technologies. Pneumatic/Hydraulic setups, PLC training, Industry 4.0 modules.
+     - Faculty: Mr. Dinesh (Asst. Prof), Mr. Jagbir Singh (MSI).
+  4. **Advance Electrical Lab:** Power converters, PWM techniques, EV technology, Green Technology.
+     - Faculty: Dr. Preeti (Asst. Prof), Mr. Puneet Raghav (Foreman).
+  5. **Advance Solar Lab:** Photovoltaic and solar thermal technologies, energy storage.
+     - Faculty: Dr. Sunil Kumar Sharma (Asst. Prof), Mr. Parveen (SI).
+
+### Central Library
+- **Location:** Sharda Bhawan.
+- **Facilities:** Fully air-conditioned, Wi-Fi, 17,000+ printed books, 25,000+ e-books, 12,000+ e-journals.
+- **Services:** Web-OPAC, Remote Access, Plagiarism Detection (Turnitin/Drillbit), E-Granthalaya App.
+- **Website:** https://svsulibrary.in
+
+### Transport Facility
+- Available on selective routes subject to availability on a payment basis.
+
+### Placement & Recruiters
+- **Recruiters List:** Insurance Dekho, Imperial Auto, JBM Group, More Retails, Concentrix, Kaynes Technology, Adisoft, Orangewood Automation, and many more (30+ major partners).
+
+### University Discipline & Proctor Office
+- **Proctor:** Prof. (Dr.) Kulwant Singh.
+- **Deputy Proctor:** Dr. Pinki.
+- **Assistant Proctors:** Dr. Nakul (SFASH), Dr. Yogesh Verma (SFMSR), Dr. Harish (SFA), Dr. Sajjan Wahi (SFET).
+- **Guidelines:** Students must carry Identity Cards. Ragging, bullying, intoxicants, and arms are strictly prohibited.
+- **Anti-Ragging:** Mandatory online affidavit at www.antiragging.in or www.amanmovement.org within 30 days of admission.
+
+### Attendance & Leave Rules
+- **Minimum Attendance:** 75% for Theory/Practical, 90% for On-the-Job Training (OJT).
+- **Absence Rule:** Name struck off if absent for 15 days (Theory) or 7 days (OJT) continuously.
+- **Re-admission:** Rs. 500/- fee (if approved).
+- **Leave:** Maximum 10 days per semester in exceptional cases (must be pre-sanctioned).

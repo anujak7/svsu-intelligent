@@ -1,6 +1,7 @@
 import hashlib
 import os
 import json
+import re
 import sqlite3
 from datetime import datetime
 
@@ -12,9 +13,11 @@ except Exception:
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.normpath(os.path.join(BASE_DIR, ".."))
-ROOT_DIR = os.path.normpath(os.path.join(BACKEND_DIR, ".."))
+if os.path.basename(BACKEND_DIR).lower() == "bot_backend" or "BOT_BACKEND" in BACKEND_DIR:
+    ROOT_DIR = os.path.normpath(os.path.join(BACKEND_DIR, ".."))
+else:
+    ROOT_DIR = BACKEND_DIR
 BACKEND_DATA_DIR = os.path.join(BACKEND_DIR, "data")
-ROOT_DIR = os.path.normpath(os.path.join(BACKEND_DIR, ".."))
 KNOWLEDGE_BASE = os.path.join(ROOT_DIR, "SVSU_KNOWLEDGE")
 
 # Organized Paths
@@ -22,6 +25,8 @@ KNOWLEDGE_DB_PATH = os.path.join(KNOWLEDGE_BASE, "Database", "svsu_knowledge.db"
 BACKEND_KNOWLEDGE_DIR = os.path.join(KNOWLEDGE_BASE, "Text_Knowledge")
 PDF_DIR = os.path.join(KNOWLEDGE_BASE, "PDFs")
 STRUCTURED_DATA_DIR = os.path.join(KNOWLEDGE_BASE, "Structured_Data")
+PDF_KNOWLEDGE_TEXT_PATH = os.path.join(BACKEND_KNOWLEDGE_DIR, "pdf_knowledge.txt")
+_PDF_KNOWLEDGE_SECTION_CACHE = None
 
 SOURCE_GROUP_PRIORITIES = {
     "CUSTOM_FACTS": 260,
@@ -144,20 +149,58 @@ def _iter_source_files():
 
 
 def _extract_pdf_text(pdf_path: str) -> str:
-    if fitz is None:
-        return ""
+    native_text = ""
+    if fitz is not None:
+        extracted_pages = []
+        try:
+            with fitz.open(pdf_path) as doc:
+                for page in doc:
+                    page_text = page.get_text("text") or ""
+                    if page_text.strip():
+                        extracted_pages.append(page_text.strip())
+        except Exception:
+            extracted_pages = []
+        native_text = "\n\n".join(extracted_pages).strip()
 
-    extracted_pages = []
+    fallback_text = _get_pdf_knowledge_fallback(os.path.basename(pdf_path))
+    if fallback_text and len(fallback_text) > len(native_text) + 80:
+        return fallback_text
+    return native_text or fallback_text or ""
+
+
+def _load_pdf_knowledge_sections():
+    global _PDF_KNOWLEDGE_SECTION_CACHE
+    if _PDF_KNOWLEDGE_SECTION_CACHE is not None:
+        return _PDF_KNOWLEDGE_SECTION_CACHE
+
+    sections = {}
+    if not os.path.exists(PDF_KNOWLEDGE_TEXT_PATH):
+        _PDF_KNOWLEDGE_SECTION_CACHE = sections
+        return sections
+
     try:
-        with fitz.open(pdf_path) as doc:
-            for page in doc:
-                page_text = page.get_text("text") or ""
-                if page_text.strip():
-                    extracted_pages.append(page_text.strip())
+        with open(PDF_KNOWLEDGE_TEXT_PATH, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
     except Exception:
-        return ""
+        _PDF_KNOWLEDGE_SECTION_CACHE = sections
+        return sections
 
-    return "\n\n".join(extracted_pages).strip()
+    pattern = re.compile(r"^--- DOCUMENT: (.+?) ---\s*$", re.MULTILINE)
+    matches = list(pattern.finditer(content))
+    for index, match in enumerate(matches):
+        filename = match.group(1).strip()
+        start = match.end()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(content)
+        section_text = content[start:end].strip()
+        if section_text:
+            sections[filename] = section_text
+
+    _PDF_KNOWLEDGE_SECTION_CACHE = sections
+    return sections
+
+
+def _get_pdf_knowledge_fallback(filename: str) -> str:
+    return _load_pdf_knowledge_sections().get(str(filename or "").strip(), "")
 
 
 def _read_file_bytes(path: str) -> bytes:

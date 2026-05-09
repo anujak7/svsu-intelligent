@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -590,10 +590,143 @@
         textarea:focus {
             border-color: var(--primary);
         }
+
+        /* ═══════════════════════════════════════
+           MOBILE RESPONSIVE — Admin Panel
+           ═══════════════════════════════════════ */
+
+        /* Hamburger toggle button (hidden on desktop) */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 2000;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Overlay for sidebar on mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.active { display: block; }
+
+        @media (max-width: 768px) {
+            /* Show hamburger */
+            .mobile-menu-toggle { display: flex; }
+
+            /* Sidebar hidden by default */
+            .sidebar {
+                left: -320px;
+                z-index: 1001;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                padding-top: 1.5rem;
+            }
+            .sidebar.open { left: 0; }
+
+            /* Main content full width */
+            .main-content {
+                margin-left: 0;
+                padding: 70px 14px 24px 14px;
+            }
+
+            /* Header stacked on mobile */
+            .dashboard-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
+            .dashboard-header > div:last-child {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            /* Stats grid: 2 columns on tablet, 1 on phone */
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                margin-bottom: 16px !important;
+            }
+            .stat-card { padding: 1rem !important; }
+            .stat-card .value { font-size: 1.6rem !important; }
+
+            /* Traffic 4-col grid → 2 col */
+            .stats-grid[style*="repeat(4"] {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Charts full width */
+            .charts-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Tables: horizontal scroll */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            table { min-width: 600px; }
+
+            /* Cards */
+            .card { border-radius: 14px !important; }
+            .card-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
+            .card-header .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            /* Login card */
+            .login-card { width: 94vw !important; padding: 1.5rem !important; }
+
+            /* Modal */
+            .modal-content { width: 94vw !important; }
+
+            /* Traffic summary row */
+            #trafficSection .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Buttons */
+            .btn { font-size: 0.8rem !important; padding: 0.5rem 0.8rem !important; }
+
+            /* Action buttons in tables */
+            .action-btn { width: 30px !important; height: 30px !important; }
+        }
+
+        @media (max-width: 420px) {
+            .stats-grid { grid-template-columns: 1fr !important; }
+            #trafficSection .stats-grid { grid-template-columns: 1fr !important; }
+            .main-content { padding: 66px 10px 20px 10px; }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- Mobile hamburger & sidebar overlay -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileSidebar()" aria-label="Menu">
+        <i class="fas fa-bars" id="mobileMenuIcon"></i>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
     <!-- Mail Modal -->
     <div id="mailModal"
@@ -634,7 +767,7 @@
     <!-- Login Overlay -->
     <div id="loginOverlay">
         <div class="login-card">
-            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="SVSU">
+            <img src="../assets/logo-svsu.png?v=3" alt="SVSU">
             <h2>Admin Login</h2>
             <p>Access the Intelligence Portal</p>
             <div class="form-group">
@@ -652,7 +785,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo-box">
-            <img src="https://svsu.ac.in/img/SVSU-Logo.png" alt="Logo">
+            <img src="../assets/logo-svsu.png?v=3" alt="Logo">
         </div>
 
         <ul class="nav-menu">
@@ -676,6 +809,11 @@
                     Admission Interest Forms
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="/knowledge-store" target="_blank" class="nav-link" style="color: var(--primary);">
+                    <i class="fas fa-database" style="margin-right: 8px;"></i> Knowledge Store
+                </a>
+            </li>
         </ul>
 
         <div class="sidebar-footer">
@@ -693,11 +831,16 @@
                 <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">SVSU Intelligent Dashboard</h1>
                 <p id="currentDateDisplay" style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;"></p>
             </div>
-            <div
-                style="background: white; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
-                <span
-                    style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
-                <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-main);">LIVE SYSTEM ACTIVE</span>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button class="btn btn-sync" onclick="syncData()" style="padding: 8px 16px; border-radius: 10px; font-weight: 700;">
+                    <i class="fas fa-sync-alt" id="syncBtnIcon"></i> Refresh Data
+                </button>
+                <div
+                    style="background: white; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                    <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-main);">LIVE SYSTEM ACTIVE</span>
+                </div>
             </div>
         </header>
 
@@ -811,7 +954,9 @@
                                 <th>Course Requested</th>
                                 <th>Contact</th>
                                 <th>City</th>
+                                <th>Specific Query</th>
                                 <th>Timestamp</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="appsBody">
@@ -883,6 +1028,12 @@
                 <i class="fas fa-brain" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
                 <h2>Advanced Conversion Analytics</h2>
                 <p>Calculating demographic split and ROI from specialized bot variants...</p>
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-sync" onclick="rebuildKnowledge()" style="background: var(--secondary); color: white; padding: 12px 24px;">
+                        <i class="fas fa-hammer"></i> Rebuild Unified Knowledge Store
+                    </button>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">Forces a full sync of all PDFs and structured data sources.</p>
+                </div>
             </div>
         </section>
 
@@ -900,6 +1051,8 @@
                 day: 'numeric'
             }) + ' | SVSU Intelligent Agent';
         }
+
+        // Admin panel loads should not inflate public traffic metrics.
 
         let trendChart, botChart, trafficChart, autoSyncHandle = null;
 
@@ -921,6 +1074,55 @@
 
         function logout() {
             window.location.reload();
+        }
+
+        async function deleteLead(leadId) {
+            if (!confirm('Are you sure you want to delete this lead?')) return;
+            try {
+                const res = await fetch('/api/delete-lead', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ lead_id: leadId })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    alert('Lead deleted successfully');
+                    syncData();
+                } else alert('Error: ' + data.message);
+            } catch (e) { alert('Request failed'); }
+        }
+
+        async function deleteApplication(email, mobile) {
+            if (!confirm('Are you sure you want to delete this entry?')) return;
+            try {
+                const res = await fetch('/api/delete-application', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, mobile })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    alert('Entry deleted successfully');
+                    syncData();
+                } else alert('Error: ' + data.message);
+            } catch (e) { alert('Request failed'); }
+        }
+
+        async function rebuildKnowledge() {
+            if (!confirm('Rebuild knowledge store from all source PDFs?')) return;
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rebuilding...';
+            btn.disabled = true;
+            try {
+                const res = await fetch('/api/knowledge-store/rebuild', { method: 'POST' });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    alert('Knowledge base rebuilt successfully!');
+                } else alert('Rebuild failed: ' + data.message);
+            } catch (e) { alert('Request failed'); }
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
 
         function showSection(name) {
@@ -1152,6 +1354,7 @@
                         <td style="color: var(--text-muted)">${safeTimestamp}</td>
                         <td style="display: flex; gap: 8px;">
                              ${emailAction}
+                             <button class="action-btn" title="Delete Lead" onclick="deleteLead('${escapeHtml(String(l.lead_id))}')" style="background: #ef4444; color: white; border: none;"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
                     body.appendChild(tr);
@@ -1181,7 +1384,11 @@
                             <div>${escapeHtml(String(a.city || '--'))}</div>
                             <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(String(a.qualification || '--'))}</div>
                         </td>
+                        <td style="max-width: 250px; font-size: 13px; color: #475569;">${escapeHtml(String(a.user_query || '--'))}</td>
                         <td style="color: var(--text-muted)">${escapeHtml(String(a.timestamp || '--'))}</td>
+                        <td>
+                            <button class="action-btn" title="Delete Entry" onclick="deleteApplication('${escapeHtml(String(a.email))}', '${escapeHtml(String(a.mobile))}')" style="background: #ef4444; color: white; border: none;"><i class="fas fa-trash"></i></button>
+                        </td>
                     `;
                     body.appendChild(tr);
                 });
@@ -1392,6 +1599,40 @@
                 console.error("Traffic Analytics Error:", err);
             }
         }
+
+        // ── Mobile Sidebar Toggle ──
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('mobileMenuIcon');
+            const isOpen = sidebar.classList.contains('open');
+            if (isOpen) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                icon.className = 'fas fa-bars';
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                icon.className = 'fas fa-times';
+            }
+        }
+
+
+        function closeMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('mobileMenuIcon');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            icon.className = 'fas fa-bars';
+        }
+
+        // Auto-close sidebar on mobile when a nav section is selected
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeMobileSidebar();
+            });
+        });
     </script>
 </body>
 

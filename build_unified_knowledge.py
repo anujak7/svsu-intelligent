@@ -23,6 +23,7 @@ KNOWLEDGE_BASE = os.path.join(BASE_DIR, "SVSU_KNOWLEDGE")
 STRUCTURED_DATA_DIR = os.path.join(KNOWLEDGE_BASE, "Structured_Data")
 TEXT_DATA_DIR = os.path.join(KNOWLEDGE_BASE, "Text_Knowledge")
 OUTPUT_FILE = os.path.join(STRUCTURED_DATA_DIR, "master_fact_sheet.json")
+PROGRAM_REPORT_FILE = os.path.join(STRUCTURED_DATA_DIR, "program_data_coverage_report.json")
 
 def generate_master_fact_sheet():
     print("Generating EXTENSIVE Master Fact Sheet...")
@@ -85,6 +86,25 @@ def generate_master_fact_sheet():
                 } for p in progs
             ]
 
+    # 2.5 Program data audit + PDF coverage
+    if os.path.exists(PROGRAM_REPORT_FILE):
+        with open(PROGRAM_REPORT_FILE, "r", encoding="utf-8") as f:
+            report = json.load(f)
+            fact_sheet["program_count_views"] = report.get("program_count_views", {})
+            fact_sheet["program_data_quality"] = {
+                "field_coverage_after": report.get("field_coverage_after", {}),
+                "faculty_breakdown": report.get("faculty_breakdown", {}),
+            }
+            fact_sheet["pdf_ingestion_summary"] = report.get("pdf_inventory_summary", {})
+            fact_sheet["pdf_source_inventory"] = [
+                {
+                    "file": row.get("file", ""),
+                    "in_knowledge_db": row.get("in_knowledge_db", False),
+                    "pages": row.get("pages", 0),
+                }
+                for row in report.get("pdf_inventory", [])
+            ]
+
     # 3. Add Administrative Sections
     admin_path = os.path.join(TEXT_DATA_DIR, "administration_knowledge.txt")
     if os.path.exists(admin_path):
@@ -113,7 +133,7 @@ def rebuild_all():
     print("Initializing Knowledge Store...")
     knowledge_store.init_knowledge_store()
     print("Rebuilding Knowledge Base...")
-    knowledge_store.rebuild_knowledge_store()
+    knowledge_store.rebuild_knowledge_store(force=True)
     generate_master_fact_sheet()
     print("Success! SVSU Knowledge is now optimized with ALL data.")
 
