@@ -1818,11 +1818,9 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
                 <p style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.85;">Welcome to</p>
                 <p style="margin: 0 0 5px; font-size: 22px; font-weight: 800;">India's 1st Government Skill University</p>
                 <p style="margin: 0; font-size: 14px; opacity: 0.9; line-height: 1.6;">SVSU bridges the gap between education &amp; industry with its unique <b>Earn-While-You-Learn</b> and <b>Dual Education</b> model. Learn skills, earn certificates, and get placed in top companies!</p>
-            </div>
-
-            <!-- Admission Process Image -->
+            </            <!-- Admission Process Image -->
             <div style="margin: 30px 0; text-align: center;">
-                <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/admission-process.png.png" alt="Admission Process" style="width: 100%; max-width: 550px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" onerror="this.style.display='none'">
+                <img src="https://github.com/anujak7/svsu-intelligent/blob/main/assets/admission-process.png.png?raw=true" alt="Admission Process" style="width: 100%; max-width: 550px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" onerror="this.style.display='none'">
                 <p style="font-size: 12px; color: #94a3b8; margin-top: 8px;">Step-by-step procedure to join our learning community.</p>
             </div>
 
@@ -1840,18 +1838,18 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td width="50%" style="padding: 0 8px 15px 0;">
-                            <a href="https://coe.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(59,130,246,0.3);">📋 Examination (COE)</a>
+                            <a href="https://coe.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(59,130,246,0.3);"> Examination (COE)</a>
                         </td>
                         <td width="50%" style="padding: 0 0 15px 8px;">
-                            <a href="https://www.svsulibrary.in/" style="display: block; background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.3);">📚 Central Library</a>
+                            <a href="https://www.svsulibrary.in/" style="display: block; background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.3);"> Central Library</a>
                         </td>
                     </tr>
                     <tr>
                         <td width="50%" style="padding: 0 8px 0 0;">
-                            <a href="https://rnd.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(139,92,246,0.3);">🔬 Research (R&D)</a>
+                            <a href="https://rnd.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(139,92,246,0.3);"> Research (R&D)</a>
                         </td>
                         <td width="50%" style="padding: 0 0 0 8px;">
-                            <a href="https://digitalojtdiary.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #ea580c, #f97316); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(249,115,22,0.3);">💼 OJT Portal</a>
+                            <a href="https://digitalojtdiary.svsu.ac.in/" style="display: block; background: linear-gradient(135deg, #ea580c, #f97316); color: #ffffff; padding: 15px; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px rgba(249,115,22,0.3);"> OJT Portal</a>
                         </td>
                     </tr>
                 </table>
@@ -1860,11 +1858,11 @@ async def register_application(data: ApplicationData, background_tasks: Backgrou
             <!-- Value Proposition Image -->
             <div style="margin: 40px 0; background-color: #f1f5f9; padding: 25px; border-radius: 20px;">
                 <p style="text-align: center; font-weight: 800; color: #0f172a; margin-bottom: 20px; font-size: 18px;">Why SVSU is the Right Choice for You</p>
-                <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/top-10-reasons.png.png" alt="Top 10 Reasons" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">
+                <img src="https://github.com/anujak7/svsu-intelligent/blob/main/assets/top-10-reasons.png.png?raw=true" alt="Top 10 Reasons" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">
                 
                 <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
                     <p style="text-align: center; font-weight: 800; color: #0f172a; margin-bottom: 20px; font-size: 18px;">Our Industry Partners & Recruiters</p>
-                    <img src="https://raw.githubusercontent.com/anujak7/svsu-intelligent/main/assets/companies-hiring.png.png" alt="Companies Hiring" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">
+                    <img src="https://github.com/anujak7/svsu-intelligent/blob/main/assets/companies-hiring.png.png?raw=true" alt="Companies Hiring" style="width: 100%; border-radius: 10px;" onerror="this.style.display='none'">yle.display='none'">
                     <p style="text-align: center; font-size: 13px; color: #64748b; margin-top: 15px;">Join the elite list of professionals hired by top global brands.</p>
                 </div>
             </div>
