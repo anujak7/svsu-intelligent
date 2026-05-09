@@ -9,6 +9,7 @@ SERVERS = [
 REMOTE_DIR = "/home/svsuuser/svsu-intelligent"
 LOCAL_API_SERVER = r"c:\Users\USER\Desktop\BOT-SVSU\BOT_BACKEND\api_server.py"
 LOCAL_DOMAIN_AGENTS = r"c:\Users\USER\Desktop\BOT-SVSU\BOT_BACKEND\agentic_system\domain_agents.py"
+LOCAL_CHATBOT_HTML = r"c:\Users\USER\Desktop\BOT-SVSU\admin_panel\chatbot.html"
 
 def deploy_to(server):
     ip = server["ip"]
@@ -26,6 +27,7 @@ def deploy_to(server):
     sftp = ssh.open_sftp()
     sftp.put(LOCAL_API_SERVER, f"{REMOTE_DIR}/BOT_BACKEND/api_server.py")
     sftp.put(LOCAL_DOMAIN_AGENTS, f"{REMOTE_DIR}/BOT_BACKEND/agentic_system/domain_agents.py")
+    sftp.put(LOCAL_CHATBOT_HTML, f"{REMOTE_DIR}/admin_panel/chatbot.html")
     sftp.close()
     print("  Upload complete!")
 
