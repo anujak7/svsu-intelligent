@@ -1,6 +1,6 @@
 (function() {
     const CHATBOT_BASE = "https://chatbot.svsu.ac.in";
-    const WIDGET_VERSION = "20260510-height-fixed-v3";
+    const WIDGET_VERSION = "20260510-height-fixed-v4";
     const CHATBOT_IFRAME_URL = CHATBOT_BASE + "/admin_panel/chatbot.html?widget=1&v=" + encodeURIComponent(WIDGET_VERSION);
     const CHATBOT_ORIGIN = new URL(CHATBOT_BASE).origin;
     const ID = 'svsu-chatbot-v7';
@@ -74,11 +74,12 @@
         }
         #${ID}-frame {
             position: fixed;
+            top: 242px !important;
             bottom: 5px !important;
             right: 15px !important;
             width: 450px !important;
-            height: 860px !important;
-            max-height: 96vh !important;
+            height: auto !important;
+            max-height: none !important;
             border: none !important;
             display: none;
             z-index: 2147483647;

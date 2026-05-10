@@ -65,6 +65,7 @@ NO_CACHE_PATHS = {
     "/admin_panel/admin.html",
     "/admin_panel/admin_dashboard.html",
     "/admin_panel/talk.html",
+    "/assets/widget.js",
 }
 
 @app.middleware("http")
