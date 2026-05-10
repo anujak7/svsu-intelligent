@@ -1,6 +1,6 @@
 (function() {
     const CHATBOT_BASE = "https://chatbot.svsu.ac.in";
-    const WIDGET_VERSION = "20260509-girl-resize-v1";
+    const WIDGET_VERSION = "20260510-height-force-v2";
     const CHATBOT_IFRAME_URL = CHATBOT_BASE + "/admin_panel/chatbot.html?widget=1&v=" + encodeURIComponent(WIDGET_VERSION);
     const CHATBOT_ORIGIN = new URL(CHATBOT_BASE).origin;
     const ID = 'svsu-chatbot-v7';
@@ -74,15 +74,15 @@
         }
         #${ID}-frame {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 450px;
-            height: 92vh;
-            border: none;
+            bottom: 5px !important;
+            right: 10px !important;
+            width: 450px !important;
+            height: 95vh !important;
+            border: none !important;
             display: none;
             z-index: 2147483647;
             background: transparent !important;
-            overflow: visible;
+            overflow: visible !important;
         }
         #${ID}-frame.active {
             display: block;
