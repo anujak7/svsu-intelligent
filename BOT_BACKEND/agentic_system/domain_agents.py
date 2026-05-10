@@ -18,8 +18,8 @@ def get_llm_client():
     return Groq(api_key=api_key)
 
 GROQ_MODELS_CASCADE = [
-    "llama-3.1-8b-instant",
     "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
     "mixtral-8x7b-32768",
     "llama3-70b-8192"
 ]
@@ -65,7 +65,7 @@ async def call_groq_with_retry(messages, model="llama-3.3-70b-versatile", max_to
         print(f"[ORCHESTRATOR] Groq failed. Attempting Gemini fallback (Key: {gemini_key[:5]}...)")
         try:
             genai.configure(api_key=gemini_key)
-            model_gemini = genai.GenerativeModel("gemini-2.5-flash")
+            model_gemini = genai.GenerativeModel("gemini-1.5-flash")
             
             # Format messages for Gemini (Role: user/model)
             gemini_history = []
@@ -2454,8 +2454,8 @@ You are directly connected to the 'SVSU_KNOWLEDGE' engine which indexes all Univ
 """
     try:
         # Use 3.3-70b for maximum reasoning quality as requested by user ("acche ans. de rha tha")
-        primary_model = "llama-3.1-8b-instant"
-        max_tokens_val = 256 if mode == "voice" else 1500 # Optimized for speed
+        primary_model = "llama-3.3-70b-versatile"
+        max_tokens_val = 256 if mode == "voice" else 2048 # Increased for depth
         
         messages = [
             {"role": "system", "content": system_prompt},
