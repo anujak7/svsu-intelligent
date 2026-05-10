@@ -138,25 +138,25 @@
         .menu-btn { width: 28px; height: 28px; border-radius: 7px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--svsu-dark); border: none; font-size: 0.74rem; }
         
         #widgetCloseBtn { 
-            position: absolute; 
-            top: 6px; 
-            right: 6px; 
-            width: 20px; 
-            height: 20px; 
+            position: fixed; 
+            top: 12px; 
+            right: 12px; 
+            width: 38px; 
+            height: 38px; 
             border-radius: 50%; 
             background: #e74c3c; 
             color: white; 
-            display: flex; 
+            display: none; 
             align-items: center; 
             justify-content: center; 
             cursor: pointer; 
-            border: none; 
-            font-size: 0.6rem; 
-            z-index: 1000;
-            transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 3px solid white; 
+            font-size: 1.1rem; 
+            z-index: 2147483647;
+            transition: 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
-        #widgetCloseBtn:hover { transform: scale(1.1); background: #c0392b; }
+        #widgetCloseBtn:hover { transform: scale(1.15) rotate(90deg); background: #c0392b; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
         
         /* Dropdown */
         .dropdown-menu { position: absolute; top: 46px; right: 8px; background: white; border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); width: 168px; display: none; flex-direction: column; z-index: 300; border: 1px solid #eee; }
@@ -556,14 +556,15 @@
         </div>
     </div>
 
+    <button id="widgetCloseBtn" aria-label="Close chat" style="display: none;"><i class="fas fa-times"></i></button>
+
     <div class="chat-widget" id="chatWidget">
-        <button id="widgetCloseBtn" aria-label="Close chat"><i class="fas fa-times"></i></button>
         <header class="chat-header">
             <div class="header-left">
                 <img src="../assets/logo-svsu.png?v=3" alt="SVSU">
                 <span>SVSU Intelligent</span>
             </div>
-            <div class="header-right" style="padding-right: 20px;">
+            <div class="header-right">
                 <button class="talk-toggle" id="admissionInterestBtn" style="background: #27ae60;">Apply Now</button>
                 <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
             </div>
