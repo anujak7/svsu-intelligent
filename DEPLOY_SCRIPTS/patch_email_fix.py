@@ -11,6 +11,7 @@ LOCAL_API_SERVER = r"c:\Users\USER\Desktop\BOT-SVSU\BOT_BACKEND\api_server.py"
 LOCAL_DOMAIN_AGENTS = r"c:\Users\USER\Desktop\BOT-SVSU\BOT_BACKEND\agentic_system\domain_agents.py"
 LOCAL_CHATBOT_HTML = r"c:\Users\USER\Desktop\BOT-SVSU\admin_panel\chatbot.html"
 LOCAL_ENV = r"c:\Users\USER\Desktop\BOT-SVSU\BOT_BACKEND\.env"
+LOCAL_WIDGET_JS = r"c:\Users\USER\Desktop\BOT-SVSU\assets\widget.js"
 
 def deploy_to(server):
     ip = server["ip"]
@@ -30,6 +31,7 @@ def deploy_to(server):
     sftp.put(LOCAL_DOMAIN_AGENTS, f"{REMOTE_DIR}/BOT_BACKEND/agentic_system/domain_agents.py")
     sftp.put(LOCAL_CHATBOT_HTML, f"{REMOTE_DIR}/admin_panel/chatbot.html")
     sftp.put(LOCAL_ENV, f"{REMOTE_DIR}/BOT_BACKEND/.env")
+    sftp.put(LOCAL_WIDGET_JS, f"{REMOTE_DIR}/assets/widget.js")
     sftp.close()
     print("  Upload complete!")
 

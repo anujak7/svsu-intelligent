@@ -76,8 +76,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 310px;
-            height: 450px;
+            width: 450px;
+            height: 92vh;
             border: none;
             display: none;
             z-index: 2147483647;
