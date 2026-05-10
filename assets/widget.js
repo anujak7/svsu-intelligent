@@ -1,6 +1,6 @@
 (function() {
     const CHATBOT_BASE = "https://chatbot.svsu.ac.in";
-    const WIDGET_VERSION = "20260510-resize-compact-v2";
+    const WIDGET_VERSION = "20260510-height-550-v1";
     const CHATBOT_IFRAME_URL = CHATBOT_BASE + "/admin_panel/chatbot.html?widget=1&v=" + encodeURIComponent(WIDGET_VERSION);
     const CHATBOT_ORIGIN = new URL(CHATBOT_BASE).origin;
     const ID = 'svsu-chatbot-v7';
@@ -77,7 +77,7 @@
             bottom: 20px !important;
             right: 20px !important;
             width: 350px !important;
-            height: 680px !important;
+            height: 630px !important;
             border: none !important;
             display: none;
             z-index: 2147483647;
