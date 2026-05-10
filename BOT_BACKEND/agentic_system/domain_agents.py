@@ -2466,10 +2466,13 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
         ]
         
         # Increase timeout back to 25s for 70b model + large context
-        return await asyncio.wait_for(
+        result = await asyncio.wait_for(
             call_groq_with_retry(messages, model=primary_model, max_tokens=max_tokens_val),
             timeout=25
         )
+        if result:
+            return result
+        print(f"[ERROR] Primary LLM returned None for domain '{domain}'")
     except asyncio.TimeoutError:
         print(f"[TIMEOUT] Domain Agent '{domain}' timed out after 25s. Attempting quick fallback...")
     except Exception as e:
@@ -2497,10 +2500,13 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
             {"role": "user", "content": raw_user_question}
         ]
         print(f"[FALLBACK] Attempting fast direct Groq call for '{domain}'...")
-        return await asyncio.wait_for(
+        result = await asyncio.wait_for(
             call_groq_with_retry(fallback_messages, model="llama-3.1-8b-instant", max_tokens=512),
             timeout=10
         )
+        if result:
+            return result
+        raise ValueError("Emergency Fallback returned None")
     except Exception as fe:
         print(f"[FALLBACK FAILED] {fe}")
         return "\u26a0️ I am unable to fetch a response right now. For university queries, please contact **SVSU Helpdesk: 1800-1800-147** or email **admissions@svsu.ac.in**."
