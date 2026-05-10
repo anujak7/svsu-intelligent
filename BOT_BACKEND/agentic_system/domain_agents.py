@@ -2328,7 +2328,9 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
     
     # 1. RETRIEVAL (Offload heavy CPU work to thread executor)
     loop = asyncio.get_event_loop()
-    top_final_snippets = await loop.run_in_executor(None, perform_hybrid_retrieval, raw_user_question, domain)
+    # Increase depth for non-voice queries to ensure maximum accuracy as requested by user
+    search_limit = 12 if mode == "voice" else 22
+    top_final_snippets = await loop.run_in_executor(None, perform_hybrid_retrieval, raw_user_question, domain, search_limit)
     
     priority_context, supporting_context = build_retrieved_context_sections(top_final_snippets)
 

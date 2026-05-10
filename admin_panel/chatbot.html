@@ -1564,16 +1564,20 @@
         async function finalizeLeadCapture() {
             leadStep = 'mode';
             addMsg('bot', `Thank you **${lead.name}**!`);
+            
+            // Background calls
             fetch('/api/lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(lead)
             }).catch(() => {});
 
-            // ✅ Count BOT visit ONLY after user fills Name + Mobile + Email
-            logTrafficVisitOnce();
-
-            addModeOptions();
+            // Small delay before showing options to eliminate 'laggy' feel and allow smooth rendering
+            setTimeout(() => {
+                // ✅ Count BOT visit ONLY after user fills Name + Mobile + Email
+                logTrafficVisitOnce();
+                addModeOptions();
+            }, 600);
         }
 
         async function selectLeadMode(mode) {
