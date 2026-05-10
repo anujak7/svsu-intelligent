@@ -1,6 +1,6 @@
 (function() {
     const CHATBOT_BASE = "https://chatbot.svsu.ac.in";
-    const WIDGET_VERSION = "20260510-static-launcher-v1";
+    const WIDGET_VERSION = "20260510-mobile-compact-v1";
     const CHATBOT_IFRAME_URL = CHATBOT_BASE + "/admin_panel/chatbot.html?widget=1&v=" + encodeURIComponent(WIDGET_VERSION);
     const CHATBOT_ORIGIN = new URL(CHATBOT_BASE).origin;
     const ID = 'svsu-chatbot-v7';
@@ -93,12 +93,12 @@
         }
         @media (max-width: 480px) {
             #${ID}-frame.active {
-                width: 100% !important;
-                height: 100% !important;
-                bottom: 0 !important;
-                right: 0 !important;
-                left: 0 !important;
-                top: 0 !important;
+                width: 320px !important;
+                height: 560px !important;
+                bottom: 5px !important;
+                right: 5px !important;
+                left: auto !important;
+                top: auto !important;
             }
         }
     `;
