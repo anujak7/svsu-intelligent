@@ -109,10 +109,9 @@
         /* ── Chat Widget ── */
         /* ── Chat Widget ── */
         .chat-widget { 
-            width: 350px; 
+            width: 300px; 
             height: 600px; 
-            max-width: calc(100vw - 20px);
-            max-height: calc(100vh - 20px);
+            margin-top: 50px;
             background: white; 
             border-radius: 22px; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.2); 
@@ -138,18 +137,23 @@
         .menu-btn { width: 28px; height: 28px; border-radius: 7px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--svsu-dark); border: none; font-size: 0.74rem; }
         
         #widgetCloseBtn { 
-            width: 28px; 
-            height: 28px; 
-            border-radius: 7px; 
+            position: fixed; 
+            top: 8px; 
+            right: 8px; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
             background: #e74c3c; 
             color: white; 
-            display: flex; 
+            display: none; 
             align-items: center; 
             justify-content: center; 
             cursor: pointer; 
-            border: none; 
-            font-size: 0.74rem; 
+            border: 2px solid white; 
+            font-size: 1rem; 
+            z-index: 2147483647; 
             transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         #widgetCloseBtn:hover { transform: scale(1.1); background: #c0392b; }
         
@@ -551,6 +555,8 @@
         </div>
     </div>
 
+    <button id="widgetCloseBtn" aria-label="Close chat"><i class="fas fa-times"></i></button>
+
     <div class="chat-widget" id="chatWidget">
         <header class="chat-header">
             <div class="header-left">
@@ -559,7 +565,6 @@
             </div>
             <div class="header-right">
                 <button class="talk-toggle" id="admissionInterestBtn" style="background: #27ae60;">Apply Now</button>
-                <button id="widgetCloseBtn" aria-label="Close chat"><i class="fas fa-times"></i></button>
                 <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
             </div>
             <div class="dropdown-menu" id="dropdownMenu">
