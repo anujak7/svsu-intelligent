@@ -18,10 +18,10 @@ def get_llm_client():
     return Groq(api_key=api_key)
 
 GROQ_MODELS_CASCADE = [
-    "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "openai/gpt-oss-20b",
-    "openai/gpt-oss-120b",
+    "llama-3.3-70b-versatile",
+    "mixtral-8x7b-32768",
+    "llama3-70b-8192"
 ]
 
 async def call_groq_with_retry(messages, model="llama-3.3-70b-versatile", max_tokens=2048, temperature=0.1):
@@ -2328,8 +2328,8 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
     
     # 1. RETRIEVAL (Offload heavy CPU work to thread executor)
     loop = asyncio.get_event_loop()
-    # Increase depth for non-voice queries to ensure maximum accuracy as requested by user
-    search_limit = 12 if mode == "voice" else 22
+    # Optimized depth for speed and relevance (16 is the sweet spot for accurate context)
+    search_limit = 10 if mode == "voice" else 16
     top_final_snippets = await loop.run_in_executor(None, perform_hybrid_retrieval, raw_user_question, domain, search_limit)
     
     priority_context, supporting_context = build_retrieved_context_sections(top_final_snippets)
@@ -2454,8 +2454,8 @@ You are directly connected to the 'SVSU_KNOWLEDGE' engine which indexes all Univ
 """
     try:
         # Use 3.3-70b for maximum reasoning quality as requested by user ("acche ans. de rha tha")
-        primary_model = "llama-3.1-8b-instant" if mode == "voice" else "llama-3.3-70b-versatile"
-        max_tokens_val = 256 if mode == "voice" else 2048 # Restore full capacity for detailed answers
+        primary_model = "llama-3.1-8b-instant"
+        max_tokens_val = 256 if mode == "voice" else 1500 # Optimized for speed
         
         messages = [
             {"role": "system", "content": system_prompt},
