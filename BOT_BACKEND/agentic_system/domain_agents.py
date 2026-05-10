@@ -50,12 +50,12 @@ async def call_groq_with_retry(messages, model="llama-3.3-70b-versatile", max_to
                 last_exception = e
                 err_str = str(e).lower()
                 if "rate_limit" in err_str or "429" in err_str or "rate limit" in err_str:
-                    wait_time = 1.5 ** retry_num  # Faster retries
+                    wait_time = 1.5 ** retry_num
                     print(f"[GROQ RATE LIMIT] Model {attempt_model} hit rate limit. Waiting {wait_time}s...")
                     await asyncio.sleep(wait_time)
                 else:
                     print(f"[GROQ ERROR] Model {attempt_model}: {e}")
-                    break  # Non-rate-limit error, try next model
+                    break
     
     # ---------------------------------------------------------
     # FALLBACK TO GEMINI IF ALL GROQ MODELS FAIL
@@ -2376,7 +2376,7 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
             structured_data_block = f"\n[OFFICIAL PROGRAM VERIFIED RECORD - HIGHEST TRUTH]:\n{json.dumps(record, indent=2)}\n"
             print(f"[SDI] Injected structured data for {program_name}")
 
-    # 2. Construct Prompt for the LLM
+    # 2. Construct Prompt for the LLM (SAFE CONSTRUCTION TO AVOID F-STRING BRACE CRASHES)
     role_description = AGENT_ROLES.get(domain, f"SVSU {domain} AI Agent.")
     official_program_catalog = get_official_program_catalog_context()
     program_guardrail_notes = get_program_guardrail_notes()
@@ -2404,54 +2404,57 @@ async def execute_domain_agent(domain: str, question: str, history: list = None,
             "Always identify the specific faculty member or officer (e.g., Registrar, Dean, Proctor, IT Incharge) mentioned in the snippets so the student knows exactly whom to contact."
         )
 
-    system_prompt = f"""You are the {role_description}. You are the Senior AI Counselor for SVSU (Shri Vishwakarma Skill University), powered by a Deep Reasoning engine.
-
-### THE THINKING PROTOCOL (THINK BEFORE YOU SPEAK):
-1. **DEEP SCAN**: Analyze the user's query against ALL provided knowledge snippets (Research, Recruitment, Admin, DAKSH, Super 30, etc.).
-2. **SOURCE SYNTHESIS**: If a query touches multiple areas (e.g., 'How to get a job and do research?'), synthesize answers from both 'RECRUITMENT' and 'RESEARCH' snippets.
-3. **IDENTIFY STAKEHOLDERS**: Always identify the specific official (Registrar, Dean, Nodal Officer) responsible for the queried area to ensure the student has a physical point of contact.
-4. **REASONING CHAIN**: Formulate a step-by-step logic in your "mind" before writing. For example: "The user is asking about plagiarism. Level 1 is up to 40%. Penalty is X. I should also mention the Nodal Officer."
-
-### CORE OPERATING PRINCIPLES:
-1. **UNDERSTAND & ANALYZE**: Do not just dump data. Acknowledge the user's specific context. Provide a coherent, expert-led response that feels like a mentor speaking to a student.
-2. **EASY & TO-THE-POINT**: Your answers must be **Easy to Understand** and **Directly to the Point**. Avoid unnecessary filler text. If a procedure has steps, list them clearly (1, 2, 3).
-3. **PREMIUM FORMATTING**: Use **Bold Text** for key terms, dates, and names. Use Bullet Points for lists to make the answer scannable and professional.
-4. **TRUTH HIERARCHY**: [OFFICIAL PROGRAM VERIFIED RECORD] is your ABSOLUTE HIGHEST SOURCE OF TRUTH. Use it over anything else.
-5. **ZERO HALLUCINATION**: If the information is not in the 'SVSU_KNOWLEDGE' snippets provided below, DO NOT guess. Use the official fallback.
-6. **LANGUAGE MIRRORING**: Default to professional English. For Hindi/Hinglish queries, respond in warm, professional Hinglish.
-7. **BRAND ADVOCACY**: SVSU is India's FIRST Government Skill University. Highlight its industry-linkage, practical 'Dual Education' model, and world-class infrastructure.
-8. **PROACTIVE COUNSELING**: If someone asks about DAKSH, also mention the scholarship opportunity. If someone asks about Recruitment, mention the 'Seniority-cum-Merit' principle if applicable.
-9. **OTHERS QUERY FALLBACK**: If the answer is NOT in context, professionally inform the user: 'The specific information is currently unavailable in my records. You may visit the university campus to physically meet the respective Dean or Chairperson of the department for detailed clarification.'
-
-[QUESTION-SPECIFIC RESPONSE FORMAT]:
-{answer_format_guidance}
-
-UNIVERSITY CORE KNOWLEDGE:
-{core_facts if core_facts else '- Admission Helpline: 1800-1800-147'}
-
-{structured_data_block}
-
-[OFFICIAL CURRENT PROGRAM CATALOG]:
-{official_program_catalog}
-
-[PROGRAM AVAILABILITY GUARDRAILS]:
-{program_guardrail_notes}
-
-### DATA CONNECTIVITY:
-You are directly connected to the 'SVSU_KNOWLEDGE' engine which indexes all University PDFs, CSVs, and structured JSONs. Always look for specific details in the snippets provided below.
-
-[PRIORITY SVSU KNOWLEDGE]:
-{priority_context[:8000] if priority_context else 'No extra priority manual knowledge found for this query.'}
-
-[SVSU KNOWLEDGE BANK SNIPPETS]:
-{supporting_context[:12000] if supporting_context else 'No additional domain snippets found for this query.'}
-
-[LIVE WEBSITE CONTEXT]:
-{crawled_context[:5000]}
-
-[ACTIVE CONVERSATION MEMORY]:
-{history_text}
-"""
+    # Building prompt parts safely to avoid curly brace issues in context data
+    prompt_parts = []
+    prompt_parts.append(f"You are the {role_description}. You are the Senior AI Counselor for SVSU (Shri Vishwakarma Skill University), powered by a Deep Reasoning engine.")
+    prompt_parts.append("\n### THE THINKING PROTOCOL (THINK BEFORE YOU SPEAK):")
+    prompt_parts.append("1. **DEEP SCAN**: Analyze the user's query against ALL provided knowledge snippets.")
+    prompt_parts.append("2. **SOURCE SYNTHESIS**: If a query touches multiple areas, synthesize answers.")
+    prompt_parts.append("3. **IDENTIFY STAKEHOLDERS**: Always identify the specific official responsible.")
+    prompt_parts.append("4. **REASONING CHAIN**: Formulate a step-by-step logic in your 'mind' before writing.")
+    
+    prompt_parts.append("\n### CORE OPERATING PRINCIPLES:")
+    prompt_parts.append("1. **UNDERSTAND & ANALYZE**: Do not just dump data. Provide expert-led responses.")
+    prompt_parts.append("2. **EASY & TO-THE-POINT**: Answers must be Easy to Understand and Directly to the Point.")
+    prompt_parts.append("3. **PREMIUM FORMATTING**: Use **Bold Text** and Bullet Points.")
+    prompt_parts.append("4. **TRUTH HIERARCHY**: [OFFICIAL PROGRAM VERIFIED RECORD] is your ABSOLUTE HIGHEST SOURCE OF TRUTH.")
+    prompt_parts.append("5. **ZERO HALLUCINATION**: If info is not in snippets, DO NOT guess.")
+    prompt_parts.append("6. **LANGUAGE MIRRORING**: Respond in professional Hinglish for Hindi/Hinglish queries.")
+    prompt_parts.append("7. **BRAND ADVOCACY**: SVSU is India's FIRST Government Skill University.")
+    prompt_parts.append("8. **PROACTIVE COUNSELING**: Suggest related opportunities (scholarships, etc.).")
+    prompt_parts.append("9. **OTHERS QUERY FALLBACK**: If answer is NOT in context, professionally inform to visit campus.")
+    
+    prompt_parts.append("\n[QUESTION-SPECIFIC RESPONSE FORMAT]:")
+    prompt_parts.append(answer_format_guidance)
+    
+    prompt_parts.append("\nUNIVERSITY CORE KNOWLEDGE:")
+    prompt_parts.append(core_facts if core_facts else "- Admission Helpline: 1800-1800-147")
+    
+    if structured_data_block:
+        prompt_parts.append(structured_data_block)
+        
+    prompt_parts.append("\n[OFFICIAL CURRENT PROGRAM CATALOG]:")
+    prompt_parts.append(official_program_catalog)
+    
+    prompt_parts.append("\n[PROGRAM AVAILABILITY GUARDRAILS]:")
+    prompt_parts.append(program_guardrail_notes)
+    
+    prompt_parts.append("\n### DATA CONNECTIVITY:")
+    prompt_parts.append("You are directly connected to the 'SVSU_KNOWLEDGE' engine.")
+    
+    prompt_parts.append("\n[PRIORITY SVSU KNOWLEDGE]:")
+    prompt_parts.append(priority_context[:8000] if priority_context else 'No extra priority knowledge found.')
+    
+    prompt_parts.append("\n[SVSU KNOWLEDGE BANK SNIPPETS]:")
+    prompt_parts.append(supporting_context[:12000] if supporting_context else 'No additional snippets found.')
+    
+    prompt_parts.append("\n[LIVE WEBSITE CONTEXT]:")
+    prompt_parts.append(crawled_context[:5000])
+    
+    prompt_parts.append("\n[ACTIVE CONVERSATION MEMORY]:")
+    prompt_parts.append(history_text)
+    
+    system_prompt = "\n".join(prompt_parts)
     try:
         # Use 3.3-70b for maximum reasoning quality as requested by user ("acche ans. de rha tha")
         primary_model = "llama-3.3-70b-versatile"
